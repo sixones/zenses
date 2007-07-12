@@ -1,0 +1,7 @@
+C:\Zenses\src\zensesUpdater\obj\Debug\ResolveAssemblyReference.cache
+C:\Zenses\src\zensesUpdater\obj\Debug\Zenses.Updater.Properties.Resources.resources
+C:\Zenses\src\zensesUpdater\obj\Debug\zensesUpdater.csproj.GenerateResource.Cache
+C:\Zenses\bin\zensesUpdater\debug\updater.exe
+C:\Zenses\bin\zensesUpdater\debug\updater.pdb
+C:\Zenses\src\zensesUpdater\obj\Debug\updater.exe
+C:\Zenses\src\zensesUpdater\obj\Debug\updater.pdb
