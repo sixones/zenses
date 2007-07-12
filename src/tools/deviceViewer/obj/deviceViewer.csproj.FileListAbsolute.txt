@@ -1,0 +1,16 @@
+C:\Zenses\src\tools\deviceViewer\bin\Debug\deviceViewer.exe
+C:\Zenses\src\tools\deviceViewer\bin\Debug\deviceViewer.pdb
+C:\Zenses\src\tools\deviceViewer\bin\Debug\zensesLib.dll
+C:\Zenses\src\tools\deviceViewer\bin\Debug\Interop.PortableDeviceApiLib.dll
+C:\Zenses\src\tools\deviceViewer\bin\Debug\Interop.PortableDeviceTypesLib.dll
+C:\Zenses\src\tools\deviceViewer\bin\Debug\zensesLib.pdb
+C:\Zenses\src\tools\deviceViewer\obj\Debug\ResolveAssemblyReference.cache
+C:\Zenses\src\tools\deviceViewer\obj\Debug\deviceViewer.csproj.GenerateResource.Cache
+C:\Zenses\src\tools\deviceViewer\obj\Debug\deviceViewer.exe
+C:\Zenses\src\tools\deviceViewer\obj\Debug\deviceViewer.pdb
+C:\Zenses\src\bin\tools\deviceViewer\debug\deviceViewer.exe
+C:\Zenses\src\bin\tools\deviceViewer\debug\deviceViewer.pdb
+C:\Zenses\src\tools\deviceViewer\obj\Debug\Zenses.Tools.DeviceViewer.DeviceView.resources
+C:\Zenses\src\tools\deviceViewer\obj\Debug\Zenses.Tools.DeviceViewer.Properties.Resources.resources
+C:\Zenses\bin\tools\deviceViewer\debug\deviceViewer.exe
+C:\Zenses\bin\tools\deviceViewer\debug\deviceViewer.pdb
