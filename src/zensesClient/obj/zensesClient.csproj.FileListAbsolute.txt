@@ -1,0 +1,7 @@
+C:\Zenses\src\zensesClient\obj\Debug\ResolveAssemblyReference.cache
+C:\Zenses\src\zensesClient\obj\Debug\Zenses.Client.Properties.Resources.resources
+C:\Zenses\src\zensesClient\obj\Debug\zensesClient.csproj.GenerateResource.Cache
+C:\Zenses\bin\zensesClient\debug\zenses.exe
+C:\Zenses\bin\zensesClient\debug\zenses.pdb
+C:\Zenses\src\zensesClient\obj\Debug\zenses.exe
+C:\Zenses\src\zensesClient\obj\Debug\zenses.pdb
