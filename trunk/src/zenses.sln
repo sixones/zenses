@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zensesLib", "zensesLib\zensesLib.csproj", "{83AB58AE-96F8-4DE6-B32B-1430F99D2196}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zensesClient", "zensesClient\zensesClient.csproj", "{B602DEDF-9518-4A98-AF81-67B7C36F4B64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zensesUpdater", "zensesUpdater\zensesUpdater.csproj", "{EDE6C34A-9A3C-4B7C-9395-376AD9C77A19}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{83AB58AE-96F8-4DE6-B32B-1430F99D2196}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83AB58AE-96F8-4DE6-B32B-1430F99D2196}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83AB58AE-96F8-4DE6-B32B-1430F99D2196}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83AB58AE-96F8-4DE6-B32B-1430F99D2196}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B602DEDF-9518-4A98-AF81-67B7C36F4B64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B602DEDF-9518-4A98-AF81-67B7C36F4B64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B602DEDF-9518-4A98-AF81-67B7C36F4B64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B602DEDF-9518-4A98-AF81-67B7C36F4B64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDE6C34A-9A3C-4B7C-9395-376AD9C77A19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDE6C34A-9A3C-4B7C-9395-376AD9C77A19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDE6C34A-9A3C-4B7C-9395-376AD9C77A19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDE6C34A-9A3C-4B7C-9395-376AD9C77A19}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
