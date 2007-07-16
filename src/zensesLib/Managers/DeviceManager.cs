@@ -25,8 +25,27 @@ namespace Zenses.Lib.Managers
 			this._uDeviceCount = 1;
 
 			// setup client device values
-			this._hClientDeviceValues = new PortableDeviceTypesLib.PortableDeviceValues() as IPortableDeviceValues;
-			this._hClientDeviceValues.SetStringValue(ref PropertyKeys.WPD_CLIENT_NAME, "Zenses");
+			this._hClientDeviceValues = ClientValues;
+		}
+
+		public static IPortableDeviceValues ClientValues
+		{
+			get
+			{
+				IPortableDeviceValues __hClientDeviceValues = new PortableDeviceTypesLib.PortableDeviceValues() as IPortableDeviceValues;
+				__hClientDeviceValues.SetStringValue(ref PropertyKeys.WPD_CLIENT_NAME, "Zenses");
+
+				return __hClientDeviceValues;
+			}
+		}
+
+		public PortableDeviceClass GetDevice(string deviceId)
+		{
+			PortableDeviceClass deviceClass = new PortableDeviceClass();
+
+			deviceClass.Open(deviceId, this._hClientDeviceValues);
+
+			return deviceClass;
 		}
 
 		public List<Device> GetDevices()
@@ -58,7 +77,7 @@ namespace Zenses.Lib.Managers
 
 		public void UpdateDeviceProperties(ref Device device)
 		{
-			Hashtable properties = GetDeviceProperties(device.Id);
+			Hashtable properties = this.GetDeviceProperties(device.Id, "DEVICE");
 
 			if (properties.Count != 0)
 			{
@@ -70,7 +89,7 @@ namespace Zenses.Lib.Managers
 			}
 		}
 
-		public Hashtable GetDeviceProperties(string deviceId)
+		public Hashtable GetDeviceProperties(string deviceId, string objectId)
 		{
 			Hashtable properties = new Hashtable();
 
@@ -84,7 +103,7 @@ namespace Zenses.Lib.Managers
 			deviceContent.Properties(out deviceProperties);
 
 			IPortableDeviceValues deviceValues;
-			deviceProperties.GetValues("DEVICE", null, out deviceValues);
+			deviceProperties.GetValues(objectId, null, out deviceValues);
 
 			uint devicePropertyCount = 0;
 			deviceValues.GetCount(ref devicePropertyCount);
