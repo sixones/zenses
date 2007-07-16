@@ -33,9 +33,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\EntryObjectEnumerator.cs" />
+    <Compile Include="Collections\TrackEntries.cs" />
     <Compile Include="Constants\PropertyNames.cs" />
     <Compile Include="Constants\VariantTypes.cs" />
     <Compile Include="Managers\DeviceManager.cs" />
+    <Compile Include="Managers\EntryManager.cs" />
     <Compile Include="Managers\PropertyManager.cs" />
     <Compile Include="Objects\Device.cs" />
     <Compile Include="Objects\EntryObject.cs" />
