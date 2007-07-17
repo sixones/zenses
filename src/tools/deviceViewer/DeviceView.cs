@@ -20,46 +20,6 @@ namespace Zenses.Tools.DeviceViewer
 		{
 			InitializeComponent();
 			this.PopulateDeviceListView();
-			Thread thread = new Thread(new ThreadStart(this.PopulateObjectListView));
-			thread.Start();
-		}
-
-		public void PopulateObjectListView()
-		{
-			DeviceManager deviceManager = new DeviceManager();
-			Device device = deviceManager.GetDevices()[0];
-
-			TrackEntries entries = new TrackEntries(device);
-
-			foreach (EntryObject entry in entries)
-			{
-				this.UpdateEntryView(entry);	
-			}
-		}
-
-		public delegate void UpdateEntryViewEvent(EntryObject entry);
-
-		public void UpdateEntryView(EntryObject entry)
-		{
-			if (this.InvokeRequired)
-			{
-				this.BeginInvoke(new UpdateEntryViewEvent(this.UpdateEntryView), entry);
-			}
-			else
-			{
-				string[] subItems = new string[] {
-					entry.Id,
-					entry.Title,
-					entry.Artist,
-					entry.Album,
-					entry.Length.ToString(),
-					entry.Size.ToString()
-				};
-
-				ListViewItem listViewItem = new ListViewItem(subItems);
-
-				this._cDeviceListView.Items.Add(listViewItem);
-			}
 		}
 
 		public void PopulateDeviceListView()
@@ -81,7 +41,7 @@ namespace Zenses.Tools.DeviceViewer
 					};
 
 					ListViewItem listViewItem = new ListViewItem(subItems);
-
+					
 					this._cDeviceListView.Items.Add(listViewItem);
 				}
 			}
