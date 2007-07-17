@@ -29,14 +29,13 @@ namespace Zenses.Tools.TrackBrowser
 			DeviceManager deviceManager = new DeviceManager();
 			Device device = deviceManager.GetDevices()[0];
 
-			TrackEntries entries = new TrackEntries(device);
+			EntryManager entryManager = new EntryManager(device);
+
+			entryManager.FoundNewMusicEntryEvent += new EntryManager.FoundTrackEntryDelegate(this.UpdateEntryView);
 
 			this.UpdateStatus(true);
 
-			foreach (EntryObject entry in entries)
-			{
-				this.UpdateEntryView(entry);
-			}
+			entryManager.BeginFetchContent();
 
 			this.UpdateStatus(false);
 		}

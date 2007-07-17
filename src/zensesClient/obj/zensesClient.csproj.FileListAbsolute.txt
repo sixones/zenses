@@ -5,3 +5,10 @@ C:\Zenses\bin\zensesClient\debug\zenses.exe
 C:\Zenses\bin\zensesClient\debug\zenses.pdb
 C:\Zenses\src\zensesClient\obj\Debug\zenses.exe
 C:\Zenses\src\zensesClient\obj\Debug\zenses.pdb
+C:\zenses-trunk\bin\zensesClient\debug\zenses.exe
+C:\zenses-trunk\bin\zensesClient\debug\zenses.pdb
+C:\zenses-trunk\src\zensesClient\obj\Debug\ResolveAssemblyReference.cache
+C:\zenses-trunk\src\zensesClient\obj\Debug\Zenses.Client.Properties.Resources.resources
+C:\zenses-trunk\src\zensesClient\obj\Debug\zensesClient.csproj.GenerateResource.Cache
+C:\zenses-trunk\src\zensesClient\obj\Debug\zenses.exe
+C:\zenses-trunk\src\zensesClient\obj\Debug\zenses.pdb
