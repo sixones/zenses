@@ -1,0 +1,12 @@
+bin\x86\Debug\trackBrowser.exe
+bin\x86\Debug\trackBrowser.pdb
+bin\x86\Debug\zensesLib.dll
+bin\x86\Debug\Interop.PortableDeviceApiLib.dll
+bin\x86\Debug\Interop.PortableDeviceTypesLib.dll
+bin\x86\Debug\zensesLib.pdb
+obj\x86\Debug\ResolveAssemblyReference.cache
+obj\x86\Debug\trackBrowser.Properties.Resources.resources
+obj\x86\Debug\Zenses.Tools.TrackBrowser.TrackView.resources
+obj\x86\Debug\trackBrowser.csproj.GenerateResource.Cache
+obj\x86\Debug\trackBrowser.exe
+obj\x86\Debug\trackBrowser.pdb
