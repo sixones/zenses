@@ -25,32 +25,35 @@ namespace Zenses.Lib.Managers
 			this._hDeviceClass = this._hDeviceManager.GetDevice(device.Id);
 		}
 
-		public void FetchData()
+		public void BeginFetchContent()
 		{
 			this._hDeviceClass.Content(out this._hDeviceContent);
 
-			this.EnumerateFetchData("DEVICE", 0);
+			this.EnumerateFetchContent("DEVICE", 0);
 		}
 
-		public void EnumerateFetchData(string parentId, int currentLevel)
+		public delegate void FoundTrackEntryDelegate(EntryObject entryObject);
+		public event FoundTrackEntryDelegate FoundNewMusicEntryEvent;
+
+		public void EnumerateFetchContent(string parentId, int currentLevel)
 		{
-			EntryObject entry = new EntryObject();
-			this.UpdateEntryProperties(parentId, ref entry);
-			
-			if (entry.Track < 0)
+			EntryObject entryObject = new EntryObject();
+			this.UpdateEntryProperties(parentId, ref entryObject);
+
+			if (entryObject.Track < 0)
 			{
 				// playlist
 			}
 
-			if (entry.Level == 3)
+			if (entryObject.Level == 3)
 			{
 				// artist
 			}
 
-			if (entry.Track >= 0 || (entry.Filename != null && entry.Filename.EndsWith("zpl")))
+			if (entryObject.Track >= 0 || (entryObject.Filename != null && entryObject.Filename.EndsWith("zpl")))
 			{
-				// music object?
-				throw new Exception("music object found!");
+				// music entry object
+				FoundNewMusicEntryEvent(entryObject);
 			}
 
 			IEnumPortableDeviceObjectIDs deviceObjectIds;
@@ -64,7 +67,7 @@ namespace Zenses.Lib.Managers
 
 				if (fetchedCount > 0)
 				{
-					this.EnumerateFetchData(objectId, currentLevel + 1);
+					this.EnumerateFetchContent(objectId, currentLevel + 1);
 				}
 
 			} while (fetchedCount > 0);

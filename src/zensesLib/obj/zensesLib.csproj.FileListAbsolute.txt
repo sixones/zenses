@@ -6,3 +6,11 @@ C:\Zenses\bin\zensesLib\debug\zensesLib.dll
 C:\Zenses\bin\zensesLib\debug\zensesLib.pdb
 C:\Zenses\src\zensesLib\obj\Debug\zensesLib.dll
 C:\Zenses\src\zensesLib\obj\Debug\zensesLib.pdb
+C:\zenses-trunk\bin\zensesLib\debug\zensesLib.dll
+C:\zenses-trunk\bin\zensesLib\debug\zensesLib.pdb
+C:\zenses-trunk\src\zensesLib\obj\Debug\ResolveAssemblyReference.cache
+C:\zenses-trunk\src\zensesLib\obj\Debug\Interop.PortableDeviceApiLib.dll
+C:\zenses-trunk\src\zensesLib\obj\Debug\Interop.PortableDeviceTypesLib.dll
+C:\zenses-trunk\src\zensesLib\obj\Debug\zensesLib.csproj.ResolveComReference.cache
+C:\zenses-trunk\src\zensesLib\obj\Debug\zensesLib.dll
+C:\zenses-trunk\src\zensesLib\obj\Debug\zensesLib.pdb

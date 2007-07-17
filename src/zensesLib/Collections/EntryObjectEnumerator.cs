@@ -18,6 +18,10 @@ namespace Zenses.Lib.Collections
 		private EntryObject _oCurrentEntryObject;
 		private string _sCurrentObjectId;
 		private int _iCurrentLevel;
+		private string _sCurrentParentId;
+		private List<EntryObject> _lEntryObjects;
+		private int _iLastPosition = 0;
+		private bool _bUpdateAquired = false;
 
 		public EntryObjectEnumerator(Device device)
 		{
@@ -27,6 +31,10 @@ namespace Zenses.Lib.Collections
 			PortableDeviceClass deviceClass = new PortableDeviceClass();
 			deviceClass.Open(device.Id, DeviceManager.ClientValues);
 			deviceClass.Content(out this._hDeviceContent);
+
+			this._lEntryObjects = new List<EntryObject>();
+
+			this.FindChild(this._sCurrentObjectId, this._iCurrentLevel);
 		}
 
 		public EntryObject Current
@@ -56,17 +64,24 @@ namespace Zenses.Lib.Collections
 
 		public bool MoveNext()
 		{
-			try
-			{
-				this.FindChild(this._sCurrentObjectId, this._iCurrentLevel);
-			}
-			catch (UnauthorizedAccessException)
-			{
-				return true;
-			}
+			//try
+			//{
+			//    this.FindChild(this._sCurrentObjectId, this._iCurrentLevel);
+			//}
+			//catch (UnauthorizedAccessException)
+			//{
+			//    return true;
+			//}
+
+			while (this._lEntryObjects.Count < this._iLastPosition + 1) { }
 			
-			return false;
+			this._oCurrentEntryObject = this._lEntryObjects[this._iLastPosition];
+			this._iLastPosition++;
+			
+			return true;
 		}
+		
+
 
 		public void FindChild(string parentId, int currentLevel)
 		{
@@ -75,11 +90,15 @@ namespace Zenses.Lib.Collections
 
 			if (entry.Track >= 0 || (entry.Filename != null && entry.Filename.EndsWith("zpl")))
 			{
-				if (this._iCurrentLevel != currentLevel && this._sCurrentObjectId != parentId)
+				if (this._sCurrentObjectId != parentId)
 				{
 					// music object
-					this._oCurrentEntryObject = entry;
-					throw new UnauthorizedAccessException();
+					//this._oCurrentEntryObject = entry;
+					this._sCurrentObjectId = parentId;
+					this._iCurrentLevel = currentLevel;
+					//throw new UnauthorizedAccessException();
+
+					this._lEntryObjects.Add(entry);
 				}
 			}
 
