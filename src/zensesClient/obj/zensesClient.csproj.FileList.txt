@@ -1,0 +1,14 @@
+..\..\bin\zensesClient\debug\zenses.exe
+..\..\bin\zensesClient\debug\zenses.pdb
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\Zenses.Client.Properties.Resources.resources
+obj\Debug\zensesClient.csproj.GenerateResource.Cache
+obj\Debug\zenses.exe
+obj\Debug\zenses.pdb
+bin\x86\Debug\zenses.exe
+bin\x86\Debug\zenses.pdb
+obj\x86\Debug\ResolveAssemblyReference.cache
+obj\x86\Debug\Zenses.Client.Properties.Resources.resources
+obj\x86\Debug\zensesClient.csproj.GenerateResource.Cache
+obj\x86\Debug\zenses.exe
+obj\x86\Debug\zenses.pdb
