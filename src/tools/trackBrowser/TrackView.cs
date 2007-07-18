@@ -30,26 +30,31 @@ namespace Zenses.Tools.TrackBrowser
 			Device device = deviceManager.GetDevices()[0];
 
 			EntryManager entryManager = new EntryManager(device);
+			
+			DateTime startTime = DateTime.Now;
 
 			entryManager.FoundNewMusicEntryEvent += new EntryManager.FoundTrackEntryDelegate(this.UpdateEntryView);
 
-			this.UpdateStatus(true);
-
+			this.UpdateStatus(true, "Loading ...");
+			
 			entryManager.BeginFetchContent();
 
-			this.UpdateStatus(false);
+			TimeSpan totalTime = DateTime.Now - startTime;
+
+			this.UpdateStatus(true, "Tracks: " + this._cTrackListView.Items.Count.ToString() + ", Time Taken: " + totalTime.Duration().TotalSeconds + " seconds");
 		}
 
-		public delegate void UpdateStatusEvent(bool visible);
+		public delegate void UpdateStatusEvent(bool visible, string textContent);
 
-		public void UpdateStatus(bool visible)
+		public void UpdateStatus(bool visible, string textContent)
 		{
 			if (this.InvokeRequired)
 			{
-				this.BeginInvoke(new UpdateStatusEvent(this.UpdateStatus), visible);
+				this.BeginInvoke(new UpdateStatusEvent(this.UpdateStatus), visible, textContent);
 			}
 			else
 			{
+				this._cStatusLabel.Text = textContent;
 				this._cStatusLabel.Visible = visible;
 			}
 		}
@@ -69,7 +74,7 @@ namespace Zenses.Tools.TrackBrowser
 					entry.Name,
 					entry.Artist,
 					entry.Album,
-					entry.ContentType,
+					entry.Length,
 					entry.PlayCount.ToString()
 				};
 

@@ -29,15 +29,15 @@ namespace Zenses.Tools.TrackBrowser
 		private void InitializeComponent()
 		{
 			this._cSplitContainer = new System.Windows.Forms.SplitContainer();
-			this._cStatusStrip = new System.Windows.Forms.StatusStrip();
-			this._cStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+			this._cTrackListView = new System.Windows.Forms.ListView();
 			this._cEntryIdColumn = new System.Windows.Forms.ColumnHeader();
 			this._cEntryTitleColumn = new System.Windows.Forms.ColumnHeader();
 			this._cEntryArtistColumn = new System.Windows.Forms.ColumnHeader();
 			this._cEntryAlbumColumn = new System.Windows.Forms.ColumnHeader();
-			this._cEntryContentTypeColumn = new System.Windows.Forms.ColumnHeader();
+			this._cEntryDurationColumn = new System.Windows.Forms.ColumnHeader();
 			this._cEntryPlayCountColumn = new System.Windows.Forms.ColumnHeader();
-			this._cTrackListView = new System.Windows.Forms.ListView();
+			this._cStatusStrip = new System.Windows.Forms.StatusStrip();
+			this._cStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this._cSplitContainer.Panel1.SuspendLayout();
 			this._cSplitContainer.Panel2.SuspendLayout();
 			this._cSplitContainer.SuspendLayout();
@@ -62,21 +62,26 @@ namespace Zenses.Tools.TrackBrowser
 			this._cSplitContainer.SplitterDistance = 170;
 			this._cSplitContainer.TabIndex = 0;
 			// 
-			// _cStatusStrip
+			// _cTrackListView
 			// 
-			this._cStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._cStatusLabel});
-			this._cStatusStrip.Location = new System.Drawing.Point(0, 3);
-			this._cStatusStrip.Name = "_cStatusStrip";
-			this._cStatusStrip.Size = new System.Drawing.Size(888, 22);
-			this._cStatusStrip.TabIndex = 0;
-			// 
-			// _cStatusLabel
-			// 
-			this._cStatusLabel.Name = "_cStatusLabel";
-			this._cStatusLabel.Size = new System.Drawing.Size(71, 17);
-			this._cStatusLabel.Text = "Loading ......";
-			this._cStatusLabel.Visible = false;
+			this._cTrackListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this._cEntryIdColumn,
+            this._cEntryTitleColumn,
+            this._cEntryArtistColumn,
+            this._cEntryAlbumColumn,
+            this._cEntryDurationColumn,
+            this._cEntryPlayCountColumn});
+			this._cTrackListView.Dock = System.Windows.Forms.DockStyle.Fill;
+			this._cTrackListView.FullRowSelect = true;
+			this._cTrackListView.GridLines = true;
+			this._cTrackListView.Location = new System.Drawing.Point(0, 0);
+			this._cTrackListView.MultiSelect = false;
+			this._cTrackListView.Name = "_cTrackListView";
+			this._cTrackListView.Size = new System.Drawing.Size(888, 170);
+			this._cTrackListView.Sorting = System.Windows.Forms.SortOrder.Ascending;
+			this._cTrackListView.TabIndex = 2;
+			this._cTrackListView.UseCompatibleStateImageBehavior = false;
+			this._cTrackListView.View = System.Windows.Forms.View.Details;
 			// 
 			// _cEntryIdColumn
 			// 
@@ -98,36 +103,31 @@ namespace Zenses.Tools.TrackBrowser
 			this._cEntryAlbumColumn.Text = "Album";
 			this._cEntryAlbumColumn.Width = 195;
 			// 
-			// _cEntryContentTypeColumn
+			// _cEntryDurationColumn
 			// 
-			this._cEntryContentTypeColumn.Text = "Content Type";
-			this._cEntryContentTypeColumn.Width = 101;
+			this._cEntryDurationColumn.Text = "Duration";
+			this._cEntryDurationColumn.Width = 101;
 			// 
 			// _cEntryPlayCountColumn
 			// 
 			this._cEntryPlayCountColumn.Text = "Play Count";
 			this._cEntryPlayCountColumn.Width = 82;
 			// 
-			// _cTrackListView
+			// _cStatusStrip
 			// 
-			this._cTrackListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this._cEntryIdColumn,
-            this._cEntryTitleColumn,
-            this._cEntryArtistColumn,
-            this._cEntryAlbumColumn,
-            this._cEntryContentTypeColumn,
-            this._cEntryPlayCountColumn});
-			this._cTrackListView.Dock = System.Windows.Forms.DockStyle.Fill;
-			this._cTrackListView.FullRowSelect = true;
-			this._cTrackListView.GridLines = true;
-			this._cTrackListView.Location = new System.Drawing.Point(0, 0);
-			this._cTrackListView.MultiSelect = false;
-			this._cTrackListView.Name = "_cTrackListView";
-			this._cTrackListView.Size = new System.Drawing.Size(888, 170);
-			this._cTrackListView.Sorting = System.Windows.Forms.SortOrder.Ascending;
-			this._cTrackListView.TabIndex = 2;
-			this._cTrackListView.UseCompatibleStateImageBehavior = false;
-			this._cTrackListView.View = System.Windows.Forms.View.Details;
+			this._cStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._cStatusLabel});
+			this._cStatusStrip.Location = new System.Drawing.Point(0, 3);
+			this._cStatusStrip.Name = "_cStatusStrip";
+			this._cStatusStrip.Size = new System.Drawing.Size(888, 22);
+			this._cStatusStrip.TabIndex = 0;
+			// 
+			// _cStatusLabel
+			// 
+			this._cStatusLabel.Name = "_cStatusLabel";
+			this._cStatusLabel.Size = new System.Drawing.Size(71, 17);
+			this._cStatusLabel.Text = "Loading ......";
+			this._cStatusLabel.Visible = false;
 			// 
 			// TrackView
 			// 
@@ -157,7 +157,7 @@ namespace Zenses.Tools.TrackBrowser
 		private System.Windows.Forms.ColumnHeader _cEntryTitleColumn;
 		private System.Windows.Forms.ColumnHeader _cEntryArtistColumn;
 		private System.Windows.Forms.ColumnHeader _cEntryAlbumColumn;
-		private System.Windows.Forms.ColumnHeader _cEntryContentTypeColumn;
+		private System.Windows.Forms.ColumnHeader _cEntryDurationColumn;
 		private System.Windows.Forms.ColumnHeader _cEntryPlayCountColumn;
 
 
