@@ -106,7 +106,7 @@ namespace Zenses.Lib.Managers
 
 				if (properties[PropertyNames.OBJECT_DURATION] != null)
 				{
-					entry.Length = (long)(properties[PropertyNames.OBJECT_DURATION]);
+					entry.Length = (int)((long)properties[PropertyNames.OBJECT_DURATION]);
 				}
 				else
 				{

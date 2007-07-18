@@ -29,6 +29,11 @@ namespace Zenses.Lib.Storage
 		//			entryObject
 		//			lastFmObject
 
+		public Hashtable DataTable
+		{
+			get { return this._tDataTable; }
+			set { this._tDataTable = value; }
+		}
 
 		public DataBin(StoreType storeType)
 		{
@@ -50,7 +55,7 @@ namespace Zenses.Lib.Storage
 					BinaryFormatter binaryFormatter = new BinaryFormatter();
 
 					this._tDataTable = new Hashtable();
-					this._tDataTable = binaryFormatter.Deserialize(fileStream);
+					//this._tDataTable = binaryFormatter.Deserialize(fileStream);
 				}
 				finally
 				{

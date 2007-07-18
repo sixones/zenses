@@ -6,7 +6,7 @@ namespace Zenses.Lib.Constants
 {
 	public class FileLocations
 	{
-		public const string PLAYED_HISTORY_FILENAME = "zensesHistoryStore.ad";
+		public const string DATABASE_FILENAME = "data\\storage.bin";
 		public const string DEVICE_CONTENT_FILENAME = "zensesContentStore.ad";
 	}
 }

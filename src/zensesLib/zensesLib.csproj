@@ -46,6 +46,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.43.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -54,6 +55,9 @@
     <Compile Include="Constants\PropertyNames.cs" />
     <Compile Include="Constants\FileLocations.cs" />
     <Compile Include="Constants\VariantTypes.cs" />
+    <Compile Include="Logger\Log.cs" />
+    <Compile Include="Logger\LogLevel.cs" />
+    <Compile Include="Logger\LogType.cs" />
     <Compile Include="Managers\DeviceManager.cs" />
     <Compile Include="Managers\EntryManager.cs" />
     <Compile Include="Managers\PropertyManager.cs" />
@@ -62,6 +66,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Constants\PropertyKeys.cs" />
     <Compile Include="Constants\PropVariant.cs" />
+    <Compile Include="Storage\Database.cs" />
     <Compile Include="Storage\DataBin.cs" />
     <Compile Include="Storage\StoreType.cs" />
   </ItemGroup>
@@ -82,6 +87,9 @@
       <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Exceptions\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
