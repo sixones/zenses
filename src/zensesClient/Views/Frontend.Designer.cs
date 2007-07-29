@@ -61,11 +61,17 @@ namespace Zenses.Client.Views
 			this._cSubmitFromDateLabel = new System.Windows.Forms.Label();
 			this._cSubmitTracksButton = new System.Windows.Forms.Button();
 			this._cSubmitAdvancedPanel = new System.Windows.Forms.Panel();
+			this.label3 = new System.Windows.Forms.Label();
+			this.label2 = new System.Windows.Forms.Label();
+			this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+			this.label1 = new System.Windows.Forms.Label();
 			this._cMainMenuStrip = new System.Windows.Forms.MenuStrip();
 			this._cFileMainMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this._cExitMainMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this._cToolsMainMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this._cOptionsMainMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+			this.label4 = new System.Windows.Forms.Label();
 			this._cToolStripContainer.BottomToolStripPanel.SuspendLayout();
 			this._cToolStripContainer.ContentPanel.SuspendLayout();
 			this._cToolStripContainer.TopToolStripPanel.SuspendLayout();
@@ -80,7 +86,9 @@ namespace Zenses.Client.Views
 			this._cSubmitSplitContainer.Panel1.SuspendLayout();
 			this._cSubmitSplitContainer.Panel2.SuspendLayout();
 			this._cSubmitSplitContainer.SuspendLayout();
+			this._cSubmitAdvancedPanel.SuspendLayout();
 			this._cMainMenuStrip.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// _cToolStripContainer
@@ -439,10 +447,51 @@ namespace Zenses.Client.Views
 			// 
 			// _cSubmitAdvancedPanel
 			// 
-			this._cSubmitAdvancedPanel.Location = new System.Drawing.Point(0, 68);
+			this._cSubmitAdvancedPanel.Controls.Add(this.label4);
+			this._cSubmitAdvancedPanel.Controls.Add(this.numericUpDown1);
+			this._cSubmitAdvancedPanel.Controls.Add(this.label3);
+			this._cSubmitAdvancedPanel.Controls.Add(this.label2);
+			this._cSubmitAdvancedPanel.Controls.Add(this.dateTimePicker1);
+			this._cSubmitAdvancedPanel.Controls.Add(this.label1);
+			this._cSubmitAdvancedPanel.Location = new System.Drawing.Point(0, 18);
 			this._cSubmitAdvancedPanel.Name = "_cSubmitAdvancedPanel";
-			this._cSubmitAdvancedPanel.Size = new System.Drawing.Size(828, 100);
+			this._cSubmitAdvancedPanel.Size = new System.Drawing.Size(828, 148);
 			this._cSubmitAdvancedPanel.TabIndex = 4;
+			// 
+			// label3
+			// 
+			this.label3.AutoSize = true;
+			this.label3.Location = new System.Drawing.Point(5, 29);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(100, 13);
+			this.label3.TabIndex = 6;
+			this.label3.Text = "Tracks to Scrobble:";
+			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(316, 10);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(297, 13);
+			this.label2.TabIndex = 5;
+			this.label2.Text = "( allows you to scrobble tracks between the from and to date )";
+			// 
+			// dateTimePicker1
+			// 
+			this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+			this.dateTimePicker1.Location = new System.Drawing.Point(179, 7);
+			this.dateTimePicker1.Name = "dateTimePicker1";
+			this.dateTimePicker1.Size = new System.Drawing.Size(118, 20);
+			this.dateTimePicker1.TabIndex = 4;
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(5, 10);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(109, 13);
+			this.label1.TabIndex = 3;
+			this.label1.Text = "Date to Scrobble To: ";
 			// 
 			// _cMainMenuStrip
 			// 
@@ -484,6 +533,22 @@ namespace Zenses.Client.Views
 			this._cOptionsMainMenuItem.Size = new System.Drawing.Size(116, 22);
 			this._cOptionsMainMenuItem.Text = "&Options";
 			// 
+			// numericUpDown1
+			// 
+			this.numericUpDown1.Location = new System.Drawing.Point(179, 29);
+			this.numericUpDown1.Name = "numericUpDown1";
+			this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
+			this.numericUpDown1.TabIndex = 7;
+			// 
+			// label4
+			// 
+			this.label4.AutoSize = true;
+			this.label4.Location = new System.Drawing.Point(316, 31);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(173, 13);
+			this.label4.TabIndex = 8;
+			this.label4.Text = "( 0 defaults to selected / all tracks )";
+			// 
 			// Frontend
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -516,8 +581,11 @@ namespace Zenses.Client.Views
 			this._cSubmitSplitContainer.Panel1.PerformLayout();
 			this._cSubmitSplitContainer.Panel2.ResumeLayout(false);
 			this._cSubmitSplitContainer.ResumeLayout(false);
+			this._cSubmitAdvancedPanel.ResumeLayout(false);
+			this._cSubmitAdvancedPanel.PerformLayout();
 			this._cMainMenuStrip.ResumeLayout(false);
 			this._cMainMenuStrip.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -562,5 +630,11 @@ namespace Zenses.Client.Views
 		private System.Windows.Forms.Button _cSubmitTracksButton;
 		private System.Windows.Forms.CheckBox _cSubmitUseSmartScrobbleCheckbox;
 		private System.Windows.Forms.Panel _cSubmitAdvancedPanel;
+		private System.Windows.Forms.DateTimePicker dateTimePicker1;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.NumericUpDown numericUpDown1;
 	}
 }
