@@ -11,14 +11,19 @@ using Zenses.Lib.Constants;
 using Zenses.Lib.Managers;
 using Zenses.Lib.Objects;
 using Zenses.Lib.Collections;
+using Zenses.Lib.DataAccessObjects;
 
 namespace Zenses.Tools.TrackBrowser
 {
 	public partial class TrackView : Form
 	{
+		private EntryObjectDAO _hEntryObjectDAO;
+
 		public TrackView()
 		{
 			InitializeComponent();
+
+			this._hEntryObjectDAO = new EntryObjectDAO();
 
 			Thread thread = new Thread(new ThreadStart(this.PopulateObjectListView));
 			thread.Start();
@@ -69,12 +74,14 @@ namespace Zenses.Tools.TrackBrowser
 			}
 			else
 			{
+				this._hEntryObjectDAO.SaveObject(entry);
+
 				string[] subItems = new string[] {
 					entry.Id,
 					entry.Name,
 					entry.Artist,
 					entry.Album,
-					entry.Length,
+					entry.Length.ToString(),
 					entry.PlayCount.ToString()
 				};
 

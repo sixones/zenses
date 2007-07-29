@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace zensesClient
+using Zenses.Client.Views;
+
+namespace Zenses.Client
 {
 	static class Program
 	{
@@ -14,7 +16,7 @@ namespace zensesClient
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			//Application.Run(new Form1());
+			Application.Run(new Frontend());
 		}
 	}
 }

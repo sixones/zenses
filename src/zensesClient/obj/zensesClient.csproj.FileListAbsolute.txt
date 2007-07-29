@@ -12,3 +12,7 @@ C:\zenses-trunk\src\zensesClient\obj\Debug\Zenses.Client.Properties.Resources.re
 C:\zenses-trunk\src\zensesClient\obj\Debug\zensesClient.csproj.GenerateResource.Cache
 C:\zenses-trunk\src\zensesClient\obj\Debug\zenses.exe
 C:\zenses-trunk\src\zensesClient\obj\Debug\zenses.pdb
+C:\zenses-trunk\src\zensesClient\obj\Debug\Zenses.Client.Views.Frontend.resources
+C:\zenses-trunk\src\zensesClient\obj\Debug\Zenses.Client.Controls.ContentView.resources
+C:\zenses-trunk\src\zensesClient\obj\Debug\Zenses.Client.Views.Options.resources
+C:\zenses-trunk\bin\zensesClient\debug\zenses.exe.config

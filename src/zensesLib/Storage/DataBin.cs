@@ -15,7 +15,7 @@ namespace Zenses.Lib.Storage
 	{
 		private Hashtable _tDataTable;
 		private StoreType _eStoreType;
-		private string _sDataLocation;
+		//private string _sDataLocation;
 
 		// content_store
 		// hashtable -->
@@ -40,43 +40,43 @@ namespace Zenses.Lib.Storage
 			this._eStoreType = storeType;
 
 			// setup our storage location
-			if (this._eStoreType == StoreType.DeviceContent) this._sDataLocation = FileLocations.DEVICE_CONTENT_FILENAME;
-			else if (this._eStoreType == StoreType.PlayedHistory) this._sDataLocation = FileLocations.PLAYED_HISTORY_FILENAME;
+			//if (this._eStoreType == StoreType.DeviceContent) this._sDataLocation = FileLocations.DEVICE_CONTENT_FILENAME;
+			//else if (this._eStoreType == StoreType.PlayedHistory) this._sDataLocation = FileLocations.PLAYED_HISTORY_FILENAME;
 		}
 
 		public void Open()
 		{
-			FileStream fileStream = new FileStream(this._sDataLocation, FileMode.OpenOrCreate, FileAccess.Read);
+			//FileStream fileStream = new FileStream(this._sDataLocation, FileMode.OpenOrCreate, FileAccess.Read);
 
-			if (fileStream.Length != 0)
-			{
-				try
-				{
-					BinaryFormatter binaryFormatter = new BinaryFormatter();
+			//if (fileStream.Length != 0)
+			//{
+			//    try
+			//    {
+			//        BinaryFormatter binaryFormatter = new BinaryFormatter();
 
-					this._tDataTable = new Hashtable();
-					//this._tDataTable = binaryFormatter.Deserialize(fileStream);
-				}
-				finally
-				{
-					fileStream.Close();
-				}
-			}
+			//        this._tDataTable = new Hashtable();
+			//        //this._tDataTable = binaryFormatter.Deserialize(fileStream);
+			//    }
+			//    finally
+			//    {
+			//        fileStream.Close();
+			//    }
+			//}
 		}
 
 		public void Save()
 		{
-			FileStream fileStream = new FileStream(this._sDataLocation, FileMode.OpenOrCreate, FileAccess.Write);
+			//FileStream fileStream = new FileStream(this._sDataLocation, FileMode.OpenOrCreate, FileAccess.Write);
 
-			try
-			{
-				BinaryFormatter binaryFormatter = new BinaryFormatter();
-				binaryFormatter.Serialize(fileStream, this._tDataTable);
-			}
-			finally
-			{
-				fileStream.Close();
-			}
+			//try
+			//{
+			//    BinaryFormatter binaryFormatter = new BinaryFormatter();
+			//    binaryFormatter.Serialize(fileStream, this._tDataTable);
+			//}
+			//finally
+			//{
+			//    fileStream.Close();
+			//}
 		}
 	}
 }

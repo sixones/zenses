@@ -18,10 +18,10 @@ namespace Zenses.Lib.Collections
 		private EntryObject _oCurrentEntryObject;
 		private string _sCurrentObjectId;
 		private int _iCurrentLevel;
-		private string _sCurrentParentId;
+		//private string _sCurrentParentId;
 		private List<EntryObject> _lEntryObjects;
 		private int _iLastPosition = 0;
-		private bool _bUpdateAquired = false;
+		//private bool _bUpdateAquired = false;
 
 		public EntryObjectEnumerator(Device device)
 		{

@@ -11,46 +11,80 @@ namespace Zenses.Lib.Storage
 {
 	public class Database
 	{
-		private SQLiteConnection _hConnection;
+		private static SQLiteConnection __hConnection;
+
+		public Database()
+		{
+			this.Connect();
+		}
 
 		public void Connect()
 		{
-			if (this._hConnection == null || this._hConnection.State == ConnectionState.Closed)
-			{
-				if (!File.Exists(FileLocations.DATABASE_FILENAME))
-				{
-					SQLiteConnection.CreateFile(FileLocations.DATABASE_FILENAME);
-				}
+			this.CreateDatabase();
 
+			if (__hConnection == null || __hConnection.State == ConnectionState.Closed)
+			{
 				try
 				{
-					using (this._hConnection = new SQLiteConnection())
-					{
-						this._hConnection.ConnectionString = "Data Source=" + FileLocations.DATABASE_FILENAME + "; Version=3;";
-						this._hConnection.Open();
-					}
+					__hConnection = new SQLiteConnection();
+					
+					__hConnection.ConnectionString = "Data Source=" + FileLocations.DATABASE_FILENAME + "; Version=3;";
+					__hConnection.Open();
+					
 				}
 				catch (SQLiteException)
 				{
 					// handle exception
 				}
+
+				this.CreateStructure();
 			}
 		}
 
-		public DataSet Fetch(string sqlQuery)
+		public void CreateDatabase()
+		{
+			if (!Directory.Exists("data"))
+			{
+				Directory.CreateDirectory("data");
+			}
+
+			if (!File.Exists(FileLocations.DATABASE_FILENAME))
+			{
+				SQLiteConnection.CreateFile(FileLocations.DATABASE_FILENAME);
+			}
+		}
+
+		public void CreateStructure()
+		{
+			if (__hConnection.GetSchema("Tables").Rows.Count == 0)
+			{
+				// create the two tables in the database
+				this.Execute("CREATE TABLE device_tracks ([id] NVARCHAR(30), [persistent_id] NVARCHAR(30) PRIMARY KEY, [name] NVARCHAR(256), [artist] NVARCHAR(256), [album] NVARCHAR(256), [length] INTEGER, [size] INTEGER, [play_count] INTEGER, [filename] TEXT)");
+				this.Execute("CREATE TABLE played_history ([track_persistent_id] NVARCHAR(30), [date_submitted] NVARCHAR(20))");
+			}
+		}
+
+		public DataSet Fetch(string sqlQuery, params SQLiteParameter[] parameters)
 		{
 			this.Connect();
 
 			DataSet fetchedData = new DataSet();
 
-			using (SQLiteTransaction transaction = this._hConnection.BeginTransaction())
+			using (SQLiteTransaction transaction = __hConnection.BeginTransaction())
 			{
-				using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(sqlQuery, this._hConnection))
+				using (SQLiteCommand command = new SQLiteCommand())
 				{
-					using (SQLiteCommandBuilder commandBuilder = new SQLiteCommandBuilder(dataAdapter))
+					command.Parameters.AddRange(parameters);
+					command.CommandText = sqlQuery;
+					command.Connection = __hConnection;
+
+					using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command))
 					{
-						dataAdapter.FillSchema(fetchedData, SchemaType.Mapped);
-						transaction.Commit();
+						using (SQLiteCommandBuilder commandBuilder = new SQLiteCommandBuilder(dataAdapter))
+						{
+							dataAdapter.Fill(fetchedData);
+							transaction.Commit();
+						}
 					}
 				}
 			}
@@ -58,22 +92,30 @@ namespace Zenses.Lib.Storage
 			return fetchedData;
 		}
 
-		public int Execute(string sqlQuery)
+		public int Execute(string sqlQuery, params SQLiteParameter[] parameters)
 		{
 			this.Connect();
 
 			int affectedRows = 0;
-
-			using (SQLiteTransaction transaction = this._hConnection.BeginTransaction())
+			try
 			{
-				using (SQLiteCommand command = new SQLiteCommand())
+				using (SQLiteTransaction transaction = __hConnection.BeginTransaction())
 				{
-					command.CommandText = sqlQuery;
-					command.Connection = this._hConnection;
+					using (SQLiteCommand command = new SQLiteCommand())
+					{
+						command.Parameters.AddRange(parameters);
 
-					affectedRows = command.ExecuteNonQuery();
-					transaction.Commit();
+						command.CommandText = sqlQuery;
+						command.Connection = __hConnection;
+
+						affectedRows = command.ExecuteNonQuery();
+						transaction.Commit();
+					}
 				}
+			}
+			catch (SQLiteException ex)
+			{
+				throw ex;
 			}
 
 			return affectedRows;
@@ -81,7 +123,7 @@ namespace Zenses.Lib.Storage
 
 		public void Close()
 		{
-			this._hConnection.Close();
+			__hConnection.Close();
 		}
 
 		~Database()
