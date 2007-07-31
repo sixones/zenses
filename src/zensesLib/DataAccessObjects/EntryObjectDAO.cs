@@ -20,6 +20,11 @@ namespace Zenses.Lib.DataAccessObjects
 
 		public List<EntryObject> FetchNotSubmitted()
 		{
+			return this.FetchNotSubmitted(false);
+		}
+
+		public List<EntryObject> FetchNotSubmitted(bool repeatPlayed)
+		{
 			List<EntryObject> entries = this.FetchPlayed();
 
 			List<EntryObject> recentlyPlayed = new List<EntryObject>();
@@ -35,6 +40,8 @@ namespace Zenses.Lib.DataAccessObjects
 				for (int i = 0; i < notSubmittedCount; i++)
 				{
 					recentlyPlayed.Add(entry);
+
+					if (!repeatPlayed) break;
 				}
 			}
 

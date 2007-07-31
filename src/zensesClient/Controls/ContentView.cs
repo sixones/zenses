@@ -20,12 +20,32 @@ namespace Zenses.Client.Controls
 			set { this._lEntries = value; }
 		}
 
-		public ContentView(List<EntryObject> entries)
+		public List<EntryObject> CheckedItems
 		{
-			InitializeComponent();
+			get
+			{
+				List<EntryObject> entries = new List<EntryObject>();
 
+				foreach (ListViewItem listViewItem in this._cTrackContentView.CheckedItems)
+				{
+					entries.Add((EntryObject)listViewItem.Tag);
+				}
+
+				return entries;
+			}
+		}
+
+		public ContentView()
+		{
+			this.InitializeComponent();
+			this._lEntries = new List<EntryObject>();
+		}
+
+		public void BindData(List<EntryObject> entries, bool withCheckboxes)
+		{
 			this._lEntries = entries;
-
+			this._cTrackContentView.CheckBoxes = withCheckboxes;
+			
 			if (this._lEntries != null && this._lEntries.Count > 0)
 			{
 				foreach (EntryObject entry in this._lEntries)
@@ -39,6 +59,7 @@ namespace Zenses.Client.Controls
 					};
 
 					ListViewItem listItem = new ListViewItem(items);
+					listItem.Tag = entry;
 
 					this._cTrackContentView.Items.Add(listItem);
 				}

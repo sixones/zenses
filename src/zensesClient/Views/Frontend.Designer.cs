@@ -56,22 +56,31 @@ namespace Zenses.Client.Views
 			this._cHistoryTab = new System.Windows.Forms.TabPage();
 			this._cSubmitTab = new System.Windows.Forms.TabPage();
 			this._cSubmitSplitContainer = new System.Windows.Forms.SplitContainer();
+			this._cSubmitShowAdvancedButton = new System.Windows.Forms.Button();
+			this.checkBox4 = new System.Windows.Forms.CheckBox();
 			this._cSubmitUseSmartScrobbleCheckbox = new System.Windows.Forms.CheckBox();
+			this.checkBox3 = new System.Windows.Forms.CheckBox();
 			this._cSubmitFromDateValue = new System.Windows.Forms.DateTimePicker();
+			this.label16 = new System.Windows.Forms.Label();
 			this._cSubmitFromDateLabel = new System.Windows.Forms.Label();
+			this.label15 = new System.Windows.Forms.Label();
 			this._cSubmitTracksButton = new System.Windows.Forms.Button();
-			this._cSubmitAdvancedPanel = new System.Windows.Forms.Panel();
-			this.label3 = new System.Windows.Forms.Label();
-			this.label2 = new System.Windows.Forms.Label();
-			this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-			this.label1 = new System.Windows.Forms.Label();
+			this.label14 = new System.Windows.Forms.Label();
+			this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
+			this.label7 = new System.Windows.Forms.Label();
+			this.label13 = new System.Windows.Forms.Label();
+			this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+			this.label12 = new System.Windows.Forms.Label();
+			this.label9 = new System.Windows.Forms.Label();
+			this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
+			this.label11 = new System.Windows.Forms.Label();
 			this._cMainMenuStrip = new System.Windows.Forms.MenuStrip();
 			this._cFileMainMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this._cExitMainMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this._cToolsMainMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this._cOptionsMainMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-			this.label4 = new System.Windows.Forms.Label();
+			this._cPlayedContentView = new Zenses.Client.Controls.ContentView();
+			this._cSubmitContentView = new Zenses.Client.Controls.ContentView();
 			this._cToolStripContainer.BottomToolStripPanel.SuspendLayout();
 			this._cToolStripContainer.ContentPanel.SuspendLayout();
 			this._cToolStripContainer.TopToolStripPanel.SuspendLayout();
@@ -82,13 +91,14 @@ namespace Zenses.Client.Views
 			this.groupBox1.SuspendLayout();
 			this._cLastFMGroup.SuspendLayout();
 			this._cDeviceInformationGroup.SuspendLayout();
+			this._cPlayedTab.SuspendLayout();
 			this._cSubmitTab.SuspendLayout();
 			this._cSubmitSplitContainer.Panel1.SuspendLayout();
 			this._cSubmitSplitContainer.Panel2.SuspendLayout();
 			this._cSubmitSplitContainer.SuspendLayout();
-			this._cSubmitAdvancedPanel.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
 			this._cMainMenuStrip.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// _cToolStripContainer
@@ -351,6 +361,7 @@ namespace Zenses.Client.Views
 			// 
 			// _cPlayedTab
 			// 
+			this._cPlayedTab.Controls.Add(this._cPlayedContentView);
 			this._cPlayedTab.Location = new System.Drawing.Point(4, 28);
 			this._cPlayedTab.Name = "_cPlayedTab";
 			this._cPlayedTab.Padding = new System.Windows.Forms.Padding(3);
@@ -385,24 +396,58 @@ namespace Zenses.Client.Views
 			// 
 			this._cSubmitSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._cSubmitSplitContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+			this._cSubmitSplitContainer.IsSplitterFixed = true;
 			this._cSubmitSplitContainer.Location = new System.Drawing.Point(3, 3);
 			this._cSubmitSplitContainer.Name = "_cSubmitSplitContainer";
 			this._cSubmitSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
 			// 
 			// _cSubmitSplitContainer.Panel1
 			// 
+			this._cSubmitSplitContainer.Panel1.Controls.Add(this._cSubmitShowAdvancedButton);
+			this._cSubmitSplitContainer.Panel1.Controls.Add(this.checkBox4);
 			this._cSubmitSplitContainer.Panel1.Controls.Add(this._cSubmitUseSmartScrobbleCheckbox);
+			this._cSubmitSplitContainer.Panel1.Controls.Add(this.checkBox3);
 			this._cSubmitSplitContainer.Panel1.Controls.Add(this._cSubmitFromDateValue);
+			this._cSubmitSplitContainer.Panel1.Controls.Add(this.label16);
 			this._cSubmitSplitContainer.Panel1.Controls.Add(this._cSubmitFromDateLabel);
+			this._cSubmitSplitContainer.Panel1.Controls.Add(this.label15);
 			this._cSubmitSplitContainer.Panel1.Controls.Add(this._cSubmitTracksButton);
+			this._cSubmitSplitContainer.Panel1.Controls.Add(this.label14);
+			this._cSubmitSplitContainer.Panel1.Controls.Add(this.numericUpDown4);
+			this._cSubmitSplitContainer.Panel1.Controls.Add(this.label7);
+			this._cSubmitSplitContainer.Panel1.Controls.Add(this.label13);
+			this._cSubmitSplitContainer.Panel1.Controls.Add(this.dateTimePicker2);
+			this._cSubmitSplitContainer.Panel1.Controls.Add(this.label12);
+			this._cSubmitSplitContainer.Panel1.Controls.Add(this.label9);
+			this._cSubmitSplitContainer.Panel1.Controls.Add(this.numericUpDown3);
+			this._cSubmitSplitContainer.Panel1.Controls.Add(this.label11);
 			// 
 			// _cSubmitSplitContainer.Panel2
 			// 
-			this._cSubmitSplitContainer.Panel2.Controls.Add(this._cSubmitAdvancedPanel);
+			this._cSubmitSplitContainer.Panel2.Controls.Add(this._cSubmitContentView);
 			this._cSubmitSplitContainer.Panel2.Enter += new System.EventHandler(this._cSubmitSplitContainer_Panel2_Enter);
 			this._cSubmitSplitContainer.Size = new System.Drawing.Size(828, 314);
-			this._cSubmitSplitContainer.SplitterDistance = 29;
+			this._cSubmitSplitContainer.SplitterDistance = 154;
 			this._cSubmitSplitContainer.TabIndex = 0;
+			// 
+			// _cSubmitShowAdvancedButton
+			// 
+			this._cSubmitShowAdvancedButton.Location = new System.Drawing.Point(748, 2);
+			this._cSubmitShowAdvancedButton.Name = "_cSubmitShowAdvancedButton";
+			this._cSubmitShowAdvancedButton.Size = new System.Drawing.Size(75, 23);
+			this._cSubmitShowAdvancedButton.TabIndex = 16;
+			this._cSubmitShowAdvancedButton.Text = "Advanced";
+			this._cSubmitShowAdvancedButton.UseVisualStyleBackColor = true;
+			this._cSubmitShowAdvancedButton.Click += new System.EventHandler(this._cSubmitShowAdvancedButton_Click);
+			// 
+			// checkBox4
+			// 
+			this.checkBox4.AutoSize = true;
+			this.checkBox4.Location = new System.Drawing.Point(158, 130);
+			this.checkBox4.Name = "checkBox4";
+			this.checkBox4.Size = new System.Drawing.Size(15, 14);
+			this.checkBox4.TabIndex = 6;
+			this.checkBox4.UseVisualStyleBackColor = true;
 			// 
 			// _cSubmitUseSmartScrobbleCheckbox
 			// 
@@ -416,82 +461,139 @@ namespace Zenses.Client.Views
 			this._cSubmitUseSmartScrobbleCheckbox.Text = "Use Smart Scrobble";
 			this._cSubmitUseSmartScrobbleCheckbox.UseVisualStyleBackColor = true;
 			// 
+			// checkBox3
+			// 
+			this.checkBox3.AutoSize = true;
+			this.checkBox3.Location = new System.Drawing.Point(158, 108);
+			this.checkBox3.Name = "checkBox3";
+			this.checkBox3.Size = new System.Drawing.Size(15, 14);
+			this.checkBox3.TabIndex = 5;
+			this.checkBox3.UseVisualStyleBackColor = true;
+			// 
 			// _cSubmitFromDateValue
 			// 
 			this._cSubmitFromDateValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this._cSubmitFromDateValue.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-			this._cSubmitFromDateValue.Location = new System.Drawing.Point(603, 6);
+			this._cSubmitFromDateValue.Location = new System.Drawing.Point(501, 6);
 			this._cSubmitFromDateValue.Name = "_cSubmitFromDateValue";
 			this._cSubmitFromDateValue.Size = new System.Drawing.Size(118, 20);
 			this._cSubmitFromDateValue.TabIndex = 2;
+			// 
+			// label16
+			// 
+			this.label16.AutoSize = true;
+			this.label16.Location = new System.Drawing.Point(5, 129);
+			this.label16.Name = "label16";
+			this.label16.Size = new System.Drawing.Size(105, 13);
+			this.label16.TabIndex = 15;
+			this.label16.Text = "Group Same Tracks:";
 			// 
 			// _cSubmitFromDateLabel
 			// 
 			this._cSubmitFromDateLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this._cSubmitFromDateLabel.AutoSize = true;
-			this._cSubmitFromDateLabel.Location = new System.Drawing.Point(429, 9);
+			this._cSubmitFromDateLabel.Location = new System.Drawing.Point(327, 9);
 			this._cSubmitFromDateLabel.Name = "_cSubmitFromDateLabel";
 			this._cSubmitFromDateLabel.Size = new System.Drawing.Size(168, 13);
 			this._cSubmitFromDateLabel.TabIndex = 1;
 			this._cSubmitFromDateLabel.Text = "Date to Calculate Scrobbles From:";
 			// 
+			// label15
+			// 
+			this.label15.AutoSize = true;
+			this.label15.Location = new System.Drawing.Point(5, 107);
+			this.label15.Name = "label15";
+			this.label15.Size = new System.Drawing.Size(122, 13);
+			this.label15.TabIndex = 12;
+			this.label15.Text = "Group Albums Together:";
+			// 
 			// _cSubmitTracksButton
 			// 
 			this._cSubmitTracksButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this._cSubmitTracksButton.Location = new System.Drawing.Point(727, 3);
+			this._cSubmitTracksButton.Location = new System.Drawing.Point(625, 3);
 			this._cSubmitTracksButton.Name = "_cSubmitTracksButton";
 			this._cSubmitTracksButton.Size = new System.Drawing.Size(96, 23);
 			this._cSubmitTracksButton.TabIndex = 0;
 			this._cSubmitTracksButton.Text = "Scrobble Tracks";
 			this._cSubmitTracksButton.UseVisualStyleBackColor = true;
+			this._cSubmitTracksButton.Click += new System.EventHandler(this._cSubmitTracksButton_Click);
 			// 
-			// _cSubmitAdvancedPanel
+			// label14
 			// 
-			this._cSubmitAdvancedPanel.Controls.Add(this.label4);
-			this._cSubmitAdvancedPanel.Controls.Add(this.numericUpDown1);
-			this._cSubmitAdvancedPanel.Controls.Add(this.label3);
-			this._cSubmitAdvancedPanel.Controls.Add(this.label2);
-			this._cSubmitAdvancedPanel.Controls.Add(this.dateTimePicker1);
-			this._cSubmitAdvancedPanel.Controls.Add(this.label1);
-			this._cSubmitAdvancedPanel.Location = new System.Drawing.Point(0, 18);
-			this._cSubmitAdvancedPanel.Name = "_cSubmitAdvancedPanel";
-			this._cSubmitAdvancedPanel.Size = new System.Drawing.Size(828, 148);
-			this._cSubmitAdvancedPanel.TabIndex = 4;
+			this.label14.AutoSize = true;
+			this.label14.Location = new System.Drawing.Point(281, 85);
+			this.label14.Name = "label14";
+			this.label14.Size = new System.Drawing.Size(372, 13);
+			this.label14.TabIndex = 11;
+			this.label14.Text = "( 0 defaults to selected / all tracks - the number of tracks to scrobble per day " +
+				")";
 			// 
-			// label3
+			// numericUpDown4
 			// 
-			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(5, 29);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(100, 13);
-			this.label3.TabIndex = 6;
-			this.label3.Text = "Tracks to Scrobble:";
+			this.numericUpDown4.Location = new System.Drawing.Point(158, 81);
+			this.numericUpDown4.Name = "numericUpDown4";
+			this.numericUpDown4.Size = new System.Drawing.Size(118, 20);
+			this.numericUpDown4.TabIndex = 10;
 			// 
-			// label2
+			// label7
 			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(316, 10);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(297, 13);
-			this.label2.TabIndex = 5;
-			this.label2.Text = "( allows you to scrobble tracks between the from and to date )";
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(5, 40);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(109, 13);
+			this.label7.TabIndex = 3;
+			this.label7.Text = "Date to Scrobble To: ";
 			// 
-			// dateTimePicker1
+			// label13
 			// 
-			this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-			this.dateTimePicker1.Location = new System.Drawing.Point(179, 7);
-			this.dateTimePicker1.Name = "dateTimePicker1";
-			this.dateTimePicker1.Size = new System.Drawing.Size(118, 20);
-			this.dateTimePicker1.TabIndex = 4;
+			this.label13.AutoSize = true;
+			this.label13.Location = new System.Drawing.Point(5, 84);
+			this.label13.Name = "label13";
+			this.label13.Size = new System.Drawing.Size(142, 13);
+			this.label13.TabIndex = 9;
+			this.label13.Text = "Tracks to Scrobble in a Day:";
 			// 
-			// label1
+			// dateTimePicker2
 			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(5, 10);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(109, 13);
-			this.label1.TabIndex = 3;
-			this.label1.Text = "Date to Scrobble To: ";
+			this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+			this.dateTimePicker2.Location = new System.Drawing.Point(158, 36);
+			this.dateTimePicker2.Name = "dateTimePicker2";
+			this.dateTimePicker2.Size = new System.Drawing.Size(118, 20);
+			this.dateTimePicker2.TabIndex = 4;
+			// 
+			// label12
+			// 
+			this.label12.AutoSize = true;
+			this.label12.Location = new System.Drawing.Point(281, 62);
+			this.label12.Name = "label12";
+			this.label12.Size = new System.Drawing.Size(173, 13);
+			this.label12.TabIndex = 8;
+			this.label12.Text = "( 0 defaults to selected / all tracks )";
+			// 
+			// label9
+			// 
+			this.label9.AutoSize = true;
+			this.label9.Location = new System.Drawing.Point(281, 40);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(297, 13);
+			this.label9.TabIndex = 5;
+			this.label9.Text = "( allows you to scrobble tracks between the from and to date )";
+			// 
+			// numericUpDown3
+			// 
+			this.numericUpDown3.Location = new System.Drawing.Point(158, 58);
+			this.numericUpDown3.Name = "numericUpDown3";
+			this.numericUpDown3.Size = new System.Drawing.Size(118, 20);
+			this.numericUpDown3.TabIndex = 7;
+			// 
+			// label11
+			// 
+			this.label11.AutoSize = true;
+			this.label11.Location = new System.Drawing.Point(5, 62);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(100, 13);
+			this.label11.TabIndex = 6;
+			this.label11.Text = "Tracks to Scrobble:";
 			// 
 			// _cMainMenuStrip
 			// 
@@ -533,21 +635,23 @@ namespace Zenses.Client.Views
 			this._cOptionsMainMenuItem.Size = new System.Drawing.Size(116, 22);
 			this._cOptionsMainMenuItem.Text = "&Options";
 			// 
-			// numericUpDown1
+			// _cPlayedContentView
 			// 
-			this.numericUpDown1.Location = new System.Drawing.Point(179, 29);
-			this.numericUpDown1.Name = "numericUpDown1";
-			this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
-			this.numericUpDown1.TabIndex = 7;
+			this._cPlayedContentView.Dock = System.Windows.Forms.DockStyle.Fill;
+			this._cPlayedContentView.Entries = null;
+			this._cPlayedContentView.Location = new System.Drawing.Point(3, 3);
+			this._cPlayedContentView.Name = "_cPlayedContentView";
+			this._cPlayedContentView.Size = new System.Drawing.Size(828, 314);
+			this._cPlayedContentView.TabIndex = 0;
 			// 
-			// label4
+			// _cSubmitContentView
 			// 
-			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(316, 31);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(173, 13);
-			this.label4.TabIndex = 8;
-			this.label4.Text = "( 0 defaults to selected / all tracks )";
+			this._cSubmitContentView.Dock = System.Windows.Forms.DockStyle.Fill;
+			this._cSubmitContentView.Entries = null;
+			this._cSubmitContentView.Location = new System.Drawing.Point(0, 0);
+			this._cSubmitContentView.Name = "_cSubmitContentView";
+			this._cSubmitContentView.Size = new System.Drawing.Size(828, 156);
+			this._cSubmitContentView.TabIndex = 0;
 			// 
 			// Frontend
 			// 
@@ -576,16 +680,16 @@ namespace Zenses.Client.Views
 			this._cLastFMGroup.PerformLayout();
 			this._cDeviceInformationGroup.ResumeLayout(false);
 			this._cDeviceInformationGroup.PerformLayout();
+			this._cPlayedTab.ResumeLayout(false);
 			this._cSubmitTab.ResumeLayout(false);
 			this._cSubmitSplitContainer.Panel1.ResumeLayout(false);
 			this._cSubmitSplitContainer.Panel1.PerformLayout();
 			this._cSubmitSplitContainer.Panel2.ResumeLayout(false);
 			this._cSubmitSplitContainer.ResumeLayout(false);
-			this._cSubmitAdvancedPanel.ResumeLayout(false);
-			this._cSubmitAdvancedPanel.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
 			this._cMainMenuStrip.ResumeLayout(false);
 			this._cMainMenuStrip.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -629,12 +733,21 @@ namespace Zenses.Client.Views
 		private System.Windows.Forms.Label _cSubmitFromDateLabel;
 		private System.Windows.Forms.Button _cSubmitTracksButton;
 		private System.Windows.Forms.CheckBox _cSubmitUseSmartScrobbleCheckbox;
-		private System.Windows.Forms.Panel _cSubmitAdvancedPanel;
-		private System.Windows.Forms.DateTimePicker dateTimePicker1;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.NumericUpDown numericUpDown1;
+		private System.Windows.Forms.CheckBox checkBox4;
+		private System.Windows.Forms.CheckBox checkBox3;
+		private System.Windows.Forms.Label label16;
+		private System.Windows.Forms.Label label15;
+		private System.Windows.Forms.Label label14;
+		private System.Windows.Forms.NumericUpDown numericUpDown4;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.Label label13;
+		private System.Windows.Forms.DateTimePicker dateTimePicker2;
+		private System.Windows.Forms.Label label12;
+		private System.Windows.Forms.Label label9;
+		private System.Windows.Forms.NumericUpDown numericUpDown3;
+		private System.Windows.Forms.Label label11;
+		private System.Windows.Forms.Button _cSubmitShowAdvancedButton;
+		private Zenses.Client.Controls.ContentView _cSubmitContentView;
+		private Zenses.Client.Controls.ContentView _cPlayedContentView;
 	}
 }

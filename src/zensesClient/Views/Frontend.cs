@@ -10,6 +10,7 @@ using Zenses.Client.Controls;
 using Zenses.Client.Properties;
 
 using Zenses.Lib.DataAccessObjects;
+using Zenses.Lib.Gui;
 using Zenses.Lib.Objects;
 using Zenses.Lib.Managers;
 
@@ -17,14 +18,19 @@ namespace Zenses.Client.Views
 {
 	public partial class Frontend : Form
 	{
-		private ContentView _cContentViewControl;
 		private Device _oDevice;
 		private List<Device> _lConnectedDevices;
 		private EntryObjectDAO _hEntryDAO;
+		private ShrinkArea _hSubmitAdvancedOptionsArea;
 
 		public Frontend()
 		{
 			this.InitializeComponent();
+
+			// make shrink area and hide by default
+			this._hSubmitAdvancedOptionsArea = new ShrinkArea(this._cSubmitSplitContainer.Panel1, this._cSubmitSplitContainer, 35, 140);
+			this._hSubmitAdvancedOptionsArea.Toggle();
+
 			//this.LoadRecentlyPlayed();
 		}
 
@@ -83,9 +89,8 @@ namespace Zenses.Client.Views
 		public void InitializeRecentlyPlayedTab()
 		{
 			EntryObjectDAO entryDAO = new EntryObjectDAO();
-			List<EntryObject> entries = entryDAO.FetchNotSubmitted();
-
-			this.InitializeContentViewComponents(entries);
+			this._cPlayedContentView.BindData(entryDAO.FetchNotSubmitted(), false);
+			//this.InitializeContentViewComponents(entries, false);
 		}
 
 		public void InitializeScrobbleTracksTab()
@@ -98,6 +103,9 @@ namespace Zenses.Client.Views
 			{
 				this._cSubmitFromDateValue.Value = Settings.Default.Scrobble_LastDate;
 			}
+
+			EntryObjectDAO entryDAO = new EntryObjectDAO();
+			this._cSubmitContentView.BindData(entryDAO.FetchNotSubmitted(), true);
 		}
 
 		public void ScanDeviceForContent()
@@ -112,7 +120,6 @@ namespace Zenses.Client.Views
 			entryManager.BeginFetchContent();
 		}
 
-
 		private int foundCount = 0;
 
 		public void FoundEntryObject(EntryObject entry)
@@ -121,15 +128,6 @@ namespace Zenses.Client.Views
 			this._hEntryDAO.SaveObject(entry);
 			this.foundCount++;
 			this._cStatusStripStatusValue.Text = "Found " + this.foundCount.ToString() + " entries";
-		}
-
-		public void InitializeContentViewComponents(List<EntryObject> entries)
-		{
-			this._cContentViewControl = new ContentView(entries);
-			this._cContentViewControl.Dock = DockStyle.Fill;
-			this._cContentViewControl.Location = new Point(0, 0);
-
-			this._cPlayedTab.Controls.Add(this._cContentViewControl);
 		}
 
 		private void _cSummaryTab_Enter(object sender, EventArgs e)
@@ -144,12 +142,37 @@ namespace Zenses.Client.Views
 
 		private void _cSubmitSplitContainer_Panel2_Enter(object sender, EventArgs e)
 		{
-			this.InitializeScrobbleTracksTab();
+			if (this._cSubmitContentView.Entries.Count == 0)
+			{
+				this.InitializeScrobbleTracksTab();
+			}
 		}
 
 		private void _cPlayedTab_Enter(object sender, EventArgs e)
 		{
-			this.InitializeRecentlyPlayedTab();
+			if (this._cPlayedContentView.Entries.Count == 0)
+			{
+				this.InitializeRecentlyPlayedTab();
+			}
+		}
+
+		private void _cSubmitShowAdvancedButton_Click(object sender, EventArgs e)
+		{
+			this._hSubmitAdvancedOptionsArea.Toggle();
+
+			if (this._hSubmitAdvancedOptionsArea.Expanded)
+			{
+				this._cSubmitShowAdvancedButton.Text = "Hide";
+			}
+			else
+			{
+				this._cSubmitShowAdvancedButton.Text = "Advanced";
+			}
+		}
+
+		private void _cSubmitTracksButton_Click(object sender, EventArgs e)
+		{
+			MessageBox.Show("Scrobbling " + this._cSubmitContentView.CheckedItems.Count.ToString() + " tracks");
 		}
 	}
 }

@@ -38,6 +38,7 @@ namespace Zenses.Client.Controls
 			// 
 			// _cTrackContentView
 			// 
+			this._cTrackContentView.AllowColumnReorder = true;
 			this._cTrackContentView.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this._cTrackContentView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this._cTitleColumn,
@@ -48,6 +49,7 @@ namespace Zenses.Client.Controls
 			this._cTrackContentView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._cTrackContentView.FullRowSelect = true;
 			this._cTrackContentView.GridLines = true;
+			this._cTrackContentView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
 			this._cTrackContentView.Location = new System.Drawing.Point(0, 0);
 			this._cTrackContentView.Name = "_cTrackContentView";
 			this._cTrackContentView.Size = new System.Drawing.Size(804, 402);
