@@ -104,5 +104,13 @@ namespace Zenses.Lib.Objects
 			get { return this._sObjectFormat; }
 			set { this._sObjectFormat = value; }
 		}
+
+		public int LengthSeconds
+		{
+			get
+			{
+				return this.Length / 1000;
+			}
+		}
 	}
 }

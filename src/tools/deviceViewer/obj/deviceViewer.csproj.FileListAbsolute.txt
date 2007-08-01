@@ -22,3 +22,9 @@ C:\zenses-trunk\src\tools\deviceViewer\obj\Debug\Zenses.Tools.DeviceViewer.Prope
 C:\zenses-trunk\src\tools\deviceViewer\obj\Debug\deviceViewer.csproj.GenerateResource.Cache
 C:\zenses-trunk\src\tools\deviceViewer\obj\Debug\deviceViewer.exe
 C:\zenses-trunk\src\tools\deviceViewer\obj\Debug\deviceViewer.pdb
+C:\zenses-trunk\src\tools\deviceViewer\obj\Release\ResolveAssemblyReference.cache
+C:\zenses-trunk\src\tools\deviceViewer\obj\Release\Zenses.Tools.DeviceViewer.DeviceView.resources
+C:\zenses-trunk\src\tools\deviceViewer\obj\Release\Zenses.Tools.DeviceViewer.Properties.Resources.resources
+C:\zenses-trunk\src\tools\deviceViewer\obj\Release\deviceViewer.csproj.GenerateResource.Cache
+C:\zenses-trunk\src\tools\deviceViewer\obj\Release\deviceViewer.exe
+C:\zenses-trunk\src\tools\deviceViewer\obj\Release\deviceViewer.pdb

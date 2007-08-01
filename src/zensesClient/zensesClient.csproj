@@ -53,6 +53,10 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\ConfirmScrobble.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ConfirmScrobble.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Frontend.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Frontend.cs</DependentUpon>
@@ -77,6 +81,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Settings.cs" />
+    <Compile Include="Views\ConfirmScrobble.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ConfirmScrobble.Designer.cs">
+      <DependentUpon>ConfirmScrobble.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Frontend.cs">
       <SubType>Form</SubType>
     </Compile>

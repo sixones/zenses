@@ -12,3 +12,10 @@ C:\zenses-trunk\src\zensesUpdater\obj\Debug\Zenses.Updater.Properties.Resources.
 C:\zenses-trunk\src\zensesUpdater\obj\Debug\zensesUpdater.csproj.GenerateResource.Cache
 C:\zenses-trunk\src\zensesUpdater\obj\Debug\updater.exe
 C:\zenses-trunk\src\zensesUpdater\obj\Debug\updater.pdb
+C:\zenses-trunk\bin\zensesUpdater\release\updater.exe
+C:\zenses-trunk\bin\zensesUpdater\release\updater.pdb
+C:\zenses-trunk\src\zensesUpdater\obj\Release\ResolveAssemblyReference.cache
+C:\zenses-trunk\src\zensesUpdater\obj\Release\Zenses.Updater.Properties.Resources.resources
+C:\zenses-trunk\src\zensesUpdater\obj\Release\zensesUpdater.csproj.GenerateResource.Cache
+C:\zenses-trunk\src\zensesUpdater\obj\Release\updater.exe
+C:\zenses-trunk\src\zensesUpdater\obj\Release\updater.pdb
