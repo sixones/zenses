@@ -90,7 +90,6 @@ namespace Zenses.Client.Views
 		{
 			EntryObjectDAO entryDAO = new EntryObjectDAO();
 			this._cPlayedContentView.BindData(entryDAO.FetchNotSubmitted(), false);
-			//this.InitializeContentViewComponents(entries, false);
 		}
 
 		public void InitializeScrobbleTracksTab()
@@ -142,7 +141,7 @@ namespace Zenses.Client.Views
 
 		private void _cSubmitSplitContainer_Panel2_Enter(object sender, EventArgs e)
 		{
-			if (this._cSubmitContentView.Entries.Count == 0)
+			if (this._cSubmitContentView.Entries == null || this._cSubmitContentView.Entries.Count == 0)
 			{
 				this.InitializeScrobbleTracksTab();
 			}
@@ -150,7 +149,7 @@ namespace Zenses.Client.Views
 
 		private void _cPlayedTab_Enter(object sender, EventArgs e)
 		{
-			if (this._cPlayedContentView.Entries.Count == 0)
+			if (this._cPlayedContentView.Entries == null || this._cPlayedContentView.Entries.Count == 0)
 			{
 				this.InitializeRecentlyPlayedTab();
 			}
@@ -172,7 +171,35 @@ namespace Zenses.Client.Views
 
 		private void _cSubmitTracksButton_Click(object sender, EventArgs e)
 		{
-			MessageBox.Show("Scrobbling " + this._cSubmitContentView.CheckedItems.Count.ToString() + " tracks");
+			if (this._cSubmitContentView.CheckedItems.Count > 0)
+			{
+				ConfirmScrobble confirmScrobbleForm = new ConfirmScrobble();
+
+				PlayedTrackManager trackManager = new PlayedTrackManager();
+				List<PlayedTrack> playedTracks = trackManager.GenerateScrobbleTimes(this._cSubmitContentView.CheckedItems, this._cSubmitFromDateValue.Value);
+
+				confirmScrobbleForm.Show();
+				confirmScrobbleForm.DataBind(playedTracks);
+			}
+			else
+			{
+				MessageBox.Show("You need to select some tracks to scrobble first");
+			}
+		}
+
+		private void _cSubmitSelectAllContextItem_Click(object sender, EventArgs e)
+		{
+			this._cSubmitContentView.SelectAll();
+		}
+
+		private void _cSubmitSelectArtistContextItem_Click(object sender, EventArgs e)
+		{
+			this._cSubmitContentView.SelectAllForArtist();
+		}
+
+		private void _cSubmitSelectAlbumContextItem_Click(object sender, EventArgs e)
+		{
+			this._cSubmitContentView.SelectAllForAlbum();
 		}
 	}
 }

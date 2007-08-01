@@ -28,6 +28,7 @@ namespace Zenses.Client.Views
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this._cToolStripContainer = new System.Windows.Forms.ToolStripContainer();
 			this._cStatusStrip = new System.Windows.Forms.StatusStrip();
 			this._cStatusStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -74,6 +75,8 @@ namespace Zenses.Client.Views
 			this.label9 = new System.Windows.Forms.Label();
 			this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
 			this.label11 = new System.Windows.Forms.Label();
+			this._cSubmitContentViewContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this._cSubmitSelectAllContextItem = new System.Windows.Forms.ToolStripMenuItem();
 			this._cMainMenuStrip = new System.Windows.Forms.MenuStrip();
 			this._cFileMainMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this._cExitMainMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -81,6 +84,9 @@ namespace Zenses.Client.Views
 			this._cOptionsMainMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this._cPlayedContentView = new Zenses.Client.Controls.ContentView();
 			this._cSubmitContentView = new Zenses.Client.Controls.ContentView();
+			this._cSubmitSelectArtistContextItem = new System.Windows.Forms.ToolStripMenuItem();
+			this._cSubmitSelectAlbumContextItem = new System.Windows.Forms.ToolStripMenuItem();
+			this._cSubmitAlbumContextSplitter = new System.Windows.Forms.ToolStripSeparator();
 			this._cToolStripContainer.BottomToolStripPanel.SuspendLayout();
 			this._cToolStripContainer.ContentPanel.SuspendLayout();
 			this._cToolStripContainer.TopToolStripPanel.SuspendLayout();
@@ -98,6 +104,7 @@ namespace Zenses.Client.Views
 			this._cSubmitSplitContainer.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
+			this._cSubmitContentViewContextMenu.SuspendLayout();
 			this._cMainMenuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -595,6 +602,24 @@ namespace Zenses.Client.Views
 			this.label11.TabIndex = 6;
 			this.label11.Text = "Tracks to Scrobble:";
 			// 
+			// _cSubmitContentViewContextMenu
+			// 
+			this._cSubmitContentViewContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._cSubmitSelectAllContextItem,
+            this._cSubmitAlbumContextSplitter,
+            this._cSubmitSelectArtistContextItem,
+            this._cSubmitSelectAlbumContextItem});
+			this._cSubmitContentViewContextMenu.Name = "_cSubmitContentViewContextMenu";
+			this._cSubmitContentViewContextMenu.ShowImageMargin = false;
+			this._cSubmitContentViewContextMenu.Size = new System.Drawing.Size(128, 98);
+			// 
+			// _cSubmitSelectAllContextItem
+			// 
+			this._cSubmitSelectAllContextItem.Name = "_cSubmitSelectAllContextItem";
+			this._cSubmitSelectAllContextItem.Size = new System.Drawing.Size(127, 22);
+			this._cSubmitSelectAllContextItem.Text = "Select All";
+			this._cSubmitSelectAllContextItem.Click += new System.EventHandler(this._cSubmitSelectAllContextItem_Click);
+			// 
 			// _cMainMenuStrip
 			// 
 			this._cMainMenuStrip.Dock = System.Windows.Forms.DockStyle.None;
@@ -618,7 +643,7 @@ namespace Zenses.Client.Views
 			// _cExitMainMenuItem
 			// 
 			this._cExitMainMenuItem.Name = "_cExitMainMenuItem";
-			this._cExitMainMenuItem.Size = new System.Drawing.Size(92, 22);
+			this._cExitMainMenuItem.Size = new System.Drawing.Size(152, 22);
 			this._cExitMainMenuItem.Text = "&Exit";
 			// 
 			// _cToolsMainMenuItem
@@ -646,12 +671,32 @@ namespace Zenses.Client.Views
 			// 
 			// _cSubmitContentView
 			// 
+			this._cSubmitContentView.ContextMenuStrip = this._cSubmitContentViewContextMenu;
 			this._cSubmitContentView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._cSubmitContentView.Entries = null;
 			this._cSubmitContentView.Location = new System.Drawing.Point(0, 0);
 			this._cSubmitContentView.Name = "_cSubmitContentView";
 			this._cSubmitContentView.Size = new System.Drawing.Size(828, 156);
 			this._cSubmitContentView.TabIndex = 0;
+			// 
+			// _cSubmitSelectArtistContextItem
+			// 
+			this._cSubmitSelectArtistContextItem.Name = "_cSubmitSelectArtistContextItem";
+			this._cSubmitSelectArtistContextItem.Size = new System.Drawing.Size(127, 22);
+			this._cSubmitSelectArtistContextItem.Text = "Select Artist";
+			this._cSubmitSelectArtistContextItem.Click += new System.EventHandler(this._cSubmitSelectArtistContextItem_Click);
+			// 
+			// _cSubmitSelectAlbumContextItem
+			// 
+			this._cSubmitSelectAlbumContextItem.Name = "_cSubmitSelectAlbumContextItem";
+			this._cSubmitSelectAlbumContextItem.Size = new System.Drawing.Size(127, 22);
+			this._cSubmitSelectAlbumContextItem.Text = "Select Album";
+			this._cSubmitSelectAlbumContextItem.Click += new System.EventHandler(this._cSubmitSelectAlbumContextItem_Click);
+			// 
+			// _cSubmitAlbumContextSplitter
+			// 
+			this._cSubmitAlbumContextSplitter.Name = "_cSubmitAlbumContextSplitter";
+			this._cSubmitAlbumContextSplitter.Size = new System.Drawing.Size(124, 6);
 			// 
 			// Frontend
 			// 
@@ -688,6 +733,7 @@ namespace Zenses.Client.Views
 			this._cSubmitSplitContainer.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
+			this._cSubmitContentViewContextMenu.ResumeLayout(false);
 			this._cMainMenuStrip.ResumeLayout(false);
 			this._cMainMenuStrip.PerformLayout();
 			this.ResumeLayout(false);
@@ -749,5 +795,10 @@ namespace Zenses.Client.Views
 		private System.Windows.Forms.Button _cSubmitShowAdvancedButton;
 		private Zenses.Client.Controls.ContentView _cSubmitContentView;
 		private Zenses.Client.Controls.ContentView _cPlayedContentView;
+		private System.Windows.Forms.ContextMenuStrip _cSubmitContentViewContextMenu;
+		private System.Windows.Forms.ToolStripMenuItem _cSubmitSelectAllContextItem;
+		private System.Windows.Forms.ToolStripSeparator _cSubmitAlbumContextSplitter;
+		private System.Windows.Forms.ToolStripMenuItem _cSubmitSelectArtistContextItem;
+		private System.Windows.Forms.ToolStripMenuItem _cSubmitSelectAlbumContextItem;
 	}
 }

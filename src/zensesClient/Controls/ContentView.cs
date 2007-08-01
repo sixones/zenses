@@ -13,6 +13,7 @@ namespace Zenses.Client.Controls
 	public partial class ContentView : UserControl
 	{
 		private List<EntryObject> _lEntries;
+		private bool _bAllSelected = false;
 
 		public List<EntryObject> Entries
 		{
@@ -32,6 +33,21 @@ namespace Zenses.Client.Controls
 				}
 
 				return entries;
+			}
+		}
+
+		public List<EntryObject> SelectedItems
+		{
+			get
+			{
+				List<EntryObject> selectedEntries = new List<EntryObject>();
+
+				foreach (ListViewItem item in this._cTrackContentView.SelectedItems)
+				{
+					selectedEntries.Add((EntryObject)item.Tag);
+				}
+
+				return selectedEntries;
 			}
 		}
 
@@ -62,6 +78,68 @@ namespace Zenses.Client.Controls
 					listItem.Tag = entry;
 
 					this._cTrackContentView.Items.Add(listItem);
+				}
+			}
+		}
+
+		public void SelectAll()
+		{
+			foreach (ListViewItem listItem in this._cTrackContentView.Items)
+			{
+				listItem.Checked = !this._bAllSelected;
+			}
+
+			this._bAllSelected = !this._bAllSelected;
+		}
+
+		public void SelectAllForArtist()
+		{
+			List<string> alreadySelected = new List<string>();
+
+			foreach (EntryObject entry in this.SelectedItems)
+			{
+				if (!alreadySelected.Contains(entry.Artist))
+				{
+					this.SelectAllForArtist(entry.Artist);
+
+					alreadySelected.Add(entry.Artist);
+				}
+			}
+		}
+
+		public void SelectAllForArtist(string artist)
+		{
+			foreach (ListViewItem item in this._cTrackContentView.Items)
+			{
+				if (((EntryObject)item.Tag).Artist == artist)
+				{
+					item.Checked = true;
+				}
+			} 
+		}
+
+		public void SelectAllForAlbum()
+		{
+			List<string> alreadySelected = new List<string>();
+
+			foreach (EntryObject entry in this.SelectedItems)
+			{
+				if (!alreadySelected.Contains(entry.Album))
+				{
+					this.SelectAllForAlbum(entry.Album);
+
+					alreadySelected.Add(entry.Album);
+				}
+			}
+		}
+
+		public void SelectAllForAlbum(string album)
+		{
+			foreach (ListViewItem item in this._cTrackContentView.Items)
+			{
+				if (((EntryObject)item.Tag).Album == album)
+				{
+					item.Checked = true;
 				}
 			}
 		}
