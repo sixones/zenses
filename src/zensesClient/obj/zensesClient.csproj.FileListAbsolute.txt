@@ -17,3 +17,4 @@ C:\zenses-trunk\src\zensesClient\obj\Release\Zenses.Client.Views.Options.resourc
 C:\zenses-trunk\src\zensesClient\obj\Release\zensesClient.csproj.GenerateResource.Cache
 C:\zenses-trunk\src\zensesClient\obj\Release\zenses.exe
 C:\zenses-trunk\src\zensesClient\obj\Release\zenses.pdb
+C:\zenses-trunk\bin\zensesClient\debug\zenses.exe.config
