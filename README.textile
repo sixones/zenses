@@ -1,0 +1,96 @@
+h1. Zenses2
+
+p(project_logo). !http://sixones.com/project/zenses/images/zenses2_logo.png(zenses2 beta)!
+
+Zenses is an open source application scrobble tracks from "MTP":http://en.wikipedia.org/wiki/Media_Transfer_Protocol compatible devices ("Microsoft Zune":http://en.wikipedia.org/wiki/Zune, "Creative Zen":http://en.wikipedia.org/wiki/Creative_ZEN, "SanDisk Sansa":http://en.wikipedia.org/wiki/SanDisk_Sansa etc..) to "last.fm":http://last.fm/. Scans through your device to find played tracks to scrobble to "last.fm":http://last.fm/, Zenses will automatically create a timestamp (as MTP devices do not store this information) for each track so "last.fm":http://last.fm/ wont reject scrobbles.
+
+h2. Device Compatibility 
+
+As the Windows version of Zenses uses Windows Media Device Manager 11 SDK, theoretically any device that supports reading track data will work as long as the SDK has support. Zenses has been written purely for MTP devices but it might work with other devices that Windows Media Device Manager 11 SDK supports such as Mass Storage Class (MSC), RAPI. However the storage system used must support storing the played count on each track.
+
+Songbird have a nice chart that lists compatible, since Zenses uses the same Windows Media SDK its safe to assume listed devices will work. You can find it over at there "table":http://wiki.songbirdnest.com/Docs/Device_Support/MTP_Device_Support.
+
+h2. Links
+
+* TODO: setup "Official site, best place for builds":http://www.last.fm/group/zenses
+* "Last.fm group, forums":http://www.last.fm/group/zenses
+* TODO: setup "Bug tracker, tails":http://www.bugtails.com/
+* "Sourcecode, GitHub":http://github.com/sixones/zenses
+
+h2. Build Requirements
+
+* "Java Development Kit 6+":http://java.sun.com/javase/downloads/index.jsp
+* "Windows Media Device Manager 11 SDK (Windows Only)":http://msdn.microsoft.com/en-gb/library/aa473532.aspx
+
+h3. Platform Notes
+
+TODO
+
+h2. Compiling
+
+TODO
+
+h2. Project Aims
+
+* Include functionality for scrobbling from MTP devices to last.fm
+* Extend functionality to read tracks from other types of devices
+	* NJB (libnjb)
+	* iPod / iPhone (libipod)
+
+h2. Current Tasks
+
+* Compile libusb and libmtp for development
+	* <del>Mac OS X</del>
+	* Linux
+* Implement Windows MTP through Windows Media 11 SDK
+* <del>Design of QT user interface</del>
+* <del>Implementation of libmtp</del>
+* SQLite3 database storage
+* Track scrobble time calculation
+* Last.fm scrobble support
+* Preferences
+	* Last.fm account details
+	* Time between tracks	
+* Automatic update through application at runtime
+* Configure build scripts
+	* Mac OS X (Universal)
+	* Windows
+	* Linux
+
+h2. Code Guidelines
+
+* Set tabs to equal 4 spaces in your text editor
+* Never include any generated files inside the source, add files to .gitignore if needed
+
+h2. Active Developers
+
+* sixones - "http://sixones.com/":http://sixones.com/
+* liliana
+
+h2. Contribute
+
+Maybe wait until we have a first release?
+
+h2. License
+
+Zenses and Zenses2 is released under the MIT license, which is defined as;
+
+Copyright (c) 2009 Adam Livesley
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
