@@ -12,28 +12,29 @@ import javax.swing.JButton;
 
 import org.zenses.ZensesApplication;
 import org.zenses.models.PreferencesModel;
+import org.zenses.ui.ViewHandler;
 
 import java.awt.FlowLayout;
 import java.io.IOException;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import javax.swing.BoxLayout;
+import java.awt.CardLayout;
+import javax.swing.JCheckBox;
 
 @SuppressWarnings("unused")
 public class PreferencesWindow extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel jContentPane = null;
-	private JPanel lastfmPanel = null;
-	private JLabel lastfmUsernameLabel = null;
-	private JTextField lastfmUsernameField = null;
-	private JLabel lastfmPasswordLabel = null;
-	private JPasswordField lastfmPasswordField = null;
 	private JButton okButton = null;
 	private JButton cancelButton = null;
 	private JPanel generalSettingsPanel = null;
 	private JLabel intervalBetweenScrobblesLabel = null;
 	private JTextField intervalBetweenScrobblesField = null;
+	private JPanel generalSettingsPanel1 = null;
+	private JLabel dateFormatLabel = null;
+	private JTextField dateFormatField = null;
 	/**
 	 * This is the default constructor
 	 */
@@ -45,19 +46,21 @@ public class PreferencesWindow extends JFrame {
 	public void setPreferences() {
 		PreferencesModel prefs = ZensesApplication.getApplication().getZenses().getPreferences();
 
-		this.lastfmUsernameField.setText(prefs.get_lastfmUsername());
-		this.lastfmPasswordField.setText(prefs.get_lastfmPassword());
 		this.intervalBetweenScrobblesField.setText(Integer.toString(prefs.getIntervalBetweenScrobbles()));
+		this.dateFormatField.setText(prefs.getDateFormat());
 	}
 
 	public void savePreferences() {
 		PreferencesModel prefs = ZensesApplication.getApplication().getZenses().getPreferences();
 
-		prefs.set_lastfmUsername(this.lastfmUsernameField.getText());
-		prefs.set_lastfmPassword(new String(this.lastfmPasswordField.getPassword()));
 		prefs.setIntervalBetweenScrobbles(Integer.valueOf(this.intervalBetweenScrobblesField.getText()));
+		prefs.setDateFormat(this.dateFormatField.getText());
 
 		prefs.save();
+		
+		ViewHandler.getInstance().updateStateMessage("Preferences saved successfully");
+		
+		ViewHandler.getInstance().updateUI(false);
 	}
 
 	/**
@@ -66,7 +69,7 @@ public class PreferencesWindow extends JFrame {
 	 * @return void
 	 */
 	private void initialize() {
-		this.setSize(440, 172);
+		this.setSize(440, 148);
 		this.setResizable(false);
 		this.setContentPane(getJContentPane());
 		this.setTitle("Preferences");
@@ -84,66 +87,12 @@ public class PreferencesWindow extends JFrame {
 			flowLayout.setVgap(15);
 			jContentPane = new JPanel();
 			jContentPane.setLayout(flowLayout);
-			jContentPane.add(getLastfmPanel(), null);
 			jContentPane.add(getGeneralSettingsPanel(), null);
+			jContentPane.add(getGeneralSettingsPanel1(), null);
 			jContentPane.add(getCancelButton(), null);
 			jContentPane.add(getOkButton(), null);
 		}
 		return jContentPane;
-	}
-
-	/**
-	 * This method initializes lastfmPanel	
-	 * 	
-	 * @return javax.swing.JPanel	
-	 */
-	private JPanel getLastfmPanel() {
-		if (lastfmPanel == null) {
-			lastfmPasswordLabel = new JLabel();
-			lastfmPasswordLabel.setName("connectedDevicesLabel");
-			lastfmPasswordLabel.setText("Last.fm Password:");
-			lastfmUsernameLabel = new JLabel();
-			lastfmUsernameLabel.setName("connectedDevicesLabel");
-			lastfmUsernameLabel.setText("Last.fm Username:");
-			GridLayout gridLayout2 = new GridLayout();
-			gridLayout2.setRows(2);
-			lastfmPanel = new JPanel();
-			lastfmPanel.setPreferredSize(new Dimension(380, 40));
-			lastfmPanel.setLayout(gridLayout2);
-			lastfmPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-			lastfmPanel.setName("lastfmPanel");
-			lastfmPanel.add(lastfmUsernameLabel, null);
-			lastfmPanel.add(getLastfmUsernameField(), null);
-			lastfmPanel.add(lastfmPasswordLabel, null);
-			lastfmPanel.add(getLastfmPasswordField(), null);
-		}
-		return lastfmPanel;
-	}
-
-	/**
-	 * This method initializes lastfmUsernameField	
-	 * 	
-	 * @return javax.swing.JTextField	
-	 */
-	private JTextField getLastfmUsernameField() {
-		if (lastfmUsernameField == null) {
-			lastfmUsernameField = new JTextField();
-			lastfmUsernameField.setName("lastfmUsernameField");
-		}
-		return lastfmUsernameField;
-	}
-
-	/**
-	 * This method initializes lastfmPasswordField	
-	 * 	
-	 * @return javax.swing.JPasswordField	
-	 */
-	private JPasswordField getLastfmPasswordField() {
-		if (lastfmPasswordField == null) {
-			lastfmPasswordField = new JPasswordField();
-			lastfmPasswordField.setName("lastfmPasswordField");
-		}
-		return lastfmPasswordField;
 	}
 
 	/**
@@ -193,6 +142,7 @@ public class PreferencesWindow extends JFrame {
 			intervalBetweenScrobblesLabel = new JLabel();
 			intervalBetweenScrobblesLabel.setName("connectedDevicesLabel");
 			intervalBetweenScrobblesLabel.setPreferredSize(new Dimension(190, 16));
+			intervalBetweenScrobblesLabel.setToolTipText("The number of seconds to use between each track when calculating the scrobbles, can be positive or negative.");
 			intervalBetweenScrobblesLabel.setText("Interval Between Scrobbles:");
 			generalSettingsPanel = new JPanel();
 			generalSettingsPanel.setLayout(new BoxLayout(getGeneralSettingsPanel(), BoxLayout.X_AXIS));
@@ -217,6 +167,44 @@ public class PreferencesWindow extends JFrame {
 			intervalBetweenScrobblesField.setPreferredSize(new Dimension(4, 120));
 		}
 		return intervalBetweenScrobblesField;
+	}
+
+	/**
+	 * This method initializes generalSettingsPanel1	
+	 * 	
+	 * @return javax.swing.JPanel	
+	 */
+	private JPanel getGeneralSettingsPanel1() {
+		if (generalSettingsPanel1 == null) {
+			dateFormatLabel = new JLabel();
+			dateFormatLabel.setName("connectedDevicesLabel");
+			dateFormatLabel.setText("Date Format:");
+			dateFormatLabel.setToolTipText("The date format to use when reading any date input in the Zenses UI.");
+			dateFormatLabel.setPreferredSize(new Dimension(190, 16));
+			generalSettingsPanel1 = new JPanel();
+			generalSettingsPanel1.setLayout(new BoxLayout(getGeneralSettingsPanel1(), BoxLayout.X_AXIS));
+			generalSettingsPanel1.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+			generalSettingsPanel1.setName("lastfmPanel");
+			generalSettingsPanel1.setPreferredSize(new Dimension(380, 20));
+			generalSettingsPanel1.add(dateFormatLabel, null);
+			generalSettingsPanel1.add(getDateFormatField(), null);
+		}
+		return generalSettingsPanel1;
+	}
+
+	/**
+	 * This method initializes dateFormatField	
+	 * 	
+	 * @return javax.swing.JTextField	
+	 */
+	private JTextField getDateFormatField() {
+		if (dateFormatField == null) {
+			dateFormatField = new JTextField();
+			dateFormatField.setName("lastfmUsernameField");
+			dateFormatField.setText("DD/MM/YYYY");
+			dateFormatField.setPreferredSize(new Dimension(4, 120));
+		}
+		return dateFormatField;
 	}
 
 }  //  @jve:decl-index=0:visual-constraint="10,10"

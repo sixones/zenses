@@ -46,10 +46,11 @@ public class DeviceTrackServiceImpl implements DeviceTrackService {
 	public long getLastSubmissionTimestamp() {
 		Date mostRecentSubmission = deviceTrackDao.getMostRecentSubmission();
 		
-		if (mostRecentSubmission == null)
-		{
-			mostRecentSubmission = Calendar.getInstance().getTime();
-			
+		if (mostRecentSubmission == null) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(2000, 1, 1, 0, 0);
+
+			return calendar.getTimeInMillis();
 		}
 		
 		return mostRecentSubmission.getTime();

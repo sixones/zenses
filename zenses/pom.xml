@@ -32,7 +32,7 @@
 					<downloadSources>true</downloadSources>
 				</configuration>
 			</plugin>
-		    <!-- <plugin>
+		    <plugin>
 		        <groupId>org.apache.maven.plugins</groupId>
 		        <artifactId>maven-jar-plugin</artifactId>
 		        <configuration>
@@ -43,14 +43,14 @@
 		            </manifest>
 		          </archive>
 		        </configuration>
-		    </plugin> -->
-			<!-- <plugin>
+		    </plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
- 					<descriptorRefs>
-            			<descriptorRef>jar-with-dependencies</descriptorRef>
-          			</descriptorRefs>
+          			<descriptors>
+            			<descriptor>assembly.xml</descriptor>
+         			</descriptors>
                     <archive>
                         <manifest>
                         	<addClasspath>true</addClasspath>
@@ -65,10 +65,13 @@
                         <goals>
                             <goal>single</goal>
                         </goals>
+						<configuration>
+							<extraJvmArguments>-Djava.library.path=lib</extraJvmArguments>
+						</configuration>
                     </execution>
                 </executions>
-            </plugin> -->
-			<plugin>
+            </plugin>
+			<!-- <plugin>
 				<groupId>org.dstovall</groupId>
 				<artifactId>onejar-maven-plugin</artifactId>
 				<version>1.3.0</version>
@@ -83,10 +86,30 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin>-->
 		</plugins>
 	</build>
 	<dependencies>
+		<dependency>
+			<groupId>hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>1.8.0.10</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>3.3.1.GA</version>
+		</dependency>
+		<dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-beans</artifactId>
+		  <version>2.5.6.SEC01</version>
+		</dependency>
+		<dependency>
+    		<groupId>org.springframework</groupId>
+    		<artifactId>spring-context</artifactId>
+    		<version>2.5.6.SEC01</version>
+		</dependency>
 		<dependency>
 			<groupId>org.zenses</groupId>
 			<artifactId>zenses-lib</artifactId>
@@ -95,7 +118,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
+			<version>4.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -107,17 +130,6 @@
 			<groupId>net.java.dev.appframework</groupId>
 			<artifactId>appframework</artifactId>
 			<version>1.03</version>
-		</dependency>
-		<!-- <dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.spring-library</artifactId>
-			<type>libd</type>
-			<version>3.0.0.M3</version>
-		</dependency> -->
-		<dependency>
-    		<groupId>org.springframework</groupId>
-    		<artifactId>spring-context</artifactId>
-    		<version>2.5.6</version>
 		</dependency>
 		<dependency>
 			<groupId>net.java.dev.swing-layout</groupId>
@@ -134,11 +146,6 @@
 			<artifactId>plexus-utils</artifactId>
 			<version>1.1</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-hibernate3</artifactId>
-			<version>2.0-m4</version>
-		</dependency>
 	</dependencies>
 	<repositories>
 		<repository>
@@ -146,19 +153,19 @@
 			<name>SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases</name>
 			<url>http://repository.springsource.com/maven/bundles/release</url>
 		</repository>
-
+ 
 		<repository>
 			<id>com.springsource.repository.bundles.external</id>
 			<name>SpringSource Enterprise Bundle Repository - External Bundle Releases</name>
 			<url>http://repository.springsource.com/maven/bundles/external</url>
 		</repository>
-
+ 
 		<repository>
 			<id>com.springsource.repository.libraries.release</id>
 			<name>SpringSource Enterprise Bundle Repository - SpringSource Library Releases</name>
 			<url>http://repository.springsource.com/maven/libraries/release</url>
 		</repository>
-
+ 
 		<repository>
 			<id>com.springsource.repository.libraries.external</id>
 			<name>SpringSource Enterprise Bundle Repository - External Library Releases</name>

@@ -1,17 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.zenses.ui;
 
+import java.awt.Dimension;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Timer;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.zenses.Zenses;
 import org.zenses.ZensesApplication;
 import org.zenses.data.dto.DeviceTrackDto;
@@ -20,13 +22,13 @@ import org.zenses.models.ScrobbledTrackTableModel;
 import org.zenses.models.TrackTableModel;
 import org.zenses.mtp.MtpDevice;
 import org.zenses.mtp.MtpDeviceTrack;
+import org.zenses.ui.views.AboutWindow;
 import org.zenses.ui.views.MainWindow;
 import org.zenses.ui.views.PreferencesWindow;
+import org.zenses.ui.views.UpdateWindow;
+import org.zenses.utils.CustomThread;
+import org.zenses.utils.DataTimerTask;
 
-/**
- *
- * @author sixones
- */
 public class ViewHandler
 {
 	public static int TAB_SUMMARY = 0;
@@ -35,26 +37,76 @@ public class ViewHandler
 	
     protected MainWindow _mainWindow;
     protected PreferencesWindow _preferencesWindow;
+    protected AboutWindow _aboutWindow;
+    protected UpdateWindow _updateWindow;
     
     private Zenses _zenses;
     protected List<DeviceTrackDto> _tracksToScrobble;
+    protected Timer _uiUpdateTimer;
+    
+    private static ViewHandler __instance;
 
-    public ViewHandler(Zenses zenses)
+    public ViewHandler(Zenses zenses) throws Exception
     {
+		if (ViewHandler.__instance != null) {
+			throw new Exception();
+		}
+		
+		ViewHandler.__instance = this;
+    	
         this._zenses = zenses;
         
         this.setupUserInterface();
     }
+    
+    public synchronized void updateUI() {
+    	this.updateUI(true);
+    }
+    
+    public synchronized void updateUI(boolean updateStateMessage) {
+    	if (!this.getZenses().getServicesReady()) {
+			this._uiUpdateTimer = new Timer();
+			this._uiUpdateTimer.schedule(new DataTimerTask<Boolean>(updateStateMessage) {
+				public void run() {
+					ViewHandler.getInstance().updateUI(this.getData());
+				}
+			}, 500);
+			
+			return;
+    	}
+    	
+    	if (this._uiUpdateTimer != null) {
+    		this._uiUpdateTimer.cancel();
+    	}
+    	
+    	new CustomThread<Boolean>(updateStateMessage) {
+    		public void run() {
+    			ViewHandler.getInstance().bindUnscrobbledTrable(this.getData());
+    			ViewHandler.getInstance().bindHistoryTable(this.getData());
+    			ViewHandler.getInstance().updateSummaryMessage();
+    		}
+    	}.start();
+    	
+    	this.getMainWindow().getScrobbleDateField().setText(Zenses.getInstance().getLastScrobbledDate());
+    	this.getMainWindow().getScrobbleTimeField().setText(Zenses.getInstance().getLastScrobbledTime());
+    }
 
 	public void showMainWindow() {
-		this.bindHistoryToDatabase();
-		
 		ZensesApplication.getApplication().show(this._mainWindow);
 		
-		this.updateSummaryMessage();
-		this.bindTracksToDatabase();
+		new Thread() {
+			public void run() {
+				ViewHandler.getInstance().updateUI();
+			}
+		}.start();	
 	}
 	
+	public void showAboutWindow() {
+		this._aboutWindow.setAlwaysOnTop(true);
+		this._aboutWindow.setVisible(true);
+		this._aboutWindow.setLocationRelativeTo(this._mainWindow);
+	}
+
 	public void showPreferencesView() {
 		this._preferencesWindow.setAlwaysOnTop(true);
 		this._preferencesWindow.setPreferences();
@@ -74,15 +126,22 @@ public class ViewHandler
 		return this._mainWindow;
 	}
 	
+	public void hideUpdateWindow() {
+		this._updateWindow.setVisible(false);
+		this._updateWindow.dispose();
+	}
+	
 	public PreferencesWindow getPreferencesWindow() {
 		return this._preferencesWindow;
 	}
 	
 	public void findDevices() {
-		this.updateStatusMessage("Searching for devices ...");
+		this.updateStateMessage("Searching for devices ...");
 		
 		@SuppressWarnings("unchecked")
 		List<MtpDevice> devices = this._zenses.getDeviceService().getDevices();
+		
+		this._mainWindow.getConnectedDevicesComboBox().removeAllItems();
 		
 		if (!devices.isEmpty()) {
 			for (MtpDevice<?> device : devices) {
@@ -91,74 +150,93 @@ public class ViewHandler
 			
 			this._mainWindow.getConnectedDevicesComboBox().setEnabled(true);
 			
-			this.updateStatusMessage("Found " + devices.size() + " device(s)");
+			this.updateStateMessage("Found " + devices.size() + " device(s)");
 		} else {
 			this._mainWindow.getConnectedDevicesComboBox().setEnabled(false);
 			
-			this.updateStatusMessage("No devices could be found");
+			this.updateStateMessage("No devices could be found");
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public void fetchTracksFromSelectedDevice() {
-		MtpDevice device = (MtpDevice) this._mainWindow.getConnectedDevicesComboBox().getSelectedItem();
-		this.updateStatusMessage("Connecting to device ...");
-		
-		List<MtpDeviceTrack> tracks = this._zenses.getDeviceService().getTracks(device);
-		
-		if (!tracks.isEmpty()) {
-			for (MtpDeviceTrack track : tracks) {
-				try {
-					this._zenses.getDeviceTrackService().createOrUpdate(track);
-				} catch (Exception e) {
-					e.printStackTrace();
+	public synchronized void fetchTracksFromSelectedDevice() {
+		new Thread() {
+			public void run() {
+				MtpDevice device = (MtpDevice) ViewHandler.getInstance().getMainWindow().getConnectedDevicesComboBox().getSelectedItem();
+				ViewHandler.getInstance().updateStateMessage("Connecting to device ...");
+				
+				List<MtpDeviceTrack> tracks = ZensesApplication.getApplication().getZenses().getDeviceService().getTracks(device);
+
+				ViewHandler.getInstance().updateStateMessage("Fetching track information from device ...");
+				
+				if (!tracks.isEmpty()) {
+					for (MtpDeviceTrack track : tracks) {
+						try {
+							Zenses.getInstance().getDeviceTrackService().createOrUpdate(track);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
 				}
+				
+				ViewHandler.getInstance().updateUI();
+				ViewHandler.getInstance().updateStateMessage("Device tracks collected and ready for scrobbling");
 			}
-		}
-		
-		this.bindTracksToDatabase();
-		this.updateStatusMessage("Device tracks collected and ready for scrobbling");
+		}.start();
 	}
 	
-	private void bindTracksToDatabase() {
-		List<DeviceTrackDto> tracks = this._zenses.getDeviceTrackService().getUnsubmittedTracks();
+	private synchronized void bindUnscrobbledTrable(boolean updateStateMessage) {
+		List<DeviceTrackDto> tracks = this.getZenses().getDeviceTrackService().getUnsubmittedTracks();
 		
 		TrackTableModel tableModel = new TrackTableModel(tracks);
+		JTable table = this.getMainWindow().getUnscrobbledTracksTable();
 		
-		this._mainWindow.getUnscrobbledTracksTable().setModel(tableModel);
+		table.setModel(tableModel);
+		table.setRowHeight(20);
+		table.setRowMargin(2);
+		table.setIntercellSpacing(new Dimension(5, 5));
 		
-		int columnWidth = this._mainWindow.getUnscrobbledTracksTable().getWidth() / tableModel.getColumnCount() + 1;
+		int columnWidth = table.getWidth() / tableModel.getColumnCount() + 1;
 		
-		this.updateStatusMessage(tracks.size() + " unscrobbled tracks found");
+		if (updateStateMessage) {
+			this.updateStateMessage(tracks.size() + " unscrobbled tracks found");
+		}
 		
 		// resize the columns
 		for (int i = 0; i < tableModel.getColumnCount(); i++) {
-			TableColumn column = this._mainWindow.getUnscrobbledTracksTable().getColumnModel().getColumn(i);
-			
+			TableColumn column = table.getColumnModel().getColumn(i);
+
 			if (i == 0) {
-				column.setPreferredWidth(15);
-			} else if (i == 2) {
-				column.setPreferredWidth((columnWidth * 2) + (columnWidth - 15));
+				column.setHeaderRenderer(new CheckboxHeader(new CheckboxHeaderListener(table)));
+				column.setMaxWidth(25);
+			} else if (i == 1) {
+				column.setPreferredWidth((columnWidth * 2) + (columnWidth - 25));
 			} else {
 				column.setPreferredWidth(columnWidth);
 			}
 		}
 	}
 	
-	private void bindHistoryToDatabase() {
-		List<LastFmSubmissionDto> tracks = this._zenses.getDeviceTrackService().getScrobbledTracks();
+	private void bindHistoryTable(boolean updateStateMessage) {
+		List<LastFmSubmissionDto> tracks = this.getZenses().getDeviceTrackService().getScrobbledTracks();
 		
 		ScrobbledTrackTableModel tableModel = new ScrobbledTrackTableModel(tracks);
+		JTable table = this.getMainWindow().getScrobbledHistoryTable();
 		
-		this._mainWindow.getScrobbledHistoryTable().setModel(tableModel);
+		table.setModel(tableModel);
+		table.setRowHeight(20);
+		table.setRowMargin(2);
+		table.setIntercellSpacing(new Dimension(5, 5));
 		
-		int columnWidth = this._mainWindow.getScrobbledHistoryTable().getWidth() / tableModel.getColumnCount() + 1;
+		int columnWidth = this.getMainWindow().getScrobbledHistoryTable().getWidth() / tableModel.getColumnCount() + 1;
 		
-		this.updateStatusMessage(tracks.size() + " already scrobbled tracks found");
+		if (updateStateMessage) {
+			this.updateStateMessage(tracks.size() + " already scrobbled tracks found");
+		}
 		
 		// resize the columns
 		for (int i = 0; i < tableModel.getColumnCount(); i++) {
-			TableColumn column = this._mainWindow.getScrobbledHistoryTable().getColumnModel().getColumn(i);
+			TableColumn column = this.getMainWindow().getScrobbledHistoryTable().getColumnModel().getColumn(i);
 			
 			if (i == 0) {
 				column.setPreferredWidth((columnWidth * 2) + (columnWidth - 15));
@@ -172,23 +250,47 @@ public class ViewHandler
 		JOptionPane.showMessageDialog(this.getMainWindow(), message, "Dialog", JOptionPane.ERROR_MESSAGE);
 	}
 	
+	public long getScrobbleFrom() {
+		DateTimeFormatter formatter = DateTimeFormat.forPattern("HH:mm "+this.getZenses().getPreferences().getDateFormat());
+		long scrobbleFromMilliseconds = formatter.parseMillis(this.getMainWindow().getScrobbleTimeField().getText()+" "+this.getMainWindow().getScrobbleDateField().getText());
+		
+		return scrobbleFromMilliseconds;
+	}
+	
+	public void updateAvailable(String changes) {
+		/*String title = "A newer version of Zenses2 is available";
+		String message = "Version " + version + " is now available, would you like to visit the update site?";
+		Object[] options = { "Yes", "No" };
+		
+		int choice = JOptionPane.showOptionDialog(this.getMainWindow(), message, title, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+		
+		if (choice == 0) {
+			this.getZenses().openBrowser("http://sixones.com/projects/zenses/update.html");
+		}*/
+		
+		this._updateWindow = new UpdateWindow();
+		this._updateWindow.updateVersionMessage();
+		this._updateWindow.updateChanges();
+		
+		this._updateWindow.setVisible(true);
+		this._updateWindow.setAlwaysOnTop(true);
+		this._updateWindow.setLocationRelativeTo(this.getMainWindow());
+	}
+	
 	public void scrobbleSelectedTracks() {
 		this._tracksToScrobble = new ArrayList<DeviceTrackDto>();
 		
-		this.updateStatusMessage("Calculating tracks to scrobble");
+		//if (!this.getZenses().authenticate()) return;
+		this.getZenses().authenticate();
 		
-		if (this.getZenses().getPreferences().get_lastfmUsername() != "" && this.getZenses().getPreferences().get_lastfmPassword() != "") {
-			try {
-				this.getZenses().getTracksSubmitter().setLastFmAuthentication(this.getZenses().getPreferences().get_lastfmUsername(), this.getZenses().getPreferences().get_lastfmPassword());
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				this.showError("Failed to login to Last.fm as " + this.getZenses().getPreferences().get_lastfmUsername());
-				
-				return;
-			}
+		if (!this.getZenses().isAuthorised()) {
+			this.showError("Please autheticate with Last.fm before attempting to scrobble tracks.");
+			
+			return;
 		}
 		
+		this.updateStateMessage("Calculating tracks to scrobble");
+
 		for (int i = 0; i < this.getMainWindow().getUnscrobbledTracksTable().getRowCount(); i++) {
 			Object val = this.getMainWindow().getUnscrobbledTracksTable().getModel().getValueAt(i, 0);
 
@@ -199,36 +301,63 @@ public class ViewHandler
 			}
 		}
 		
+		Date scrobbleFromDate = new Date(this.getScrobbleFrom());
+		
+		String scrobbleFromOriginal = new SimpleDateFormat("hh:mma d MMMM yyyy").format(scrobbleFromDate);
+		
 		if (!this._tracksToScrobble.isEmpty()) {
-			this.updateStatusMessage("Attempting to scrobble " + this._tracksToScrobble.size() + " tracks");
+			String title = "Confirm Scrobbles";
+			String message = "Are you sure you want to scrobble "+this._tracksToScrobble.size()+" tracks from "+ scrobbleFromOriginal +"?";
+			Object[] options = { "Yes", "No" };
 			
-			String startDateTime = this.getMainWindow().getScrobbleTimeField().getText(); 
+			int choice = JOptionPane.showOptionDialog(this.getMainWindow(), message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 			
-			try {
-				this._zenses.getTracksSubmitter().updateTracks(this._tracksToScrobble, startDateTime, this.getZenses().getPreferences().getIntervalBetweenScrobbles());
-			} catch (IOException e) {
-				System.out.println(e.getMessage());
+			if (choice == 1) {
+				this.updateStateMessage("Cancelled scrobbling tracks");
+				return;
 			}
 			
-			this.updateStatusMessage("Completed scrobbling " + this._tracksToScrobble.size() + " tracks");
-			
-			this.bindTracksToDatabase();
-			this.bindHistoryToDatabase();
+			this.updateStateMessage("Attempting to scrobble " + this._tracksToScrobble.size() + " tracks");
+		
+			new CustomThread<List<DeviceTrackDto>>(this._tracksToScrobble) {
+				public void run() {
+					Date scrobbleFromDate = new Date(ViewHandler.getInstance().getScrobbleFrom());
+					String scrobbleFrom = new SimpleDateFormat("HH:mm dd/MM/yyyy").format(scrobbleFromDate);
+		
+					try {
+						Zenses.getInstance().getTracksSubmitter().updateTracks(this.getData(), scrobbleFrom, Zenses.getInstance().getPreferences().getIntervalBetweenScrobbles());
+						ViewHandler.getInstance().updateStateMessage("Completed scrobbling " + this.getData().size() + " tracks");
+					} catch (IllegalArgumentException e) {
+						ViewHandler.getInstance().showError(e.getMessage());
+						ViewHandler.getInstance().updateStateMessage("Failed scrobbling " + this.getData().size() + " tracks");
+					} catch (IOException e) {
+						ViewHandler.getInstance().showError(e.getMessage());
+						ViewHandler.getInstance().updateStateMessage("Failed scrobbling " + this.getData().size() + " tracks");
+					} finally {
+						ViewHandler.getInstance().updateUI(false);
+					}
+				}
+			}.start();
 		} else {
-			this.updateStatusMessage("No tracks selected to scrobble");
+			this.updateStateMessage("No tracks selected to scrobble");
 		}
 	}
 	
-	private void updateStatusMessage(String message) {
+	public static ViewHandler getInstance() {
+		return ViewHandler.__instance;
+	}
+
+	public void updateStateMessage(String message) {
 		this._mainWindow.getStatusLabel().setText(message);
 	}
 	
-	public void updateSummaryMessage() {
+	private void updateSummaryMessage() {
 		String message = "";
+		
 		int count = this.getZenses().getDeviceTrackService().getScrobbledTracksCount();
 		
 		if (count == 0) {
-			message = "Nothing scrobbled yet :(";
+			message = "Nothing scrobbled yet";
 		} else if (count == 1) {
 			message = "Scrobbled only " + this.getZenses().getDeviceTrackService().getScrobbledTracksCount() + " track";
 		} else {
@@ -236,15 +365,16 @@ public class ViewHandler
 		}
 
 		this.getMainWindow().getSummaryTextLabel().setText(message);
+		
+		if (this.getZenses().authenticate(false)) {
+			this.getMainWindow().authenticated();
+		}
 	}
     
 	protected void setupUserInterface() {
 		this._mainWindow = new MainWindow(this);
 		this._preferencesWindow = new PreferencesWindow();
-	}
-
-	public void set_zenses(Zenses _zenses) {
-		this._zenses = _zenses;
+		this._aboutWindow = new AboutWindow();
 	}
 
 	public Zenses getZenses() {

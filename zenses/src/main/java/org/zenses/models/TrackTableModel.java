@@ -10,7 +10,7 @@ public class TrackTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1561610603232645582L;
 
-	protected String[] _columns = { "", "Title", "Artist", "Album", "Play Count" };
+	protected Object[] _columns = { "", "Title", "Artist", "Album", "Play Count" };
 	protected List<DeviceTrackDto> _tracks;
 	protected boolean[] _selectedToSubmit;
 	
@@ -33,7 +33,6 @@ public class TrackTableModel extends AbstractTableModel {
 	public String getColumnName(int columnIndex) {
 		return this._columns[columnIndex].toString();
 	}
-
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		DeviceTrackDto track = this._tracks.get(rowIndex);

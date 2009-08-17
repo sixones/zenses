@@ -37,7 +37,7 @@
 				<prop key="hibernate.connection.shutdown">true</prop>
 				<prop key="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</prop>
 				<!--<prop key="hibernate.hbm2ddl.auto">validate</prop>
-			<prop key="hibernate.hbm2ddl.auto">create-drop</prop>-->
+				<prop key="hibernate.hbm2ddl.auto">create-drop</prop>-->
 			</props>
 		</property>
 	</bean>

@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
 import org.zenses.data.dto.DeviceTrackDto;
 import org.zenses.data.service.DeviceTrackService;
 
@@ -25,10 +24,18 @@ public class TracksSubmitterImpl implements TracksSubmitter {
 	public void updateTracks(List<DeviceTrackDto> tracks, String startDateTime, int intervalBetweenSongs) throws IOException {
 		DateTimeFormatter formatter = DateTimeFormat.forPattern("HH:mm dd/MM/yyyy");
 		long newSubmissionTimestamp = formatter.parseMillis(startDateTime);
-		long lastSubmissionTimestamp = deviceTrackService.getLastSubmissionTimestamp();
+		
+		// Doesnt seem to be needed, last.fm is letting us scrobble tracks earlier!
+		/*long lastSubmissionTimestamp = this.deviceTrackService.getLastSubmissionTimestamp();
+		
+		Date lastSubmissionDate = new Date(lastSubmissionTimestamp);
+		DateFormat format = new SimpleDateFormat("d MMM yyyy HH:mm:ss");
+		
 		Assert.isTrue(lastSubmissionTimestamp < newSubmissionTimestamp,
-				"New submissions must be later than existing ones!");
+				"New submissions must be later than "+format.format(lastSubmissionDate));*/
+		
 		long lastFmSubmissionStart = newSubmissionTimestamp / 1000;
+		
 		for (DeviceTrackDto dto : tracks) {
 			for (int i = 0; i < dto.getPlayCount() - dto.getSubmissions().size(); i++) {
 				try {
@@ -46,7 +53,44 @@ public class TracksSubmitterImpl implements TracksSubmitter {
 	}
 
 	@Override
-	public void setLastFmAuthentication(String username, String password) throws IOException {
-		submitter.initializeScrobbler(username, password);
+	public boolean authenticatesNow(String token) throws IOException {
+		return submitter.authenticatesNow(token);
+	}
+	
+	@Override
+	public void authenticate() throws IOException {
+		submitter.authenticate();
+	}
+	
+	@Override
+	public String getSessionToken() {
+		return this.submitter.getSession().getKey();
+	}
+	
+	@Override
+	public String getRequestToken() {
+		return this.submitter.getRequestToken();
+	}
+	
+	@Override
+	public String getSessionUsername() {
+		return this.submitter.getSessionUser().getName();
+	}
+	
+	@Override
+	public boolean isSubscriber() {
+		return this.submitter.getSessionUser().isSubscriber();
+	}
+	
+	@Override
+	public String getSessionApiKey() {
+		return this.submitter.getSession().getApiKey();
+	}
+	
+	@Override
+	public String getNextSubmissionTime() {
+		DateTimeFormatter formatter = DateTimeFormat.forPattern("HH:mm dd/MM/yyyy");
+		
+		return formatter.print(this.deviceTrackService.getLastSubmissionTimestamp() + 5000);
 	}
 }

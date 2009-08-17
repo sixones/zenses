@@ -26,6 +26,16 @@ public interface TracksSubmitter {
 	 * @throws IOException
 	 */
 	void updateTracks(List<DeviceTrackDto> tracks, String startDateTime, int intervalBetweenSongs) throws IOException;
+	
+	boolean authenticatesNow(String token) throws IOException;
+	void authenticate() throws IOException;
 
-	void setLastFmAuthentication(String username, String password) throws IOException;
+	String getSessionApiKey();
+	String getSessionToken();
+	String getSessionUsername();
+	boolean isSubscriber();
+	
+	String getRequestToken();
+	
+	String getNextSubmissionTime();
 }

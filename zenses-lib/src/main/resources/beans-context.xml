@@ -5,10 +5,7 @@
 
 	<bean id="deviceTrackDao" class="org.zenses.data.dao.DeviceTrackDaoImpl" />
 	<bean id="deviceTrackService" class="org.zenses.data.service.DeviceTrackServiceImpl" />
-	<bean id="lastFmTracksSubmitter" class="org.zenses.lastfm.LastFmTracksSubmitter">
-		<property name="lastfmPassword" value="${lastfm.password}" />
-		<property name="lastfmUser" value="${lastfm.user}" />
-	</bean>
+	<bean id="lastFmTracksSubmitter" class="org.zenses.lastfm.LastFmTracksSubmitter" />
 	<bean id="trackSubmitter" class="org.zenses.lastfm.TracksSubmitterImpl" />
 
 </beans>

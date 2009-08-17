@@ -5,9 +5,9 @@ import java.util.prefs.Preferences;
 import org.zenses.ZensesApplication;
 
 public class PreferencesModel {
-	protected String _lastfmUsername;
-	protected String _lastfmPassword;
-	protected int _intervalBetweenScrobbles;
+	private String _sessionToken;
+	private int _intervalBetweenScrobbles;
+	private String _dateFormat;
 	
 	protected Preferences _preferences;
 	
@@ -18,35 +18,28 @@ public class PreferencesModel {
 	
 	public void populate()
 	{
-		this._lastfmUsername = this._preferences.get("lastfm_username", "");
-		this._lastfmPassword = this._preferences.get("lastfm_password", "");
+		this._sessionToken = this._preferences.get("session_token", "");
+	
 		this._intervalBetweenScrobbles = this._preferences.getInt("interval_between_scrobbles", 0);
+		this._dateFormat = this._preferences.get("date_format", "dd/MM/yyyy");
 	}
 	
 	public void save()
 	{
 		// TODO: encrypt preference  data
-		this._preferences.put("lastfm_username", this._lastfmUsername);
-		this._preferences.put("lastfm_password", this._lastfmPassword);
+		this._preferences.put("session_token", this._sessionToken);
+
 		this._preferences.putInt("interval_between_scrobbles", this._intervalBetweenScrobbles);
+		this._preferences.put("date_format", this._dateFormat);
 	}
 	
 	// Properties
-	
-	public String get_lastfmUsername() {
-		return this._lastfmUsername;
+	public String getSessionToken() {
+		return this._sessionToken;
 	}
 	
-	public void set_lastfmUsername(String username) {
-		this._lastfmUsername = username;
-	}
-
-	public String get_lastfmPassword() {
-		return this._lastfmPassword;
-	}
-	
-	public void set_lastfmPassword(String password) {
-		this._lastfmPassword = password;
+	public void setSessionToken(String value) {
+		this._sessionToken = value;
 	}
 	
 	public int getIntervalBetweenScrobbles() {
@@ -55,5 +48,13 @@ public class PreferencesModel {
 	
 	public void setIntervalBetweenScrobbles(int value) {
 		this._intervalBetweenScrobbles = value;
+	}
+	
+	public String getDateFormat() {
+		return this._dateFormat;
+	}
+	
+	public void setDateFormat(String value) {
+		this._dateFormat = value;
 	}
 }

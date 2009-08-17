@@ -30,7 +30,11 @@ public class ZensesApplication extends SingleFrameApplication
             Logger.getLogger(ZensesApplication.class.getName()).log(Level.SEVERE, null, e);
         }
         
-        this._zenses = new Zenses();
+        try {
+			this._zenses = new Zenses();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
         if (this.getZenses().isMacOSX()) {
             System.setProperty("apple.laf.useScreenMenuBar", "true"); 
@@ -47,7 +51,7 @@ public class ZensesApplication extends SingleFrameApplication
     }
     
     protected void configureWindow(java.awt.Window root) {
-
+    	
     }
 
     public static ZensesApplication getApplication() {
