@@ -7,9 +7,13 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 import org.zenses.AbstractSpringTest;
 import org.zenses.data.service.DeviceTrackService;
 
+@ContextConfiguration(locations = "classpath:mtplib-linux-context.xml")
+@Transactional
 public class MtpDeviceDaoTest extends AbstractSpringTest {
 
 	@Autowired
@@ -24,11 +28,7 @@ public class MtpDeviceDaoTest extends AbstractSpringTest {
 		if (devices.size() > 0) {
 			List<MtpDeviceTrack> tracks = mtpDeviceDao.getTracks(devices.get(0));
 			for (MtpDeviceTrack track : tracks) {
-				try {
-					deviceTrackService.createOrUpdate(track);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				deviceTrackService.createOrUpdate(track);
 			}
 		} else {
 			Assert.fail("Connect at least one device!");

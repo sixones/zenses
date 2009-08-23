@@ -9,8 +9,7 @@
         http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<context:property-placeholder
-		location="classpath:user.properties,
-	classpath:${dbtype}.properties" />
+		location="classpath:${dbtype}.properties" />
 	<context:annotation-config />
 
 	<import resource="hibernate-context.xml" />

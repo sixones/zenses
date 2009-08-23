@@ -30,22 +30,18 @@ public class DeviceTrackDaoTest extends AbstractSpringTest {
 		deviceTrackDao.saveOrUpdate(deviceTrackDto);
 		LastFmSubmissionDto submission = new LastFmSubmissionDto(deviceTrackDto, new Date());
 		deviceTrackDao.save(submission);
-		// TODO: assertions
-		// System.out.println(deviceTrackDto.getSubmissions().size());
-	}
+		deviceTrackDto = deviceTrackDao.flushAndReload(deviceTrackDto);
+		
 
-	@Test
-	public void testSubmissions() {
-		@SuppressWarnings("unused")
-		DeviceTrackDto deviceTrackDto = deviceTrackDao.findByPersistentId(PERSISTENT_ID, DEVICE_ID);
-		// System.out.println(deviceTrackDto.getSubmissions().size());
-	}
-
-	@Test
-	public void testGetUnsubmitted() {
 		List<DeviceTrackDto> tracks = deviceTrackDao.getUnsubmittedTracks();
 		assertEquals(1, tracks.size());
 		assertEquals(2, tracks.get(0).getNumberOfPlaysToSubmit());
+
+		DeviceTrackDto deviceTrackDto2 = deviceTrackDao.findByPersistentId(PERSISTENT_ID, DEVICE_ID);
+		assertSame(deviceTrackDto, deviceTrackDto2);
+		
+		List<LastFmSubmissionDto> scrobbledTracks = deviceTrackDao.getScrobbledTracks();
+		assertEquals(1, scrobbledTracks.size());
 
 	}
 

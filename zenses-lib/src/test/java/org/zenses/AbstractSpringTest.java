@@ -7,11 +7,11 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContext.xml")
-@TransactionConfiguration(defaultRollback = false)
-public class AbstractSpringTest {
+@TransactionConfiguration(defaultRollback = true)
+public abstract class AbstractSpringTest {
 
 	static {
-		System.setProperty("dbtype", "hsql");
+		System.setProperty("dbtype", "hsql-test");
 		System.setProperty("mtplib", "jmtp");
 	}
 }

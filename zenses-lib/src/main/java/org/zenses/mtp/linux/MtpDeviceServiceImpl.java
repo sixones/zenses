@@ -20,8 +20,7 @@ public class MtpDeviceServiceImpl implements MtpDeviceService<FakeLibraryDevice>
 
 	public List<MtpDeviceTrack> getTracks(MtpDevice<FakeLibraryDevice> portableDevice) {
 		List<MtpDeviceTrack> tracks = new ArrayList<MtpDeviceTrack>();
-		tracks.add(new MtpDeviceTrackImpl("Madonna", "Frozen", portableDevice.getDelegate().getName()));
-		// TODO Auto-generated method stub
+		tracks.add(new MtpDeviceTrackImpl("Madonna", "Frozen", "Ray of light", portableDevice.getDelegate().getName()));
 		return tracks;
 	}
 

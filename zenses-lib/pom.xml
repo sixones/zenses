@@ -147,16 +147,6 @@
 			<version>3.3.1.GA</version>
 		</dependency>
 		<dependency>
-		  <groupId>org.springframework</groupId>
-		  <artifactId>spring-beans</artifactId>
-		  <version>2.5.6.SEC01</version>
-		</dependency>
-		<dependency>
-    		<groupId>org.springframework</groupId>
-    		<artifactId>spring-context</artifactId>
-    		<version>2.5.6.SEC01</version>
-		</dependency>
-		<dependency>
 			<groupId>jmtp</groupId>
 			<artifactId>jmtp</artifactId>
 			<version>1.0</version>
@@ -199,9 +189,15 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-hibernate3</artifactId>
-			<version>2.0-m4</version>
+			<artifactId>org.springframework.spring-library</artifactId>
+			<type>libd</type>
+			<version>3.0.0.M3</version>
 		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.springframework</groupId>-->
+<!--			<artifactId>spring-hibernate3</artifactId>-->
+<!--			<version>2.0-m4</version>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>org.springframework.test</artifactId>

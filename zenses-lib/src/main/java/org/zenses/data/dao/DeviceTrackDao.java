@@ -47,9 +47,9 @@ public interface DeviceTrackDao {
 	List<DeviceTrackDto> getUnsubmittedTracks();
 
 	List<LastFmSubmissionDto> getScrobbledTracks();
-	
+
 	int getScrobbledTracksCount();
-	
+
 	/**
 	 * Returns a submission that has most recent time. It will be helpful to
 	 * validate that we won't use playtime that's before already submitted
@@ -58,5 +58,14 @@ public interface DeviceTrackDao {
 	 * @return
 	 */
 	Date getMostRecentSubmission();
+
+	/**
+	 * !!!! Do NOT use !!!! this method outside of tests unless you REALLY know
+	 * exactly what you're doing
+	 * 
+	 * @param entity
+	 * @return
+	 */
+	DeviceTrackDto flushAndReload(DeviceTrackDto entity);
 
 }

@@ -63,4 +63,12 @@ public class DeviceTrackDaoImpl extends HibernateDaoSupport implements DeviceTra
 		List<Date> find = getHibernateTemplate().find("select max(s.dateSubmitted) from LastFmSubmissionDto s");
 		return find.get(0);
 	}
+
+	@Override
+	public DeviceTrackDto flushAndReload(DeviceTrackDto entity) {
+		getHibernateTemplate().flush();
+		getHibernateTemplate().evict(entity);
+		return findByPersistentId(entity.getPersistentId(), entity.getDeviceId());
+	}
+
 }

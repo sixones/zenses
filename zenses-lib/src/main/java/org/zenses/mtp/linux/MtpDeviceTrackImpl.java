@@ -9,17 +9,18 @@ public class MtpDeviceTrackImpl implements MtpDeviceTrack {
 	private String artist;
 	private String track;
 	private String deviceId;
+	private String album;
 
-	public MtpDeviceTrackImpl(String artist, String track, String deviceId) {
+	public MtpDeviceTrackImpl(String artist, String track, String album, String deviceId) {
 		this.artist = artist;
 		this.track = track;
+		this.album = album;
 		this.deviceId = deviceId;
 	}
 
 	@Override
 	public String getAlbum() {
-		// TODO Auto-generated method stub
-		return null;
+		return album;
 	}
 
 	@Override
@@ -34,26 +35,22 @@ public class MtpDeviceTrackImpl implements MtpDeviceTrack {
 
 	@Override
 	public String getFilename() {
-		// TODO Auto-generated method stub
-		return null;
+		return "filename";
 	}
 
 	@Override
 	public BigInteger getLength() {
-		// TODO Auto-generated method stub
-		return null;
+		return new BigInteger("100");
 	}
 
 	@Override
 	public String getPersistentId() {
-		// TODO Auto-generated method stub
-		return null;
+		return "abcd";
 	}
 
 	@Override
 	public Long getPlayCount() {
-		// TODO Auto-generated method stub
-		return null;
+		return 0L;
 	}
 
 	@Override
@@ -63,8 +60,7 @@ public class MtpDeviceTrackImpl implements MtpDeviceTrack {
 
 	@Override
 	public String getZenId() {
-		// TODO Auto-generated method stub
-		return null;
+		return "abcd";
 	}
 
 }
