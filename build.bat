@@ -1,4 +1,4 @@
 cd zenses-lib/
-mvn install -DskipTests=true
+mvn clean test install
 cd ../zenses/
-mvn assembly:assembly -DskipTests=true
+mvn clean install assembly:assembly
