@@ -1,10 +1,13 @@
 package org.zenses.data.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.hibernate.Query;
+import org.hibernate.ScrollableResults;
 import org.hibernate.SessionFactory;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.util.Assert;
@@ -49,15 +52,27 @@ public class DeviceTrackDaoImpl extends HibernateDaoSupport implements DeviceTra
 
 	@SuppressWarnings("unchecked")
 	public List<LastFmSubmissionDto> getScrobbledTracks() {
-		List<LastFmSubmissionDto> tracks = getHibernateTemplate().find(
-			"from LastFmSubmissionDto s ORDER BY s.dateSubmitted DESC");
-		return tracks;
+		String findString = "from LastFmSubmissionDto s ORDER BY s.dateSubmitted DESC";
+		Query query = getSession().createQuery(findString);
+		query.setFetchSize(20);
+		query.setMaxResults(50);
+		ScrollableResults scrollableResults = query.scroll();
+		ArrayList<LastFmSubmissionDto> result = new ArrayList<LastFmSubmissionDto>();
+		if (scrollableResults.next()) {
+			Object[] objects = scrollableResults.get();
+			for (Object obj : objects) {
+				result.add((LastFmSubmissionDto) obj);
+			}
+		}
+		// List<LastFmSubmissionDto> tracks = template.find(findString);
+		// return tracks;
+		return result;
 	}
-	
+
 	public int getScrobbledTracksCount() {
 		return this.getScrobbledTracks().size();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Date getMostRecentSubmission() {
 		List<Date> find = getHibernateTemplate().find("select max(s.dateSubmitted) from LastFmSubmissionDto s");

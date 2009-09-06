@@ -28,12 +28,17 @@ public class DeviceTrackServiceImpl implements DeviceTrackService {
 			deviceTrackDto = new DeviceTrackDto(dt.getZenId(), dt.getPersistentId(), dt.getDeviceId(), dt.getArtist(),
 					dt.getTitle(), dt.getAlbum(), dt.getLength(), dt.getPlayCount(), dt.getFilename());
 			// logger.info("Creating new track " + deviceTrackDto);
+			deviceTrackDao.saveOrUpdate(deviceTrackDto);
 		} else {
-			// logger.info("Updating track " + deviceTrackDto);
-			deviceTrackDto.setLastRead(new Date());
-			deviceTrackDto.setPlayCount(dt.getPlayCount());
+			if (!deviceTrackDto.getPlayCount().equals(dt.getPlayCount())) {
+				//performance improvement - only update records if playCount changed
+				// logger.info("Updating track " + deviceTrackDto);
+				deviceTrackDto.setLastRead(new Date());
+				deviceTrackDto.setPlayCount(dt.getPlayCount());
+				deviceTrackDao.saveOrUpdate(deviceTrackDto);
+			}
 		}
-		deviceTrackDao.saveOrUpdate(deviceTrackDto);
+
 		// logger.info("Track saved to db: " + deviceTrackDto);
 	}
 
@@ -45,14 +50,14 @@ public class DeviceTrackServiceImpl implements DeviceTrackService {
 
 	public long getLastSubmissionTimestamp() {
 		Date mostRecentSubmission = deviceTrackDao.getMostRecentSubmission();
-		
+
 		if (mostRecentSubmission == null) {
 			Calendar calendar = Calendar.getInstance();
 			calendar.set(2000, 1, 1, 0, 0);
 
 			return calendar.getTimeInMillis();
 		}
-		
+
 		return mostRecentSubmission.getTime();
 	}
 
@@ -61,17 +66,17 @@ public class DeviceTrackServiceImpl implements DeviceTrackService {
 		DateTimeFormatter formatter = DateTimeFormat.forPattern("HH:mm dd/MM/yyyy");
 		return formatter.print(getLastSubmissionTimestamp() + 60000);
 	}
-	
+
 	@Override
 	public List<DeviceTrackDto> getUnsubmittedTracks() {
 		return deviceTrackDao.getUnsubmittedTracks();
 	}
-	
+
 	@Override
 	public List<LastFmSubmissionDto> getScrobbledTracks() {
 		return deviceTrackDao.getScrobbledTracks();
 	}
-	
+
 	@Override
 	public int getScrobbledTracksCount() {
 		return deviceTrackDao.getScrobbledTracksCount();

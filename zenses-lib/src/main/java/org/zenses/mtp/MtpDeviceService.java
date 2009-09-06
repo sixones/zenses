@@ -8,4 +8,14 @@ public interface MtpDeviceService<T> {
 
 	List<MtpDeviceTrack> getTracks(MtpDevice<T> portableDevice);
 
+	/**
+	 * Additional method, mainly for debugging purposes, to avoid scanning the
+	 * device for a huge number of tracks
+	 * 
+	 * @param portableDevice
+	 * @param maxNumberOfTracks
+	 * @return
+	 */
+	List<MtpDeviceTrack> getTracks(MtpDevice<T> portableDevice, int maxNumberOfTracks);
+
 }

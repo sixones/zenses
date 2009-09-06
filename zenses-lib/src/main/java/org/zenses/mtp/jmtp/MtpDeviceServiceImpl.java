@@ -17,7 +17,7 @@ import org.zenses.mtp.MtpDeviceTrack;
 
 public class MtpDeviceServiceImpl implements MtpDeviceService<PortableDevice> {
 
-	Logger logger = Logger.getLogger(MtpDeviceServiceImpl.class);
+	private final static Logger logger = Logger.getLogger(MtpDeviceServiceImpl.class);
 
 	public List<MtpDevice<PortableDevice>> getDevices() {
 		PortableDeviceManager pdm = new PortableDeviceManager();
@@ -30,32 +30,26 @@ public class MtpDeviceServiceImpl implements MtpDeviceService<PortableDevice> {
 	}
 
 	public List<MtpDeviceTrack> getTracks(MtpDevice<PortableDevice> mtpDevice) {
-		PortableDevice portableDevice = ((MtpDeviceImpl) mtpDevice).getDelegate();
-		portableDevice.open();
-		
-		List<MtpDeviceTrack> tracks = new ArrayList<MtpDeviceTrack>();
-		for (PortableDeviceObject pdo : portableDevice.getRootObjects()) {
-			addTracks(portableDevice.getSerialNumber(), pdo, 0, tracks);
-		}
-		portableDevice.close();
-		return tracks;
+		return getTracks(mtpDevice, -1);
+
 	}
 
-	private void addTracks(String deviceId, PortableDeviceObject pdo, int level, List<MtpDeviceTrack> tracks) {
-		// if (tracks.size() > 1000){
-		// return;
-		// }
+	private void addTracks(String deviceId, PortableDeviceObject pdo, int level, List<MtpDeviceTrack> tracks,
+			int maxNumberOfTracks) {
+		if (tracks.size() > maxNumberOfTracks && maxNumberOfTracks != -1) {
+			return;
+		}
 		if (pdo instanceof PortableDeviceStorageObject) {
 			PortableDeviceStorageObject pdso = (PortableDeviceStorageObject) pdo;
 			PortableDeviceObject[] childObjects = pdso.getChildObjects();
 			for (PortableDeviceObject child : childObjects) {
-				addTracks(deviceId, child, level + 1, tracks);
+				addTracks(deviceId, child, level + 1, tracks, maxNumberOfTracks);
 			}
 		} else if (pdo instanceof PortableDeviceFolderObject) {
 			PortableDeviceFolderObject pdfo = (PortableDeviceFolderObject) pdo;
 			PortableDeviceObject[] childObjects = pdfo.getChildObjects();
 			for (PortableDeviceObject child : childObjects) {
-				addTracks(deviceId, child, level + 1, tracks);
+				addTracks(deviceId, child, level + 1, tracks, maxNumberOfTracks);
 			}
 		} else if (pdo instanceof PortableDeviceAudioObject) {
 			PortableDeviceAudioObject pdao = (PortableDeviceAudioObject) pdo;
@@ -63,5 +57,18 @@ public class MtpDeviceServiceImpl implements MtpDeviceService<PortableDevice> {
 			tracks.add(track);
 			logger.info("Found track [" + tracks.size() + "]: " + track);
 		}
+	}
+
+	@Override
+	public List<MtpDeviceTrack> getTracks(MtpDevice<PortableDevice> mtpDevice, int maxNumberOfTracks) {
+		PortableDevice portableDevice = mtpDevice.getDelegate();
+		portableDevice.open();
+
+		List<MtpDeviceTrack> tracks = new ArrayList<MtpDeviceTrack>();
+		for (PortableDeviceObject pdo : portableDevice.getRootObjects()) {
+			addTracks(portableDevice.getSerialNumber(), pdo, 0, tracks, maxNumberOfTracks);
+		}
+		portableDevice.close();
+		return tracks;
 	}
 }
