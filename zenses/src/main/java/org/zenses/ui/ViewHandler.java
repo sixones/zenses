@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
+import org.apache.log4j.Logger;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.zenses.Zenses;
@@ -31,6 +32,8 @@ import org.zenses.utils.DataTimerTask;
 
 public class ViewHandler
 {
+	private final static Logger logger = Logger.getLogger(ViewHandler.class);
+
 	public static int TAB_SUMMARY = 0;
 	public static int TAB_TRACKS = 1;
 	public static int HISTORY = 2;
@@ -161,6 +164,7 @@ public class ViewHandler
 	@SuppressWarnings("unchecked")
 	public synchronized void fetchTracksFromSelectedDevice() {
 		new Thread() {
+
 			public void run() {
 				MtpDevice device = (MtpDevice) ViewHandler.getInstance().getMainWindow().getConnectedDevicesComboBox().getSelectedItem();
 				ViewHandler.getInstance().updateStateMessage("Connecting to device ...");
@@ -170,8 +174,10 @@ public class ViewHandler
 				ViewHandler.getInstance().updateStateMessage("Fetching track information from device ...");
 				
 				if (!tracks.isEmpty()) {
-					for (MtpDeviceTrack track : tracks) {
+					for (int i = 0; i < tracks.size(); i++) {
+						MtpDeviceTrack track = tracks.get(i);
 						try {
+							logger.info("Updating track " + i + " out of " + tracks.size());
 							Zenses.getInstance().getDeviceTrackService().createOrUpdate(track);
 						} catch (Exception e) {
 							e.printStackTrace();
