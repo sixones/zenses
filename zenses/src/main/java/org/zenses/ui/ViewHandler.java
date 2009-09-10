@@ -49,6 +49,7 @@ public class ViewHandler
     protected List<DeviceTrackDto> _tracksToScrobble;
     protected Timer _uiUpdateTimer;
     protected Timer _findDevicesTimer;
+    protected Timer _devicesUpdateTimer;
     
     private static ViewHandler __instance;
 
@@ -186,7 +187,7 @@ public class ViewHandler
 		return this._preferencesWindow;
 	}
 	
-	public void findDevices() {
+	/*public void findDevices() {
     	if (!this.getZenses().getServicesReady()) {
 			this._findDevicesTimer = new Timer();
 			this._findDevicesTimer.schedule(new TimerTask() {
@@ -222,7 +223,7 @@ public class ViewHandler
 			
 			this.updateStateMessage("No devices could be found");
 		}
-	}
+	}*/
 	
 	@SuppressWarnings("unchecked")
 	public synchronized void fetchTracksFromSelectedDevice() {
@@ -386,12 +387,6 @@ public class ViewHandler
 				this._tracksToScrobble.add(track);
 			}
 		}
-		
-		Date scrobbleFromDate = new Date(this.getScrobbleFrom());
-		
-		this.updateStateMessage("Validating scrobbles");
-		
-		String scrobbleFromOriginal = new SimpleDateFormat("hh:mma d MMMM yyyy").format(scrobbleFromDate);
 		
 		if (!this._tracksToScrobble.isEmpty()) {
 			String title = "Confirm Scrobbles";

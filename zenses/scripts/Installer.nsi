@@ -88,8 +88,10 @@ Section "Zenses2 Beta1" SecDummy
 
   ${If} ${FileExists} `$INSTDIR\data\zenses.data.script`
     ; data exists, so dont touch it
+	; move the data
+	Rename `$INSTDIR\data\zenses.data.script` `$APPDATA\data\zenses.data.script`
   ${Else}
-    SetOutPath "$INSTDIR\data"
+    SetOutPath "$APPDATA\data"
     file "data\zenses.data.script"
   ${EndIf}
 

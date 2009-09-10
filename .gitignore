@@ -4,7 +4,11 @@
 .settings
 
 zenses/.classpath
+zenses/.settings
+zenses/bin
 zenses/target
 
 zenses-lib/.classpath
+zenses-lib/.settings
+zenses-lib/bin
 zenses-lib/target
