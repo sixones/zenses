@@ -26,9 +26,16 @@ public class MtpDeviceDaoTest extends AbstractSpringTest {
 	public void init() {
 		List<MtpDevice<PortableDevice>> devices = mtpDeviceDao.getDevices();
 		if (devices.size() > 0) {
-			List<MtpDeviceTrack> tracks = mtpDeviceDao.getTracks(devices.get(0));
-			for (MtpDeviceTrack track : tracks) {
-				deviceTrackService.createOrUpdate(track);
+			List<MtpDeviceTrack> tracks;
+			
+			try {
+				tracks = mtpDeviceDao.getTracks(devices.get(0));
+				
+				for (MtpDeviceTrack track : tracks) {
+					deviceTrackService.createOrUpdate(track);
+				}
+			} catch (MTPException e) {
+				Assert.fail(e.getMessage());
 			}
 		} else {
 			Assert.fail("Connect at least one device!");

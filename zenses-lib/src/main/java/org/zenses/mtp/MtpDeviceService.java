@@ -6,7 +6,7 @@ public interface MtpDeviceService<T> {
 
 	List<MtpDevice<T>> getDevices();
 
-	List<MtpDeviceTrack> getTracks(MtpDevice<T> portableDevice);
+	List<MtpDeviceTrack> getTracks(MtpDevice<T> portableDevice) throws MTPException;
 
 	/**
 	 * Additional method, mainly for debugging purposes, to avoid scanning the

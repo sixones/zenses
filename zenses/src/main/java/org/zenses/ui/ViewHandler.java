@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -21,6 +22,7 @@ import org.zenses.data.dto.DeviceTrackDto;
 import org.zenses.data.dto.LastFmSubmissionDto;
 import org.zenses.models.ScrobbledTrackTableModel;
 import org.zenses.models.TrackTableModel;
+import org.zenses.mtp.MTPException;
 import org.zenses.mtp.MtpDevice;
 import org.zenses.mtp.MtpDeviceTrack;
 import org.zenses.ui.views.AboutWindow;
@@ -46,6 +48,7 @@ public class ViewHandler
     private Zenses _zenses;
     protected List<DeviceTrackDto> _tracksToScrobble;
     protected Timer _uiUpdateTimer;
+    protected Timer _devicesUpdateTimer;
     
     private static ViewHandler __instance;
 
@@ -93,6 +96,48 @@ public class ViewHandler
     	this.getMainWindow().getScrobbleDateField().setText(Zenses.getInstance().getLastScrobbledDate());
     	this.getMainWindow().getScrobbleTimeField().setText(Zenses.getInstance().getLastScrobbledTime());
     }
+    
+    public synchronized void findDevices() {
+    	if (!this.getZenses().getServicesReady()) {
+			this._devicesUpdateTimer = new Timer();
+			this._devicesUpdateTimer.schedule(new TimerTask() {
+				public void run() {
+					ViewHandler.getInstance().findDevices();
+				}
+			}, 500);
+			
+			return;
+    	}
+    	
+    	if (this._devicesUpdateTimer != null) {
+    		this._devicesUpdateTimer.cancel();
+    	}
+    	
+    	new Thread() {
+    		public void run() {
+    			ViewHandler.getInstance().updateStateMessage("Searching for devices ...");
+    			
+    			@SuppressWarnings("unchecked")
+    			List<MtpDevice> devices = Zenses.getInstance().getDeviceService().getDevices();
+    			
+    			ViewHandler.getInstance().getMainWindow().getConnectedDevicesComboBox().removeAllItems();
+    			
+    			if (!devices.isEmpty()) {
+    				for (MtpDevice<?> device : devices) {
+    					ViewHandler.getInstance().getMainWindow().getConnectedDevicesComboBox().addItem(device);
+    				}
+    				
+    				ViewHandler.getInstance().getMainWindow().getConnectedDevicesComboBox().setEnabled(true);
+    				
+    				ViewHandler.getInstance().updateStateMessage("Found " + devices.size() + " device(s)");
+    			} else {
+    				ViewHandler.getInstance().getMainWindow().getConnectedDevicesComboBox().setEnabled(false);
+    				
+    				ViewHandler.getInstance().updateStateMessage("No devices could be found");
+    			}
+    		}
+    	}.start();
+    }
 
 	public void showMainWindow() {
 		ZensesApplication.getApplication().show(this._mainWindow);
@@ -137,29 +182,6 @@ public class ViewHandler
 	public PreferencesWindow getPreferencesWindow() {
 		return this._preferencesWindow;
 	}
-	
-	public void findDevices() {
-		this.updateStateMessage("Searching for devices ...");
-		
-		@SuppressWarnings("unchecked")
-		List<MtpDevice> devices = this._zenses.getDeviceService().getDevices();
-		
-		this._mainWindow.getConnectedDevicesComboBox().removeAllItems();
-		
-		if (!devices.isEmpty()) {
-			for (MtpDevice<?> device : devices) {
-				this._mainWindow.getConnectedDevicesComboBox().addItem(device);
-			}
-			
-			this._mainWindow.getConnectedDevicesComboBox().setEnabled(true);
-			
-			this.updateStateMessage("Found " + devices.size() + " device(s)");
-		} else {
-			this._mainWindow.getConnectedDevicesComboBox().setEnabled(false);
-			
-			this.updateStateMessage("No devices could be found");
-		}
-	}
 
 	@SuppressWarnings("unchecked")
 	public synchronized void fetchTracksFromSelectedDevice() {
@@ -169,8 +191,20 @@ public class ViewHandler
 				MtpDevice device = (MtpDevice) ViewHandler.getInstance().getMainWindow().getConnectedDevicesComboBox().getSelectedItem();
 				ViewHandler.getInstance().updateStateMessage("Connecting to device ...");
 				
-				List<MtpDeviceTrack> tracks = ZensesApplication.getApplication().getZenses().getDeviceService().getTracks(device);
-
+				List<MtpDeviceTrack> tracks;
+				
+				try
+				{
+					tracks = ZensesApplication.getApplication().getZenses().getDeviceService().getTracks(device);
+				}
+				catch (MTPException e)
+				{
+					ViewHandler.getInstance().updateStateMessage("Failed.");
+					ViewHandler.getInstance().showError(e.getMessage() + "\nTry to reboot the device and make sure its connected.");
+					
+					return;
+				}
+					
 				ViewHandler.getInstance().updateStateMessage("Fetching track information from device ...");
 				
 				if (!tracks.isEmpty()) {
@@ -264,16 +298,6 @@ public class ViewHandler
 	}
 	
 	public void updateAvailable(String changes) {
-		/*String title = "A newer version of Zenses2 is available";
-		String message = "Version " + version + " is now available, would you like to visit the update site?";
-		Object[] options = { "Yes", "No" };
-		
-		int choice = JOptionPane.showOptionDialog(this.getMainWindow(), message, title, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-		
-		if (choice == 0) {
-			this.getZenses().openBrowser("http://sixones.com/projects/zenses/update.html");
-		}*/
-		
 		this._updateWindow = new UpdateWindow();
 		this._updateWindow.updateVersionMessage();
 		this._updateWindow.updateChanges();
@@ -286,7 +310,6 @@ public class ViewHandler
 	public void scrobbleSelectedTracks() {
 		this._tracksToScrobble = new ArrayList<DeviceTrackDto>();
 		
-		//if (!this.getZenses().authenticate()) return;
 		this.getZenses().authenticate();
 		
 		if (!this.getZenses().isAuthorised()) {
@@ -308,6 +331,8 @@ public class ViewHandler
 		}
 		
 		Date scrobbleFromDate = new Date(this.getScrobbleFrom());
+		
+		this.updateStateMessage("Validating scrobbles");
 		
 		String scrobbleFromOriginal = new SimpleDateFormat("hh:mma d MMMM yyyy").format(scrobbleFromDate);
 		
