@@ -48,7 +48,7 @@ public class ViewHandler
     private Zenses _zenses;
     protected List<DeviceTrackDto> _tracksToScrobble;
     protected Timer _uiUpdateTimer;
-    protected Timer _devicesUpdateTimer;
+    protected Timer _findDevicesTimer;
     
     private static ViewHandler __instance;
 
@@ -71,8 +71,11 @@ public class ViewHandler
     
     public synchronized void updateUI(boolean updateStateMessage) {
     	if (!this.getZenses().getServicesReady()) {
-			this._uiUpdateTimer = new Timer();
-			this._uiUpdateTimer.schedule(new DataTimerTask<Boolean>(updateStateMessage) {
+    		if (this._uiUpdateTimer == null) {
+				this._uiUpdateTimer = new Timer();
+    		}
+    			
+    		this._uiUpdateTimer.schedule(new DataTimerTask<Boolean>(updateStateMessage) {
 				public void run() {
 					ViewHandler.getInstance().updateUI(this.getData());
 				}
@@ -88,13 +91,13 @@ public class ViewHandler
     	new CustomThread<Boolean>(updateStateMessage) {
     		public void run() {
     			ViewHandler.getInstance().bindUnscrobbledTrable(this.getData());
-    			ViewHandler.getInstance().bindHistoryTable(this.getData());
+    			ViewHandler.getInstance().bindHistoryTable(!this.getData());
     			ViewHandler.getInstance().updateSummaryMessage();
     		}
     	}.start();
     	
-    	this.getMainWindow().getScrobbleDateField().setText(Zenses.getInstance().getLastScrobbledDate());
-    	this.getMainWindow().getScrobbleTimeField().setText(Zenses.getInstance().getLastScrobbledTime());
+    	this.getMainWindow().getScrobbleDateField().setText(Zenses.getInstance().getNextScrobbledDate());
+    	this.getMainWindow().getScrobbleTimeField().setText(Zenses.getInstance().getNextScrobbledTime());
     }
     
     public synchronized void findDevices() {
@@ -182,7 +185,45 @@ public class ViewHandler
 	public PreferencesWindow getPreferencesWindow() {
 		return this._preferencesWindow;
 	}
-
+	
+	public void findDevices() {
+    	if (!this.getZenses().getServicesReady()) {
+			this._findDevicesTimer = new Timer();
+			this._findDevicesTimer.schedule(new TimerTask() {
+				public void run() {
+					ViewHandler.getInstance().findDevices();
+				}
+			}, 500);
+			
+			return;
+    	}
+    	
+    	if (this._findDevicesTimer != null) {
+    		this._findDevicesTimer.cancel();
+    	}
+		
+		this.updateStateMessage("Searching for devices ...");
+		
+		@SuppressWarnings("unchecked")
+		List<MtpDevice> devices = this._zenses.getDeviceService().getDevices();
+		
+		this._mainWindow.getConnectedDevicesComboBox().removeAllItems();
+		
+		if (!devices.isEmpty()) {
+			for (MtpDevice<?> device : devices) {
+				this._mainWindow.getConnectedDevicesComboBox().addItem(device);
+			}
+			
+			this._mainWindow.getConnectedDevicesComboBox().setEnabled(true);
+			
+			this.updateStateMessage("Found " + devices.size() + " device(s)");
+		} else {
+			this._mainWindow.getConnectedDevicesComboBox().setEnabled(false);
+			
+			this.updateStateMessage("No devices could be found");
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	public synchronized void fetchTracksFromSelectedDevice() {
 		new Thread() {
@@ -204,7 +245,7 @@ public class ViewHandler
 					
 					return;
 				}
-					
+
 				ViewHandler.getInstance().updateStateMessage("Fetching track information from device ...");
 				
 				if (!tracks.isEmpty()) {
@@ -310,10 +351,26 @@ public class ViewHandler
 	public void scrobbleSelectedTracks() {
 		this._tracksToScrobble = new ArrayList<DeviceTrackDto>();
 		
-		this.getZenses().authenticate();
+		//this.getZenses().authenticate();
 		
 		if (!this.getZenses().isAuthorised()) {
 			this.showError("Please autheticate with Last.fm before attempting to scrobble tracks.");
+			
+			return;
+		}
+		
+		this.updateStateMessage("Validating scrobbles");
+		
+		Date scrobbleFromDate = new Date(this.getScrobbleFrom());
+		String scrobbleFromOriginal = new SimpleDateFormat("hh:mma d MMMM yyyy").format(scrobbleFromDate);
+
+		if (scrobbleFromDate.before(this.getZenses().getLastScrobbledDateTime())) {
+			this.showError("You must choose a date to scrobble from that is after your last scrobble to Last.fm, which was " + this.getZenses().getLastScrobbledTime() +" "+ this.getZenses().getLastScrobbledDate());
+			
+			this.getMainWindow().getScrobbleDateField().setText(Zenses.getInstance().getNextScrobbledDate());
+	    	this.getMainWindow().getScrobbleTimeField().setText(Zenses.getInstance().getNextScrobbledTime());
+			
+			this.updateStateMessage("Scrobbles failed validation");
 			
 			return;
 		}

@@ -1,6 +1,7 @@
 package org.zenses.lastfm;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import org.zenses.data.dto.DeviceTrackDto;
@@ -38,4 +39,5 @@ public interface TracksSubmitter {
 	String getRequestToken();
 	
 	String getNextSubmissionTime();
+	public Date getLastSubmissionDateTime();
 }

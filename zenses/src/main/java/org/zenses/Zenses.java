@@ -91,9 +91,10 @@ public class Zenses {
 		// make pointers of the lib references
 		new Thread() {
 			public void run() {
+				Zenses.getInstance()._tracksSubmitter = ContextProvider.getTracksSubmitter();
 				Zenses.getInstance()._deviceService = ContextProvider.getDeviceService();
 				Zenses.getInstance()._deviceTrackService = ContextProvider.getDeviceTrackService();
-				Zenses.getInstance()._tracksSubmitter = ContextProvider.getTracksSubmitter();
+				
 				
 				Zenses.getInstance()._servicesReady = true;
 			}
@@ -240,6 +241,7 @@ public class Zenses {
 						this.getPreferences().setSessionToken(sessionToken);
 						this.getPreferences().save();
 						
+						this.getViewHandler().updateUI(false);
 						this.getViewHandler().getMainWindow().authenticated();
 						
 						return true;
@@ -327,15 +329,51 @@ public class Zenses {
 		return Zenses.__instance;
 	}
 
+	public Date getLastScrobbledDateTime() {
+		if (this.isAuthorised())
+		{
+			return this.getTracksSubmitter().getLastSubmissionDateTime();
+	
+		}
+	
+		return new Date(this.getDeviceTrackService().getLastSubmissionTimestamp());
+	}
+	
 	public String getLastScrobbledDate() {
-		long lastSubmission = this.getDeviceTrackService().getLastSubmissionTimestamp() + 60000;
+		long lastSubmission = this.getLastScrobbledDateTime().getTime() + 60000;
 		
 		Date lastScrobbledDate = new Date(lastSubmission);
+			
 		return new SimpleDateFormat(this.getPreferences().getDateFormat()).format(lastScrobbledDate);
 	}
 	
 	public String getLastScrobbledTime() {
-		long lastSubmission = this.getDeviceTrackService().getLastSubmissionTimestamp() + 60000;
+		long lastSubmission = this.getNextScrobbledDateTime().getTime();
+		
+		Date lastScrobbledDate = new Date(lastSubmission);
+		return new SimpleDateFormat("HH:mm").format(lastScrobbledDate);
+	}
+	
+	public Date getNextScrobbledDateTime() {
+		if (this.isAuthorised())
+		{
+			return this.getTracksSubmitter().getLastSubmissionDateTime();
+	
+		}
+	
+		return new Date(this.getDeviceTrackService().getLastSubmissionTimestamp());
+	}
+	
+	public String getNextScrobbledDate() {
+		long lastSubmission = this.getNextScrobbledDateTime().getTime();
+		
+		Date lastScrobbledDate = new Date(lastSubmission);
+			
+		return new SimpleDateFormat(this.getPreferences().getDateFormat()).format(lastScrobbledDate);
+	}
+	
+	public String getNextScrobbledTime() {
+		long lastSubmission = this.getNextScrobbledDateTime().getTime() + 60000;
 		
 		Date lastScrobbledDate = new Date(lastSubmission);
 		return new SimpleDateFormat("HH:mm").format(lastScrobbledDate);

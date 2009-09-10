@@ -40,6 +40,5 @@ public class MtpDeviceDaoTest extends AbstractSpringTest {
 		} else {
 			Assert.fail("Connect at least one device!");
 		}
-
 	}
 }

@@ -51,18 +51,17 @@ public class MtpDeviceServiceImpl implements MtpDeviceService<PortableDevice> {
 		
 		try {
 			portableDevice.open();
-			
+
 			tracks = new ArrayList<MtpDeviceTrack>();
 			
 			for (PortableDeviceObject pdo : portableDevice.getRootObjects()) {
 				addTracks(portableDevice.getSerialNumber(), pdo, 0, tracks);
 			}
-			
+
 			portableDevice.close();
 		} catch (DeviceClosedException e) {
 			throw new MTPException(e.getMessage());
 		}
-			
 		return tracks;
 >>>>>>> f8d3a57cd403c62581ecb33f6e30abdf1fe2266a:zenses-lib/src/main/java/org/zenses/mtp/jmtp/MtpDeviceServiceImpl.java
 	}

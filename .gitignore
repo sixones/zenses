@@ -1,5 +1,10 @@
+.DS_Store
 .metadata
 .classpath
 .settings
+
+zenses/.classpath
 zenses/target
+
+zenses-lib/.classpath
 zenses-lib/target

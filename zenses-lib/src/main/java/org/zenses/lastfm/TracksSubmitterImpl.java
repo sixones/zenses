@@ -2,6 +2,7 @@ package org.zenses.lastfm;
 
 import java.io.IOException;
 import java.net.ConnectException;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -92,5 +93,10 @@ public class TracksSubmitterImpl implements TracksSubmitter {
 		DateTimeFormatter formatter = DateTimeFormat.forPattern("HH:mm dd/MM/yyyy");
 		
 		return formatter.print(this.deviceTrackService.getLastSubmissionTimestamp() + 5000);
+	}
+	
+	@Override
+	public Date getLastSubmissionDateTime() {
+		return this.submitter.lastScrobbledTime();
 	}
 }
