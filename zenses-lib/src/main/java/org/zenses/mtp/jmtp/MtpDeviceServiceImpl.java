@@ -40,30 +40,9 @@ public class MtpDeviceServiceImpl implements MtpDeviceService<PortableDevice> {
 		return deviceWrappers;
 	}
 
-<<<<<<< HEAD:zenses-lib/src/main/java/org/zenses/mtp/jmtp/MtpDeviceServiceImpl.java
-	public List<MtpDeviceTrack> getTracks(MtpDevice<PortableDevice> mtpDevice) {
-		return getTracks(mtpDevice, -1);
 
-=======
 	public List<MtpDeviceTrack> getTracks(MtpDevice<PortableDevice> mtpDevice) throws MTPException {
-		PortableDevice portableDevice = ((MtpDeviceImpl) mtpDevice).getDelegate();
-		List<MtpDeviceTrack> tracks;
-		
-		try {
-			portableDevice.open();
-
-			tracks = new ArrayList<MtpDeviceTrack>();
-			
-			for (PortableDeviceObject pdo : portableDevice.getRootObjects()) {
-				addTracks(portableDevice.getSerialNumber(), pdo, 0, tracks);
-			}
-
-			portableDevice.close();
-		} catch (DeviceClosedException e) {
-			throw new MTPException(e.getMessage());
-		}
-		return tracks;
->>>>>>> f8d3a57cd403c62581ecb33f6e30abdf1fe2266a:zenses-lib/src/main/java/org/zenses/mtp/jmtp/MtpDeviceServiceImpl.java
+		return getTracks(mtpDevice, -1);
 	}
 
 	private void addTracks(String deviceId, PortableDeviceObject pdo, int level, List<MtpDeviceTrack> tracks,
@@ -92,15 +71,21 @@ public class MtpDeviceServiceImpl implements MtpDeviceService<PortableDevice> {
 	}
 
 	@Override
-	public List<MtpDeviceTrack> getTracks(MtpDevice<PortableDevice> mtpDevice, int maxNumberOfTracks) {
+	public List<MtpDeviceTrack> getTracks(MtpDevice<PortableDevice> mtpDevice, int maxNumberOfTracks) throws MTPException {
 		PortableDevice portableDevice = mtpDevice.getDelegate();
-		portableDevice.open();
+		try {
+			portableDevice.open();
 
-		List<MtpDeviceTrack> tracks = new ArrayList<MtpDeviceTrack>();
-		for (PortableDeviceObject pdo : portableDevice.getRootObjects()) {
-			addTracks(portableDevice.getSerialNumber(), pdo, 0, tracks, maxNumberOfTracks);
+			List<MtpDeviceTrack> tracks = new ArrayList<MtpDeviceTrack>();
+			for (PortableDeviceObject pdo : portableDevice.getRootObjects()) {
+				addTracks(portableDevice.getSerialNumber(), pdo, 0, tracks, maxNumberOfTracks);
+			}
+			portableDevice.close();
+			return tracks;
+			
+		} catch(DeviceClosedException dce){
+			throw new MTPException(dce.getMessage());
 		}
-		portableDevice.close();
-		return tracks;
 	}
+
 }

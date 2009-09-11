@@ -15,7 +15,8 @@ public interface MtpDeviceService<T> {
 	 * @param portableDevice
 	 * @param maxNumberOfTracks
 	 * @return
+	 * @throws MTPException 
 	 */
-	List<MtpDeviceTrack> getTracks(MtpDevice<T> portableDevice, int maxNumberOfTracks);
+	List<MtpDeviceTrack> getTracks(MtpDevice<T> portableDevice, int maxNumberOfTracks) throws MTPException;
 
 }
