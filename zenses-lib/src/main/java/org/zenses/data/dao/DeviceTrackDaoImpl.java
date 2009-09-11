@@ -46,11 +46,10 @@ public class DeviceTrackDaoImpl extends HibernateDaoSupport implements DeviceTra
 	@SuppressWarnings("unchecked")
 	public List<DeviceTrackDto> getUnsubmittedTracks() {
 		List<DeviceTrackDto> tracks = getHibernateTemplate().find(
-				"from DeviceTrackDto where playCount > submissions.size ORDER BY (playCount - submissions.size) DESC");
+				"from DeviceTrackDto where playCount > submissions.size ORDER BY album");
 		return tracks;
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<LastFmSubmissionDto> getScrobbledTracks() {
 		String findString = "from LastFmSubmissionDto s ORDER BY s.dateSubmitted DESC";
 		Query query = getSession().createQuery(findString);
@@ -64,8 +63,6 @@ public class DeviceTrackDaoImpl extends HibernateDaoSupport implements DeviceTra
 				result.add((LastFmSubmissionDto) obj);
 			}
 		}
-		// List<LastFmSubmissionDto> tracks = template.find(findString);
-		// return tracks;
 		return result;
 	}
 
