@@ -3,6 +3,7 @@ package org.zenses.mtp.jmtp;
 import java.util.ArrayList;
 import java.util.List;
 
+import jmtp.DeviceAlreadyOpenedException;
 import jmtp.DeviceClosedException;
 import jmtp.PortableDevice;
 import jmtp.PortableDeviceAudioObject;
@@ -27,19 +28,19 @@ public class MtpDeviceServiceImpl implements MtpDeviceService<PortableDevice> {
 		PortableDevice[] devices = pdm.getDevices();
 		List<MtpDevice<PortableDevice>> deviceWrappers = new ArrayList<MtpDevice<PortableDevice>>(devices.length);
 		for (PortableDevice dev : devices) {
-			
 			try {
-				if (dev.getType() == PortableDeviceType.MEDIA_PLAYER
-						|| dev.getType() == PortableDeviceType.VIDEO) {
-					deviceWrappers.add(new MtpDeviceImpl(dev));
-				}
-			} catch (DeviceClosedException e) {
-				e.printStackTrace();
+				dev.open();
+			} catch (DeviceAlreadyOpenedException doe) {
+				//that's fine, it was already open
 			}
+			if (dev.getType() == PortableDeviceType.MEDIA_PLAYER || dev.getType() == PortableDeviceType.VIDEO) {
+				deviceWrappers.add(new MtpDeviceImpl(dev));
+			}
+			dev.close();
+
 		}
 		return deviceWrappers;
 	}
-
 
 	public List<MtpDeviceTrack> getTracks(MtpDevice<PortableDevice> mtpDevice) throws MTPException {
 		return getTracks(mtpDevice, -1);
@@ -71,21 +72,27 @@ public class MtpDeviceServiceImpl implements MtpDeviceService<PortableDevice> {
 	}
 
 	@Override
-	public List<MtpDeviceTrack> getTracks(MtpDevice<PortableDevice> mtpDevice, int maxNumberOfTracks) throws MTPException {
+	public List<MtpDeviceTrack> getTracks(MtpDevice<PortableDevice> mtpDevice, int maxNumberOfTracks)
+			throws MTPException {
 		PortableDevice portableDevice = mtpDevice.getDelegate();
 		try {
 			portableDevice.open();
 
+		} catch (DeviceAlreadyOpenedException doe) {
+			// that's fine, it was already open
+		}
+		try {
 			List<MtpDeviceTrack> tracks = new ArrayList<MtpDeviceTrack>();
 			for (PortableDeviceObject pdo : portableDevice.getRootObjects()) {
 				addTracks(portableDevice.getSerialNumber(), pdo, 0, tracks, maxNumberOfTracks);
 			}
 			portableDevice.close();
+
 			return tracks;
-			
-		} catch(DeviceClosedException dce){
+		} catch (DeviceClosedException dce) {
 			throw new MTPException(dce.getMessage());
 		}
+
 	}
 
 }
