@@ -10,7 +10,7 @@ public class TrackTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1561610603232645582L;
 
-	protected Object[] _columns = { "", "Title", "Artist", "Album", "Play Count" };
+	protected Object[] _columns = { "", "Title", "Artist", "Album", "Total Play Count", "Unscrobbled Play Count" };
 	protected List<DeviceTrackDto> _tracks;
 	protected boolean[] _selectedToSubmit;
 	
@@ -49,6 +49,8 @@ public class TrackTableModel extends AbstractTableModel {
 			return track.getAlbum();
 		case 4:
 			return track.getPlayCount();
+		case 5:
+			return track.getPlayCount() - track.getSubmissions().size();
 		}
 		
 		return "Unknown";
