@@ -2,6 +2,7 @@
 .metadata
 .classpath
 .settings
+.exe
 
 zenses/.classpath
 zenses/.settings

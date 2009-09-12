@@ -3,21 +3,21 @@
  
 Name "Zenses2 Launcher"
 Caption "Zenses2 Launcher"
-; Icon "Zenses2.ico"
-OutFile "Zenses2 Beta1.exe"
+Icon "Zenses2.ico"
+OutFile "Zenses2.exe"
  
-VIAddVersionKey "ProductName" "Zenses2 Beta1"
+VIAddVersionKey "ProductName" "Zenses2 Beta2"
 VIAddVersionKey "Comments" ""
 VIAddVersionKey "CompanyName" "Sixones"
 VIAddVersionKey "LegalTrademarks" ""
 VIAddVersionKey "LegalCopyright" "Sixones"
-VIAddVersionKey "FileDescription" "Zenses2 Beta1"
-VIAddVersionKey "FileVersion" "2.0.0b1"
-VIProductVersion "2.0.0.0b1"
+VIAddVersionKey "FileDescription" "Zenses2 Beta2"
+VIAddVersionKey "FileVersion" "2.0.3b2"
+VIProductVersion "2.0.3.0b2"
  
 !define CLASSPATH "zenses2.jar"
 !define CLASS "org.zenses.ZensesApplication"
-!define PRODUCT_NAME "Zenses2 Beta1"
+!define PRODUCT_NAME "Zenses2 Beta2"
  
 ; Definitions for Java 6.0
 !define JRE_VERSION "6.0"
@@ -29,7 +29,7 @@ VIProductVersion "2.0.0.0b1"
 ; use java.exe to keep stdout/stderr
 !define JAVAEXE "javaw.exe"
  
-RequestExecutionLevel admin
+RequestExecutionLevel user
 SilentInstall silent
 AutoCloseWindow true
 ShowInstDetails nevershow
