@@ -231,7 +231,7 @@ public class ViewHandler
 
 			public void run() {
 				MtpDevice device = (MtpDevice) ViewHandler.getInstance().getMainWindow().getConnectedDevicesComboBox().getSelectedItem();
-				ViewHandler.getInstance().updateStateMessage("Connecting to device ...");
+				ViewHandler.getInstance().updateStateMessage("Connecting to device and fetching track information...");
 				
 				List<MtpDeviceTrack> tracks;
 				
@@ -247,7 +247,7 @@ public class ViewHandler
 					return;
 				}
 
-				ViewHandler.getInstance().updateStateMessage("Fetching track information from device ...");
+				ViewHandler.getInstance().updateStateMessage("Updating tracks information in local database ...");
 				
 				if (!tracks.isEmpty()) {
 					for (int i = 0; i < tracks.size(); i++) {
