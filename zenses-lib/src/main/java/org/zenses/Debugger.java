@@ -22,6 +22,7 @@ public class Debugger {
 
 	private final MtpDeviceService<PortableDevice> mtpDeviceService;
 
+	@SuppressWarnings("unchecked")
 	public Debugger() {
 		this.mtpDeviceService = ContextProvider.getDeviceService();
 	}
