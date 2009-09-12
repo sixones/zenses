@@ -23,22 +23,26 @@ public class DeviceTrackServiceImpl implements DeviceTrackService {
 	private DeviceTrackDao deviceTrackDao;
 
 	public void createOrUpdate(MtpDeviceTrack dt) {
-		DeviceTrackDto deviceTrackDto = deviceTrackDao.findByPersistentId(dt.getPersistentId(), dt.getDeviceId());
-		if (deviceTrackDto == null) {
-			deviceTrackDto = new DeviceTrackDto(dt.getZenId(), dt.getPersistentId(), dt.getDeviceId(), dt.getArtist(),
-					dt.getTitle(), dt.getAlbum(), dt.getLength(), dt.getPlayCount(), dt.getFilename());
-			// logger.info("Creating new track " + deviceTrackDto);
-			deviceTrackDao.saveOrUpdate(deviceTrackDto);
-		} else {
-			if (!deviceTrackDto.getPlayCount().equals(dt.getPlayCount())) {
-				//performance improvement - only update records if playCount changed
-				// logger.info("Updating track " + deviceTrackDto);
-				deviceTrackDto.setLastRead(new Date());
-				deviceTrackDto.setPlayCount(dt.getPlayCount());
+		// PERFORMANCE TRICK: it only makes sense to do anything with tracks
+		// with count > 0
+		if (dt.getPlayCount() > 0) {
+			DeviceTrackDto deviceTrackDto = deviceTrackDao.findByPersistentId(dt.getPersistentId(), dt.getDeviceId());
+			if (deviceTrackDto == null) {
+				deviceTrackDto = new DeviceTrackDto(dt.getZenId(), dt.getPersistentId(), dt.getDeviceId(), dt
+						.getArtist(), dt.getTitle(), dt.getAlbum(), dt.getLength(), dt.getPlayCount(), dt.getFilename());
+				// logger.info("Creating new track " + deviceTrackDto);
 				deviceTrackDao.saveOrUpdate(deviceTrackDto);
+			} else {
+				if (!deviceTrackDto.getPlayCount().equals(dt.getPlayCount())) {
+					// performance improvement - only update records if
+					// playCount changed
+					// logger.info("Updating track " + deviceTrackDto);
+					deviceTrackDto.setLastRead(new Date());
+					deviceTrackDto.setPlayCount(dt.getPlayCount());
+					deviceTrackDao.saveOrUpdate(deviceTrackDto);
+				}
 			}
 		}
-
 		// logger.info("Track saved to db: " + deviceTrackDto);
 	}
 
