@@ -2,6 +2,8 @@ package org.zenses.lastfm;
 
 import java.io.IOException;
 import java.net.ConnectException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.zenses.data.dto.DeviceTrackDto;
 import org.zenses.data.service.DeviceTrackService;
 
@@ -26,14 +29,13 @@ public class TracksSubmitterImpl implements TracksSubmitter {
 		DateTimeFormatter formatter = DateTimeFormat.forPattern("HH:mm dd/MM/yyyy");
 		long newSubmissionTimestamp = formatter.parseMillis(startDateTime);
 		
-		// Doesnt seem to be needed, last.fm is letting us scrobble tracks earlier!
-		/*long lastSubmissionTimestamp = this.deviceTrackService.getLastSubmissionTimestamp();
+		long lastSubmissionTimestamp = this.deviceTrackService.getLastSubmissionTimestamp();
 		
 		Date lastSubmissionDate = new Date(lastSubmissionTimestamp);
 		DateFormat format = new SimpleDateFormat("d MMM yyyy HH:mm:ss");
 		
 		Assert.isTrue(lastSubmissionTimestamp < newSubmissionTimestamp,
-				"New submissions must be later than "+format.format(lastSubmissionDate));*/
+				"New submissions must be later than "+format.format(lastSubmissionDate));
 		
 		long lastFmSubmissionStart = newSubmissionTimestamp / 1000;
 		
