@@ -50,20 +50,14 @@ public class DeviceTrackDaoImpl extends HibernateDaoSupport implements DeviceTra
 		return tracks;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<LastFmSubmissionDto> getScrobbledTracks() {
-		String findString = "from LastFmSubmissionDto s ORDER BY s.dateSubmitted DESC";
+		String findString = "from LastFmSubmissionDto s ORDER BY s.dateSubmitted DESC ";
+		
 		Query query = getSession().createQuery(findString);
-		query.setFetchSize(20);
+		query.setFirstResult(0);
 		query.setMaxResults(50);
-		ScrollableResults scrollableResults = query.scroll();
-		ArrayList<LastFmSubmissionDto> result = new ArrayList<LastFmSubmissionDto>();
-		if (scrollableResults.next()) {
-			Object[] objects = scrollableResults.get();
-			for (Object obj : objects) {
-				result.add((LastFmSubmissionDto) obj);
-			}
-		}
-		return result;
+		return query.list();
 	}
 
 	public int getScrobbledTracksCount() {
