@@ -248,14 +248,17 @@ public class MainWindow extends JFrame {
 	private JTabbedPane getTabbedPane() {
 		if (tabbedPane == null) {
 			tabbedPane = new JTabbedPane();
-			tabbedPane.setBackground(new Color(238, 238, 238));
+			//tabbedPane.setBackground(new Color(55, 238, 238));
 			//tabbedPane.setForeground(new Color(238, 238, 238));
 			tabbedPane.addTab("Zenses Summary", null, getSummaryTabPanel(), null);
 			tabbedPane.addTab("Unscrobbled Tracks", null, getTracksTabPanel(), null);
 			tabbedPane.addTab("Scrobbled History", null, getHistoryTabPanel(), null);
 
+			//tabbedPane.setForeground(new Color(0, 0, 0));
+			//tabbedPane.setBackground(new Color(0, 0, 0));
+			
 			for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-				tabbedPane.setBackgroundAt(i, new Color(238, 238, 238));
+				//tabbedPane.setBackgroundAt(i, new Color(238, 238, 238));
 			}
 			
 			tabbedPane.updateUI();
@@ -277,7 +280,7 @@ public class MainWindow extends JFrame {
 			summaryTextLabel.setHorizontalTextPosition(SwingConstants.CENTER);
 			summaryTabPanel = new JPanel();
 			summaryTabPanel.setLayout(new BoxLayout(getSummaryTabPanel(), BoxLayout.Y_AXIS));
-			summaryTabPanel.setBackground(null);
+			summaryTabPanel.setBackground(Color.black);
 			summaryTabPanel.add(getJPanel(), null);
 			summaryTabPanel.add(getJPanel5(), null);
 			summaryTabPanel.add(getJPanel2(), null);
