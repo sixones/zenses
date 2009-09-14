@@ -814,10 +814,10 @@ public class MainWindow extends JFrame {
 	private JMenuItem getForumMenuItem() {
 		if (forumMenuItem == null) {
 			forumMenuItem = new JMenuItem();
-			forumMenuItem.setText("Last.fm Group and Forums");
+			forumMenuItem.setText("Official Forums");
 			forumMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mousePressed(java.awt.event.MouseEvent e) {
-					ZensesApplication.getApplication().getZenses().openBrowser("http://last.fm/group/Zenses");
+					ZensesApplication.getApplication().getZenses().openBrowser("http://forum.sixones.com/");
 				}
 			});
 		}
@@ -934,10 +934,9 @@ public class MainWindow extends JFrame {
 					Date newDate = chooser.select(date);
 					
 					if (newDate != null) {
-						DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+						DateFormat dateFormatter = new SimpleDateFormat(Zenses.getInstance().getPreferences().getDateFormat()); // "dd/MM/yyyy"
 					
-						mainWindow.getScrobbleDateField().setText(format.format(newDate));
-						//((JTextField)e.getComponent()).setText(format.format(newDate));
+						mainWindow.getScrobbleDateField().setText(dateFormatter.format(newDate));
 					}
 				}
 			});
