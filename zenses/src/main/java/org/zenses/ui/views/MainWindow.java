@@ -68,6 +68,8 @@ public class MainWindow extends JFrame {
 
 	private JButton scrobbleTracksButton = null;
 
+	private JButton ignoreTracksButton = null;
+
 	private JScrollPane jScrollPane = null;
 
 	private JTable unscrobbledTracksTable = null;
@@ -399,6 +401,7 @@ public class MainWindow extends JFrame {
 			scrobbleOptionsPanel.add(scrobbleTracksLabel, null);
 			scrobbleOptionsPanel.add(getJPanel6(), null);
 			scrobbleOptionsPanel.add(getScrobbleTracksButton(), null);
+			scrobbleOptionsPanel.add(getIgnoreTracksButton(), null);
 			
 		}
 		return scrobbleOptionsPanel;
@@ -422,6 +425,25 @@ public class MainWindow extends JFrame {
 			});
 		}
 		return scrobbleTracksButton;
+	}
+	
+	/**
+	 * This method initializes scrobbleTracksButton
+	 * 
+	 * @return javax.swing.JButton
+	 */
+	private JButton getIgnoreTracksButton() {
+		if (ignoreTracksButton == null) {
+			ignoreTracksButton = new JButton();
+			ignoreTracksButton.setName("ignoreTracksButton");
+			ignoreTracksButton.setText("Ignore");
+			ignoreTracksButton.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					ZensesApplication.getApplication().getZenses().getViewHandler().ignoreSelectedTracks();
+				}
+			});
+		}
+		return ignoreTracksButton;
 	}
 
 	/**
