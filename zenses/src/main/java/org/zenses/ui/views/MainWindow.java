@@ -11,6 +11,7 @@ import java.awt.GridLayout;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -69,6 +70,8 @@ public class MainWindow extends JFrame {
 	private JButton scrobbleTracksButton = null;
 
 	private JButton ignoreTracksButton = null;
+	
+	private JCheckBox goBackInTimeCheckbox = null; 
 
 	private JScrollPane jScrollPane = null;
 
@@ -400,9 +403,9 @@ public class MainWindow extends JFrame {
 			
 			scrobbleOptionsPanel.add(scrobbleTracksLabel, null);
 			scrobbleOptionsPanel.add(getJPanel6(), null);
+			scrobbleOptionsPanel.add(getGoBackInTimeCheckbox(), null);
 			scrobbleOptionsPanel.add(getScrobbleTracksButton(), null);
 			scrobbleOptionsPanel.add(getIgnoreTracksButton(), null);
-			
 		}
 		return scrobbleOptionsPanel;
 	}
@@ -444,6 +447,20 @@ public class MainWindow extends JFrame {
 			});
 		}
 		return ignoreTracksButton;
+	}
+	
+	/**
+	 * This method initializes scrobbleTracksButton
+	 * 
+	 * @return javax.swing.JButton
+	 */
+	public JCheckBox getGoBackInTimeCheckbox() {
+		if (goBackInTimeCheckbox == null) {
+			goBackInTimeCheckbox = new JCheckBox();
+			goBackInTimeCheckbox.setName("goBackInTimeCheckbox");
+			goBackInTimeCheckbox.setText("Set time as end time");
+		}
+		return goBackInTimeCheckbox;
 	}
 
 	/**

@@ -393,19 +393,19 @@ public class ViewHandler {
 
 		Date scrobbleFromDate = new Date(this.getScrobbleFrom());
 		String scrobbleFromOriginal = new SimpleDateFormat("hh:mma d MMMM yyyy").format(scrobbleFromDate);
-
-		if (scrobbleFromDate.before(this.getZenses().getLastScrobbledDateTime())) {
-			this.showError("You must choose a date to scrobble from that is after your last scrobble to Last.fm, "
-					+ "which was " + this.getZenses().getLastScrobbledTime() + " "
-					+ this.getZenses().getLastScrobbledDate());
-
-			this.getMainWindow().getScrobbleDateField().setText(Zenses.getInstance().getNextScrobbledDate());
-			this.getMainWindow().getScrobbleTimeField().setText(Zenses.getInstance().getNextScrobbledTime());
-
-			this.updateStateMessage("Scrobbles failed validation");
-
-			return;
-		}
+//NO LONGER NECESSARY - hopefully
+//		if (scrobbleFromDate.before(this.getZenses().getLastScrobbledDateTime())) {
+//			this.showError("You must choose a date to scrobble from that is after your last scrobble to Last.fm, "
+//					+ "which was " + this.getZenses().getLastScrobbledTime() + " "
+//					+ this.getZenses().getLastScrobbledDate());
+//
+//			this.getMainWindow().getScrobbleDateField().setText(Zenses.getInstance().getNextScrobbledDate());
+//			this.getMainWindow().getScrobbleTimeField().setText(Zenses.getInstance().getNextScrobbledTime());
+//
+//			this.updateStateMessage("Scrobbles failed validation");
+//
+//			return;
+//		}
 
 		this.updateStateMessage("Calculating tracks to scrobble");
 
@@ -427,6 +427,7 @@ public class ViewHandler {
 
 			this.updateStateMessage("Attempting to scrobble " + tracksToScrobble.size() + " tracks");
 
+			final boolean goBackInTime = this.getMainWindow().getGoBackInTimeCheckbox().isSelected();
 			new CustomThread<List<DeviceTrackDto>>(tracksToScrobble) {
 				public void run() {
 					Date scrobbleFromDate = new Date(ViewHandler.getInstance().getScrobbleFrom());
@@ -435,7 +436,7 @@ public class ViewHandler {
 					try {
 						Zenses.getInstance().getTracksSubmitter().updateTracks(this.getData(), scrobbleFrom
 						// ,Zenses.getInstance().getPreferences().getIntervalBetweenScrobbles()
-								);
+								, goBackInTime);
 						ViewHandler.getInstance().updateStateMessage(
 								"Completed scrobbling " + this.getData().size() + " tracks");
 					} catch (IllegalArgumentException e) {

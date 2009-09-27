@@ -22,8 +22,31 @@ public interface TracksSubmitter {
 	 *            interval. If it is positive, the interval will be greater by
 	 *            this value from song length.
 	 * @throws IOException
+	 * @deprecated Use {@link
+	 *             #updateTracks(List<DeviceTrackDto>,String,int,boolean)}
+	 *             instead
 	 */
 	void updateTracks(List<DeviceTrackDto> tracks, String startDateTime, int intervalBetweenSongs) throws IOException;
+
+	/**
+	 * Main entrypoint - will submit all the songs to last fm and update
+	 * appropriate records in the database
+	 * 
+	 * @param tracks
+	 * @param startDateTime
+	 *            format: HH:mm dd/MM/yyyy
+	 * @param intervalBetweenSongs
+	 *            if it is a negative value - this value will be subtracted from
+	 *            song time and this will be used as interval between current
+	 *            and next song. If it is 0, then song length will be used as
+	 *            interval. If it is positive, the interval will be greater by
+	 *            this value from song length.
+	 * @param goBackInTime
+	 *            TODO
+	 * @throws IOException
+	 */
+	void updateTracks(List<DeviceTrackDto> tracks, String startDateTime, int intervalBetweenSongs, boolean goBackInTime)
+			throws IOException;
 
 	/**
 	 * Main entrypoint - will submit all the songs to last fm and update
@@ -35,8 +58,24 @@ public interface TracksSubmitter {
 	 *            format: HH:mm dd/MM/yyyy
 	 * 
 	 * @throws IOException
+	 * @deprecated Use {@link
+	 *             #updateTracks(List<DeviceTrackDto>,String,boolean)} instead
 	 */
 	void updateTracks(List<DeviceTrackDto> tracks, String startDateTime) throws IOException;
+
+	/**
+	 * Main entrypoint - will submit all the songs to last fm and update
+	 * appropriate records in the database with interval between them set to
+	 * constant value (15sec)
+	 * 
+	 * @param tracks
+	 * @param startDateTime
+	 *            format: HH:mm dd/MM/yyyy
+	 * @param goBackInTime
+	 *            TODO
+	 * @throws IOException
+	 */
+	void updateTracks(List<DeviceTrackDto> tracks, String startDateTime, boolean goBackInTime) throws IOException;
 
 	boolean authenticatesNow(String token) throws IOException;
 
@@ -58,6 +97,7 @@ public interface TracksSubmitter {
 
 	/**
 	 * Will create fake entries in the db to make the tracks ignored
+	 * 
 	 * @param tracks
 	 */
 	void ignoreTracks(List<DeviceTrackDto> tracks);

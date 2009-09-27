@@ -22,7 +22,7 @@ public class TracksProcessorTest extends AbstractSpringTest {
 	@Test
 	public void testUpdateTracksInDatabase() throws IOException {
 		List<DeviceTrackDto> tracks = deviceTrackDao.getUnsubmittedTracks();
-		processor.updateTracks(tracks, "04:55 03/06/2009", 0);
+		processor.updateTracks(tracks, "04:55 03/06/2009", 0, true);
 	}
 
 }
