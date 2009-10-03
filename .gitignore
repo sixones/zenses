@@ -3,7 +3,9 @@
 .classpath
 .settings
 .exe
-
+.project
+.zip
+.log
 zenses/.classpath
 zenses/.settings
 zenses/bin

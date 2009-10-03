@@ -1,6 +1,7 @@
 package org.zenses.ui;
 
 import java.awt.Dimension;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,6 +51,8 @@ public class ViewHandler
     protected Timer _uiUpdateTimer;
     protected Timer _findDevicesTimer;
     protected Timer _devicesUpdateTimer;
+    
+    protected Listener _listener;
     
     private static ViewHandler __instance;
 
@@ -455,6 +458,8 @@ public class ViewHandler
 	}
     
 	protected void setupUserInterface() {
+		this._listener = new Listener();
+		
 		this._mainWindow = new MainWindow(this);
 		this._preferencesWindow = new PreferencesWindow();
 		this._aboutWindow = new AboutWindow();
@@ -462,5 +467,9 @@ public class ViewHandler
 
 	public Zenses getZenses() {
 		return _zenses;
+	}
+
+	public ActionListener getListener() {
+		return this._listener;
 	}
 }

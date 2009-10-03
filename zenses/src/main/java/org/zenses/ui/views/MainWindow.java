@@ -28,6 +28,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.zenses.Zenses;
 import org.zenses.ZensesApplication;
 import org.zenses.ui.DateChooser;
+import org.zenses.ui.ListenerActions;
 import org.zenses.ui.ViewHandler;
 import javax.swing.SwingConstants;
 import java.awt.Insets;
@@ -136,6 +137,12 @@ public class MainWindow extends JFrame {
 
 	private JMenuItem checkUpdateMenuItem = null;
 
+	private JLabel unscrobbledCountLabel = null;
+
+	private JPanel jPanel8 = null;
+
+	private JPanel toolbarPanel = null;
+
 	/**
 	 * This is the default constructor
 	 */
@@ -169,6 +176,7 @@ public class MainWindow extends JFrame {
 	private void initialize() {
 		this.setSize(800, 350);
 		//this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/org/zenses/resources/zenses-icon.png")));
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setJMenuBar(getJJMenuBar());
 		this.setContentPane(getJContentPane());
 		// this.setContentPane(getJContentPane());
@@ -356,9 +364,15 @@ public class MainWindow extends JFrame {
 	 */
 	private JPanel getTracksTabPanel() {
 		if (tracksTabPanel == null) {
+			GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
+			gridBagConstraints2.gridx = 0;
+			gridBagConstraints2.gridy = 1;
+			GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
+			gridBagConstraints1.gridx = 0;
+			gridBagConstraints1.gridy = 0;
 			GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
 			gridBagConstraints3.fill = GridBagConstraints.BOTH;
-			gridBagConstraints3.gridy = 2;
+			gridBagConstraints3.gridy = 3;
 			gridBagConstraints3.weightx = 1.0;
 			gridBagConstraints3.weighty = 1.0;
 			gridBagConstraints3.gridx = 0;
@@ -377,6 +391,8 @@ public class MainWindow extends JFrame {
 			tracksTabPanel.setBackground(new Color(238, 238, 238));
 			tracksTabPanel.add(getScrobbleOptionsPanel2(), gridBagConstraints8);
 			tracksTabPanel.add(getJScrollPane(), gridBagConstraints3);
+			tracksTabPanel.add(getJPanel8(), gridBagConstraints1);
+			tracksTabPanel.add(getToolbarPanel(), gridBagConstraints2);
 		}
 		return tracksTabPanel;
 	}
@@ -388,6 +404,8 @@ public class MainWindow extends JFrame {
 	 */
 	private JPanel getScrobbleOptionsPanel2() {
 		if (scrobbleOptionsPanel == null) {
+			unscrobbledCountLabel = new JLabel();
+			unscrobbledCountLabel.setText("0 tracks");
 			scrobbleTracksLabel = new JLabel();
 			scrobbleTracksLabel.setName("scrobbleTracksLabel");
 			scrobbleTracksLabel.setText("Scrobble Tracks from:");
@@ -395,10 +413,11 @@ public class MainWindow extends JFrame {
 			scrobbleOptionsPanel.setLayout(new FlowLayout());
 			scrobbleOptionsPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 			//scrobbleOptionsPanel.setPreferredSize(new Dimension(360, 36));
-			
+			scrobbleOptionsPanel.setPreferredSize(new Dimension(562, 39));
 			scrobbleOptionsPanel.add(scrobbleTracksLabel, null);
 			scrobbleOptionsPanel.add(getJPanel6(), null);
 			scrobbleOptionsPanel.add(getScrobbleTracksButton(), null);
+			
 			
 		}
 		return scrobbleOptionsPanel;
@@ -700,7 +719,11 @@ public class MainWindow extends JFrame {
 		if (jJMenuBar == null) {
 			jJMenuBar = new JMenuBar();
 			jJMenuBar.add(getJMenu());
-			jJMenuBar.add(getWindowMenu());
+			
+			if (!Zenses.getInstance().isMacOSX()) {
+				jJMenuBar.add(getWindowMenu());
+			}
+			
 			jJMenuBar.add(getHelpMenu());
 		}
 		return jJMenuBar;
@@ -717,8 +740,11 @@ public class MainWindow extends JFrame {
 			jMenu.setText("File");
 			jMenu.add(getFindDevicesMenuItem());
 			jMenu.add(getCheckUpdateMenuItem());
-			jMenu.addSeparator();
-			jMenu.add(getExitMenuItem());
+			
+			if (!Zenses.getInstance().isMacOSX()) {
+				jMenu.addSeparator();
+				jMenu.add(getExitMenuItem());
+			}
 		}
 		return jMenu;
 	}
@@ -782,11 +808,8 @@ public class MainWindow extends JFrame {
 		if (findDevicesMenuItem == null) {
 			findDevicesMenuItem = new JMenuItem();
 			findDevicesMenuItem.setText("Find Devices");
-			findDevicesMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
-				public void mousePressed(java.awt.event.MouseEvent e) {
-					ZensesApplication.getApplication().getZenses().getViewHandler().findDevices();
-				}
-			});
+			findDevicesMenuItem.addActionListener(ViewHandler.getInstance().getListener());
+			findDevicesMenuItem.setActionCommand(ListenerActions.FIND_DEVICES.toString());
 		}
 		return findDevicesMenuItem;
 	}
@@ -970,18 +993,37 @@ public class MainWindow extends JFrame {
 		if (checkUpdateMenuItem == null) {
 			checkUpdateMenuItem = new JMenuItem();
 			checkUpdateMenuItem.setText("Check for Updates");
-			checkUpdateMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
-				public void mousePressed(java.awt.event.MouseEvent e) {
-					if (!Zenses.getInstance().updateAvailable()) {
-						String title = "You're Up-to-date!";
-						String message = "Zenses " + Zenses.version + " is currently the latest version available.";
-
-						JOptionPane.showMessageDialog(ViewHandler.getInstance().getMainWindow(), message, title, JOptionPane.PLAIN_MESSAGE);
-					}
-				}
-			});
+			checkUpdateMenuItem.addActionListener(ViewHandler.getInstance().getListener());
+			checkUpdateMenuItem.setActionCommand(ListenerActions.UPDATE_CHECK.toString());
 		}
 		return checkUpdateMenuItem;
+	}
+
+	/**
+	 * This method initializes jPanel8	
+	 * 	
+	 * @return javax.swing.JPanel	
+	 */
+	private JPanel getJPanel8() {
+		if (jPanel8 == null) {
+			jPanel8 = new JPanel();
+			jPanel8.setLayout(new FlowLayout());
+			jPanel8.add(unscrobbledCountLabel, null);
+		}
+		return jPanel8;
+	}
+
+	/**
+	 * This method initializes toolbarPanel	
+	 * 	
+	 * @return javax.swing.JPanel	
+	 */
+	private JPanel getToolbarPanel() {
+		if (toolbarPanel == null) {
+			toolbarPanel = new JPanel();
+			toolbarPanel.setLayout(new GridBagLayout());
+		}
+		return toolbarPanel;
 	}
 
 } // @jve:decl-index=0:visual-constraint="10,10"

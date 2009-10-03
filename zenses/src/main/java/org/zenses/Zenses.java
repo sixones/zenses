@@ -32,7 +32,7 @@ import org.zenses.ui.ViewHandler;
 import org.zenses.utils.Update;
 
 public class Zenses {
-	public static String version = "2.0.3b2";
+	public static String version = "2.0.4b2";
 	public static String versionAvailable = "";
 	
 	public static Update update;

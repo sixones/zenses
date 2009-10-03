@@ -31,6 +31,86 @@ Compiling
 
 Zenses is split into 2 Java projects, `zenses-lib` and `zenses`. All the logic and the main workload happens in `zenses-lib` whilst `zenses` provides the GUI using [Java Swing][Swing].
 
+To use Zenses in [Eclipse][] install the [Maven Integration] http://m2eclipse.sonatype.org/update/
+
+Before importing the projects, you will need to add a few extra dependencies that cant be redistributed:
+
+JMTP
+----
+
+Artifact file:	jmtp.jar
+Group Id:		jmtp
+Artifact Id:	jmtp
+Version:		1.0
+Packaging:		jar
+
+Last.fm Bindings
+----------------
+
+Artifact file:	last.fm-bindings.jar
+Group Id:		last.fm
+Artifact Id:	last.fm-bindings
+Version:		5.21
+Packaging:		jar
+
+JMS
+---
+
+Artifact file:	jms.jar
+Group Id:		javax.jms
+Artifact Id:	jms
+Version:		1.1
+Packaging:		jar
+
+JMX Tools
+---------
+
+Artifact file:	jmxtools.jar
+Group Id:		com.sun.jdmk
+Artifact Id:	jmxtools
+Version:		1.2.1
+Packaging:		jar
+
+JMXRI
+-----
+
+Artifact file:	jmxri.jar
+Group Id:		com.sun.jmx
+Artifact Id:	jmxri
+Version:		1.2.1
+Packaging:		jar
+
+Spring Application Framework
+----------------------------
+
+Artifact file:	appframework-1.0.3.jar
+Group Id:		org.jdesktop
+Artifact Id:	appframework
+Version:		1.0.3
+Packaging:		jar
+
+
+For each;
+	
+	File => Import
+	Maven => Install or deploy an artifact to a Maven repository
+	For artifact file => Click browse => Browse to the libs directory in the Zenses2 root and select the right jar file
+	Enter the artifact information (see list above, make sure Generate POM and Create Checksum are both checked)
+
+	Project => Update Maven Dependencies
+
+You can then import the projects:
+
+	File => Import
+	General => Maven Projects
+	
+	// browse to the root of the zenses project directory (the one that contains zenses and zenses-lib)
+	select the 2 pom.xml projects (zenses and zenses-lib)
+	click finish
+	
+	// this may take a while
+	// NOTE: let Eclipse / Maven finish before attempting to compile Zenses, doing so will cause countless errors about missing dependencies.
+
 Before you can build the two Zenses projects you will need to add the required dependencies to your [Maven][] installation, most will be automatically installed when you run the commands below. A few dependencies require a manual install as they cannot be redistributed. **TODO: add notes about installing extra dependencies.**
 
 To build `zenses-lib`:
