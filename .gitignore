@@ -4,14 +4,19 @@
 .settings
 .exe
 .project
-.zip
 .log
+scripts/*.exe
+scripts/*.jar
+scripts/*.zip
 zenses/.classpath
+zenses/.project
 zenses/.settings
 zenses/bin
 zenses/target
+zenses/scripts/
 
 zenses-lib/.classpath
+zenses-lib/.project
 zenses-lib/.settings
 zenses-lib/bin
 zenses-lib/target
