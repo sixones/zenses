@@ -50,7 +50,7 @@ public class MtpDeviceTrackImpl implements MtpDeviceTrack {
 
 	@Override
 	public Long getPlayCount() {
-		return 0L;
+		return 2L;
 	}
 
 	@Override

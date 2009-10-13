@@ -17,12 +17,17 @@ public class ContextProvider {
 			"applicationContext.xml", "mtplib-" + System.getProperty("mtplib") + "-context.xml" });
 
 	static {
-		DriverManagerDataSource dataSource = getSingleBeanOfType(DriverManagerDataSource.class);
-		if ("hsql".equals(System.getProperty("dbtype"))) {
-			String url = new StringBuilder().append("jdbc:hsqldb:file:").append(System.getenv("APPDATA")).append(
-					File.separator).append("zenses").append(File.separator).append("data").append(File.separator)
-					.append("zenses.data;shutdown=true").toString();
-			dataSource.setUrl(url);
+		String operatingSystem = System.getProperty("os.name").toLowerCase();
+
+		if (operatingSystem.contains("windows")) {
+			DriverManagerDataSource dataSource = getSingleBeanOfType(DriverManagerDataSource.class);
+			
+			if ("hsql".equals(System.getProperty("dbtype"))) {
+				String url = new StringBuilder().append("jdbc:hsqldb:file:").append(System.getenv("APPDATA")).append(
+						File.separator).append("zenses").append(File.separator).append("data").append(File.separator)
+						.append("zenses.data;shutdown=true").toString();
+				dataSource.setUrl(url);
+			}
 		}
 	}
 

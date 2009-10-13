@@ -4,6 +4,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
 
@@ -23,25 +25,16 @@ public class ZensesApplication extends SingleFrameApplication
     
     protected OSXHandler _osxHandler;
 
-    protected void startup() {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            Logger.getLogger(ZensesApplication.class.getName()).log(Level.SEVERE, null, e);
-        }
-        
+    protected void startup() {    	
         try {
 			this._zenses = new Zenses();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-        if (this.getZenses().isMacOSX()) {
-            System.setProperty("apple.laf.useScreenMenuBar", "true"); 
-            System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Zenses");
-            
-            this._osxHandler = new OSXHandler(this._zenses);
-        }
+		
+		if (this.getZenses().isMacOSX()) {
+			this._osxHandler = new OSXHandler(this.getZenses());
+		}
 
         this.getZenses().getViewHandler().showMainWindow();
     }
@@ -56,13 +49,5 @@ public class ZensesApplication extends SingleFrameApplication
 
     public static ZensesApplication getApplication() {
         return (ZensesApplication) Application.getInstance(ZensesApplication.class);
-    }
-    
-    public static void main() {
-    	ZensesApplication.main(null);
-    }
-
-    public static void main(String[] args) {
-        ZensesApplication.launch(ZensesApplication.class, args);
     }
 }

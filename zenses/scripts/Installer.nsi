@@ -12,7 +12,7 @@
 
   ;Name and file
   Name "Zenses2 Beta Installer"
-  OutFile "zenses2.0.3b2-installer.exe"
+  OutFile "zenses2.0.5b2-installer.exe"
 
   ;Default installation folder
   InstallDir "$PROGRAMFILES\Zenses2"
