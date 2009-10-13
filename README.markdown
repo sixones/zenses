@@ -13,15 +13,18 @@ Requirements
 * [Java Runtime Environment 6+][JRE_WIN]
 * [Windows Media Player 11][WMP11]
 
+
 #### Mac OS X / Linux
 
 * [libMTP][]
 * [libUSB][]
 
+
 ### Build Requirements (only required to compile Zenses from source)
 
 * [Java Development Kit 6+ (Windows)][JDK_WIN]
 * [Maven][]
+
 
 Compiling
 ---------
