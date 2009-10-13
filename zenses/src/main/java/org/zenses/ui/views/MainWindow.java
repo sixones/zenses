@@ -423,24 +423,13 @@ public class MainWindow extends JFrame {
 			scrobbleOptionsPanel.add(getJPanel9(), null);
 			//scrobbleOptionsPanel.setPreferredSize(new Dimension(562, 39));
 			
-<<<<<<< HEAD:zenses/src/main/java/org/zenses/ui/views/MainWindow.java
-<<<<<<< HEAD:zenses/src/main/java/org/zenses/ui/views/MainWindow.java
-=======
 			/// ARGHH HERE
-			
->>>>>>> c9261705d9be3c7a9435fd6241c9e719dfad523e:zenses/src/main/java/org/zenses/ui/views/MainWindow.java
+
 			scrobbleOptionsPanel.add(scrobbleTracksLabel, null);
 			scrobbleOptionsPanel.add(getJPanel6(), null);
 			scrobbleOptionsPanel.add(getGoBackInTimeCheckbox(), null);
 			scrobbleOptionsPanel.add(getScrobbleTracksButton(), null);
-<<<<<<< HEAD:zenses/src/main/java/org/zenses/ui/views/MainWindow.java
-			scrobbleOptionsPanel.add(getIgnoreTracksButton(), null);
-=======
-			
->>>>>>> aab5733dc089be2211a2791b99c28ac7c38bd528:zenses/src/main/java/org/zenses/ui/views/MainWindow.java
-=======
 			scrobbleOptionsPanel.add(getIgnoreSelectedButton(), null);
->>>>>>> c9261705d9be3c7a9435fd6241c9e719dfad523e:zenses/src/main/java/org/zenses/ui/views/MainWindow.java
 		}
 		return scrobbleOptionsPanel;
 	}
