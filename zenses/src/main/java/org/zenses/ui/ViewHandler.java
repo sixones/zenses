@@ -392,7 +392,7 @@ public class ViewHandler
 
 			if (val instanceof Boolean && (new Boolean(val.toString())) == true) {
 				DeviceTrackDto track = ((TrackTableModel)this.getMainWindow().getUnscrobbledTracksTable().getModel()).getRowDto(i);
-				
+				track.
 				this._tracksToIgnore.add(track);
 			}
 		}
@@ -413,9 +413,6 @@ public class ViewHandler
 		
 			new CustomThread<List<DeviceTrackDto>>(this._tracksToIgnore) {
 				public void run() {
-					Date scrobbleFromDate = new Date(ViewHandler.getInstance().getScrobbleFrom());
-					String scrobbleFrom = new SimpleDateFormat("HH:mm dd/MM/yyyy").format(scrobbleFromDate);
-		
 					try {
 						Zenses.getInstance().getTracksSubmitter().updateTracks(this.getData(), scrobbleFrom, Zenses.getInstance().getPreferences().getIntervalBetweenScrobbles());
 						ViewHandler.getInstance().updateStateMessage("Completed ignoring " + this.getData().size() + " tracks");
