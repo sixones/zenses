@@ -2,6 +2,8 @@ package org.zenses.lastfm;
 
 import java.io.IOException;
 import java.net.ConnectException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.zenses.data.dto.DeviceTrackDto;
 import org.zenses.data.service.DeviceTrackService;
 
