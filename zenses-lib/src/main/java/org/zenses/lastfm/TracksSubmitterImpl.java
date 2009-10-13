@@ -85,7 +85,7 @@ public class TracksSubmitterImpl implements TracksSubmitter {
 	 *             #updateTracks(List<DeviceTrackDto>,String,int,boolean)}
 	 *             instead
 	 */
-	public void updateTracks(List<DeviceTrackDto> tracks, String startDateTime, final int intervalBetweenSongs)
+	public void updateTracks(List<DeviceTrackDto> tracks, String startDateTime, int intervalBetweenSongs)
 			throws IOException {
 		updateTracks(tracks, startDateTime, intervalBetweenSongs, false);
 	}

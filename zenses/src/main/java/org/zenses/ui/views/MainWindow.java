@@ -70,8 +70,6 @@ public class MainWindow extends JFrame {
 
 	private JButton scrobbleTracksButton = null;
 
-	private JButton ignoreTracksButton = null;
-	
 	private JCheckBox goBackInTimeCheckbox = null; 
 
 	private JScrollPane jScrollPane = null;
@@ -425,15 +423,13 @@ public class MainWindow extends JFrame {
 			scrobbleOptionsPanel.add(getJPanel9(), null);
 			//scrobbleOptionsPanel.setPreferredSize(new Dimension(562, 39));
 			
-<<<<<<< HEAD:zenses/src/main/java/org/zenses/ui/views/MainWindow.java
+			/// ARGHH HERE
+			
 			scrobbleOptionsPanel.add(scrobbleTracksLabel, null);
 			scrobbleOptionsPanel.add(getJPanel6(), null);
 			scrobbleOptionsPanel.add(getGoBackInTimeCheckbox(), null);
 			scrobbleOptionsPanel.add(getScrobbleTracksButton(), null);
-			scrobbleOptionsPanel.add(getIgnoreTracksButton(), null);
-=======
-			
->>>>>>> aab5733dc089be2211a2791b99c28ac7c38bd528:zenses/src/main/java/org/zenses/ui/views/MainWindow.java
+			scrobbleOptionsPanel.add(getIgnoreSelectedButton(), null);
 		}
 		return scrobbleOptionsPanel;
 	}
@@ -460,25 +456,6 @@ public class MainWindow extends JFrame {
 			});
 		}
 		return scrobbleTracksButton;
-	}
-	
-	/**
-	 * This method initializes scrobbleTracksButton
-	 * 
-	 * @return javax.swing.JButton
-	 */
-	private JButton getIgnoreTracksButton() {
-		if (ignoreTracksButton == null) {
-			ignoreTracksButton = new JButton();
-			ignoreTracksButton.setName("ignoreTracksButton");
-			ignoreTracksButton.setText("Ignore");
-			ignoreTracksButton.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					ZensesApplication.getApplication().getZenses().getViewHandler().ignoreSelectedTracks();
-				}
-			});
-		}
-		return ignoreTracksButton;
 	}
 	
 	/**
@@ -1099,7 +1076,6 @@ public class MainWindow extends JFrame {
 			jPanel9.add(scrobbleTracksLabel, null);
 			jPanel9.add(getJPanel6(), null);
 			jPanel9.add(getScrobbleTracksButton(), null);
-			jPanel9.add(getIgnoreSelectedButton(), null);
 		}
 		return jPanel9;
 	}
