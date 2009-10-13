@@ -118,6 +118,7 @@ public class ViewHandler {
 
 			return;
 <<<<<<< HEAD:zenses/src/main/java/org/zenses/ui/ViewHandler.java
+<<<<<<< HEAD:zenses/src/main/java/org/zenses/ui/ViewHandler.java
 		}
 
 		if (this._devicesUpdateTimer != null) {
@@ -150,6 +151,8 @@ public class ViewHandler {
 		}.start();
 	}
 =======
+=======
+>>>>>>> c9261705d9be3c7a9435fd6241c9e719dfad523e:zenses/src/main/java/org/zenses/ui/ViewHandler.java
     	}
     	
     	if (this._devicesUpdateTimer != null) {
@@ -207,7 +210,10 @@ public class ViewHandler {
     		this.getMainWindow().getUnscrobbledCountLabel().setText(totalCount+" tracks, with a duration of "+totalTime);
     	}
     }
+<<<<<<< HEAD:zenses/src/main/java/org/zenses/ui/ViewHandler.java
 >>>>>>> aab5733dc089be2211a2791b99c28ac7c38bd528:zenses/src/main/java/org/zenses/ui/ViewHandler.java
+=======
+>>>>>>> c9261705d9be3c7a9435fd6241c9e719dfad523e:zenses/src/main/java/org/zenses/ui/ViewHandler.java
 
 	public void showMainWindow() {
 		ZensesApplication.getApplication().show(this._mainWindow);
@@ -287,6 +293,7 @@ public class ViewHandler {
 
 			public void run() {
 <<<<<<< HEAD:zenses/src/main/java/org/zenses/ui/ViewHandler.java
+<<<<<<< HEAD:zenses/src/main/java/org/zenses/ui/ViewHandler.java
 				MtpDevice device = (MtpDevice) ViewHandler.getInstance().getMainWindow().getConnectedDevicesComboBox()
 						.getSelectedItem();
 				ViewHandler.getInstance().updateStateMessage("Connecting to device and fetching track information...");
@@ -296,6 +303,11 @@ public class ViewHandler {
 				ViewHandler.getInstance().updateStateMessage("Connecting to device and fetching track information...");
 				
 >>>>>>> aab5733dc089be2211a2791b99c28ac7c38bd528:zenses/src/main/java/org/zenses/ui/ViewHandler.java
+=======
+				MtpDevice device = (MtpDevice) ViewHandler.getInstance().getMainWindow().getConnectedDevicesComboBox().getSelectedItem();
+				ViewHandler.getInstance().updateStateMessage("Connecting to device and fetching track information...");
+				
+>>>>>>> c9261705d9be3c7a9435fd6241c9e719dfad523e:zenses/src/main/java/org/zenses/ui/ViewHandler.java
 				List<MtpDeviceTrack> tracks;
 
 				try {
@@ -310,10 +322,14 @@ public class ViewHandler {
 
 				ViewHandler.getInstance().updateStateMessage("Updating tracks information in local database ...");
 <<<<<<< HEAD:zenses/src/main/java/org/zenses/ui/ViewHandler.java
+<<<<<<< HEAD:zenses/src/main/java/org/zenses/ui/ViewHandler.java
 
 =======
 				
 >>>>>>> aab5733dc089be2211a2791b99c28ac7c38bd528:zenses/src/main/java/org/zenses/ui/ViewHandler.java
+=======
+
+>>>>>>> c9261705d9be3c7a9435fd6241c9e719dfad523e:zenses/src/main/java/org/zenses/ui/ViewHandler.java
 				if (!tracks.isEmpty()) {
 					int allTracks = tracks.size();
 					for (int i = 0; i < allTracks; i++) {
@@ -423,11 +439,14 @@ public class ViewHandler {
 		this._updateWindow.setLocationRelativeTo(this.getMainWindow());
 	}
 <<<<<<< HEAD:zenses/src/main/java/org/zenses/ui/ViewHandler.java
+<<<<<<< HEAD:zenses/src/main/java/org/zenses/ui/ViewHandler.java
+=======
+>>>>>>> c9261705d9be3c7a9435fd6241c9e719dfad523e:zenses/src/main/java/org/zenses/ui/ViewHandler.java
 
 	public void ignoreSelectedTracks() {
 		this.updateStateMessage("Calculating tracks to scrobble");
 
-		List<DeviceTrackDto> tracksToIgnore = findSelectedTracks();
+		List<DeviceTrackDto> tracksToIgnore = this.findSelectedTracks();
 
 		if (!tracksToIgnore.isEmpty()) {
 			String title = "Confirm Ignore";
@@ -437,6 +456,7 @@ public class ViewHandler {
 			int choice = JOptionPane.showOptionDialog(this.getMainWindow(), message, title, JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
+<<<<<<< HEAD:zenses/src/main/java/org/zenses/ui/ViewHandler.java
 =======
 	
 	public void ignoreSelectedTracks() {
@@ -462,37 +482,31 @@ public class ViewHandler {
 			int choice = JOptionPane.showOptionDialog(this.getMainWindow(), message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 			
 >>>>>>> aab5733dc089be2211a2791b99c28ac7c38bd528:zenses/src/main/java/org/zenses/ui/ViewHandler.java
+=======
+>>>>>>> c9261705d9be3c7a9435fd6241c9e719dfad523e:zenses/src/main/java/org/zenses/ui/ViewHandler.java
 			if (choice == 1) {
 				this.updateStateMessage("Cancelled ignoring tracks");
 				return;
 			}
 <<<<<<< HEAD:zenses/src/main/java/org/zenses/ui/ViewHandler.java
+<<<<<<< HEAD:zenses/src/main/java/org/zenses/ui/ViewHandler.java
+=======
+>>>>>>> c9261705d9be3c7a9435fd6241c9e719dfad523e:zenses/src/main/java/org/zenses/ui/ViewHandler.java
 
 			this.updateStateMessage("Attempting to ignore " + tracksToIgnore.size() + " tracks");
 
 			new CustomThread<List<DeviceTrackDto>>(tracksToIgnore) {
 				public void run() {
-
 					try {
 						Zenses.getInstance().getTracksSubmitter().ignoreTracks(this.getData());
-						ViewHandler.getInstance().updateStateMessage(
-								"Completed ignoring " + this.getData().size() + " tracks");
-=======
-			
-			this.updateStateMessage("Ignoring " + this._tracksToIgnore.size() + " tracks ...");
-		
-			new CustomThread<List<DeviceTrackDto>>(this._tracksToIgnore) {
-				public void run() {
-					Date scrobbleFromDate = new Date(ViewHandler.getInstance().getScrobbleFrom());
-					String scrobbleFrom = new SimpleDateFormat("HH:mm dd/MM/yyyy").format(scrobbleFromDate);
-		
-					try {
-						Zenses.getInstance().getTracksSubmitter().updateTracks(this.getData(), scrobbleFrom, Zenses.getInstance().getPreferences().getIntervalBetweenScrobbles());
 						ViewHandler.getInstance().updateStateMessage("Completed ignoring " + this.getData().size() + " tracks");
+<<<<<<< HEAD:zenses/src/main/java/org/zenses/ui/ViewHandler.java
 					} catch (Exception e) {
 						ViewHandler.getInstance().showError(e.getMessage());
 						ViewHandler.getInstance().updateStateMessage("Failed ignoring " + this.getData().size() + " tracks");
 >>>>>>> aab5733dc089be2211a2791b99c28ac7c38bd528:zenses/src/main/java/org/zenses/ui/ViewHandler.java
+=======
+>>>>>>> c9261705d9be3c7a9435fd6241c9e719dfad523e:zenses/src/main/java/org/zenses/ui/ViewHandler.java
 					} finally {
 						ViewHandler.getInstance().updateUI(false);
 					}
@@ -500,32 +514,43 @@ public class ViewHandler {
 			}.start();
 		} else {
 <<<<<<< HEAD:zenses/src/main/java/org/zenses/ui/ViewHandler.java
+<<<<<<< HEAD:zenses/src/main/java/org/zenses/ui/ViewHandler.java
 			this.updateStateMessage("No tracks selected to ignore");
 		}
 
 	}
 
 =======
+=======
+>>>>>>> c9261705d9be3c7a9435fd6241c9e719dfad523e:zenses/src/main/java/org/zenses/ui/ViewHandler.java
 			this.updateStateMessage("No tracks selected to ignore ...");
 		}
+
 	}
 	
+<<<<<<< HEAD:zenses/src/main/java/org/zenses/ui/ViewHandler.java
 >>>>>>> aab5733dc089be2211a2791b99c28ac7c38bd528:zenses/src/main/java/org/zenses/ui/ViewHandler.java
+=======
+>>>>>>> c9261705d9be3c7a9435fd6241c9e719dfad523e:zenses/src/main/java/org/zenses/ui/ViewHandler.java
 	public void scrobbleSelectedTracks() {
 		if (!this.getZenses().isAuthorised()) {
 			this.showError("Please autheticate with Last.fm before attempting to scrobble tracks.");
 			return;
 <<<<<<< HEAD:zenses/src/main/java/org/zenses/ui/ViewHandler.java
+<<<<<<< HEAD:zenses/src/main/java/org/zenses/ui/ViewHandler.java
+=======
+>>>>>>> c9261705d9be3c7a9435fd6241c9e719dfad523e:zenses/src/main/java/org/zenses/ui/ViewHandler.java
 		}
-
+		
 		this.updateStateMessage("Validating scrobbles");
 
-=======
-		} 
-		
 		this.updateStateMessage("Validating scrobbles ...");
+<<<<<<< HEAD:zenses/src/main/java/org/zenses/ui/ViewHandler.java
 		
 >>>>>>> aab5733dc089be2211a2791b99c28ac7c38bd528:zenses/src/main/java/org/zenses/ui/ViewHandler.java
+=======
+
+>>>>>>> c9261705d9be3c7a9435fd6241c9e719dfad523e:zenses/src/main/java/org/zenses/ui/ViewHandler.java
 		Date scrobbleFromDate = new Date(this.getScrobbleFrom());
 		String scrobbleFromOriginal = new SimpleDateFormat("hh:mma d MMMM yyyy").format(scrobbleFromDate);
 //NO LONGER NECESSARY - hopefully
@@ -542,6 +567,7 @@ public class ViewHandler {
 //			return;
 //		}
 
+<<<<<<< HEAD:zenses/src/main/java/org/zenses/ui/ViewHandler.java
 <<<<<<< HEAD:zenses/src/main/java/org/zenses/ui/ViewHandler.java
 		this.updateStateMessage("Calculating tracks to scrobble");
 =======
@@ -571,6 +597,11 @@ public class ViewHandler {
 >>>>>>> aab5733dc089be2211a2791b99c28ac7c38bd528:zenses/src/main/java/org/zenses/ui/ViewHandler.java
 
 		List<DeviceTrackDto> tracksToScrobble = findSelectedTracks();
+=======
+		this.updateStateMessage("Calculating scrobbles times for tracks ...");
+		
+		List<DeviceTrackDto> tracksToScrobble = this.findSelectedTracks();
+>>>>>>> c9261705d9be3c7a9435fd6241c9e719dfad523e:zenses/src/main/java/org/zenses/ui/ViewHandler.java
 
 		if (!tracksToScrobble.isEmpty()) {
 			String title = "Confirm Scrobbles";
@@ -595,9 +626,7 @@ public class ViewHandler {
 					String scrobbleFrom = new SimpleDateFormat("HH:mm dd/MM/yyyy").format(scrobbleFromDate);
 
 					try {
-						Zenses.getInstance().getTracksSubmitter().updateTracks(this.getData(), scrobbleFrom
-						// ,Zenses.getInstance().getPreferences().getIntervalBetweenScrobbles()
-								, goBackInTime);
+						Zenses.getInstance().getTracksSubmitter().updateTracks(this.getData(), "", 0, false);
 						ViewHandler.getInstance().updateStateMessage(
 								"Completed scrobbling " + this.getData().size() + " tracks");
 					} catch (IllegalArgumentException e) {
