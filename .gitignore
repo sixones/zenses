@@ -8,6 +8,7 @@
 scripts/*.exe
 scripts/*.jar
 scripts/*.zip
+
 zenses/.classpath
 zenses/.project
 zenses/.settings
