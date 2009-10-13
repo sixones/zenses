@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import org.zenses.data.dto.DeviceTrackDto;
+import org.zenses.ui.ViewHandler;
 
 public class TrackTableModel extends AbstractTableModel {
 
@@ -81,6 +82,13 @@ public class TrackTableModel extends AbstractTableModel {
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 		if (columnIndex == 0){
 			this._selectedToSubmit[rowIndex] = (Boolean) aValue;
+			
+			// refresh the info from the view handler
+			new Thread() {
+				public void run() {
+					ViewHandler.getInstance().updateInformation();
+				}
+			}.start();
 		} else {
 			throw new RuntimeException("Unexpected call to set value");
 		}

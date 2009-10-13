@@ -143,6 +143,12 @@ public class MainWindow extends JFrame {
 
 	private JPanel toolbarPanel = null;
 
+	private JPanel jPanel9 = null;
+
+	private JPanel jPanel10 = null;
+
+	private JButton ignoreSelectedButton = null;
+
 	/**
 	 * This is the default constructor
 	 */
@@ -367,9 +373,6 @@ public class MainWindow extends JFrame {
 			GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
 			gridBagConstraints2.gridx = 0;
 			gridBagConstraints2.gridy = 1;
-			GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
-			gridBagConstraints1.gridx = 0;
-			gridBagConstraints1.gridy = 0;
 			GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
 			gridBagConstraints3.fill = GridBagConstraints.BOTH;
 			gridBagConstraints3.gridy = 3;
@@ -379,11 +382,13 @@ public class MainWindow extends JFrame {
 			GridBagConstraints gridBagConstraints8 = new GridBagConstraints();
 			gridBagConstraints8.gridheight = 1;
 			gridBagConstraints8.gridx = 0;
-			gridBagConstraints8.gridy = 1;
+			gridBagConstraints8.gridy = 4;
 			gridBagConstraints8.ipadx = 0;
 			gridBagConstraints8.ipady = 0;
-			gridBagConstraints8.fill = GridBagConstraints.VERTICAL;
-			gridBagConstraints8.anchor = GridBagConstraints.NORTHEAST;
+			gridBagConstraints8.fill = GridBagConstraints.HORIZONTAL;
+			gridBagConstraints8.anchor = GridBagConstraints.EAST;
+			gridBagConstraints8.weighty = 0.0D;
+			gridBagConstraints8.weightx = 0.0D;
 			gridBagConstraints8.gridwidth = 1;
 			
 			tracksTabPanel = new JPanel();
@@ -391,7 +396,6 @@ public class MainWindow extends JFrame {
 			tracksTabPanel.setBackground(new Color(238, 238, 238));
 			tracksTabPanel.add(getScrobbleOptionsPanel2(), gridBagConstraints8);
 			tracksTabPanel.add(getJScrollPane(), gridBagConstraints3);
-			tracksTabPanel.add(getJPanel8(), gridBagConstraints1);
 			tracksTabPanel.add(getToolbarPanel(), gridBagConstraints2);
 		}
 		return tracksTabPanel;
@@ -405,22 +409,24 @@ public class MainWindow extends JFrame {
 	private JPanel getScrobbleOptionsPanel2() {
 		if (scrobbleOptionsPanel == null) {
 			unscrobbledCountLabel = new JLabel();
-			unscrobbledCountLabel.setText("0 tracks");
+			unscrobbledCountLabel.setText("0 of 0 tracks, with no durations");
 			scrobbleTracksLabel = new JLabel();
 			scrobbleTracksLabel.setName("scrobbleTracksLabel");
 			scrobbleTracksLabel.setText("Scrobble Tracks from:");
 			scrobbleOptionsPanel = new JPanel();
-			scrobbleOptionsPanel.setLayout(new FlowLayout());
+			scrobbleOptionsPanel.setLayout(new BoxLayout(getScrobbleOptionsPanel2(), BoxLayout.X_AXIS));
 			scrobbleOptionsPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 			//scrobbleOptionsPanel.setPreferredSize(new Dimension(360, 36));
-			scrobbleOptionsPanel.setPreferredSize(new Dimension(562, 39));
-			scrobbleOptionsPanel.add(scrobbleTracksLabel, null);
-			scrobbleOptionsPanel.add(getJPanel6(), null);
-			scrobbleOptionsPanel.add(getScrobbleTracksButton(), null);
+			scrobbleOptionsPanel.add(getJPanel9(), null);
+			//scrobbleOptionsPanel.setPreferredSize(new Dimension(562, 39));
 			
 			
 		}
 		return scrobbleOptionsPanel;
+	}
+	
+	public JLabel getUnscrobbledCountLabel() {
+		return unscrobbledCountLabel;
 	}
 
 	/**
@@ -466,7 +472,8 @@ public class MainWindow extends JFrame {
 		if (unscrobbledTracksTable == null) {
 			unscrobbledTracksTable = new JTable();
 			unscrobbledTracksTable.setShowGrid(true);
-			unscrobbledTracksTable.setGridColor(new Color(240, 240, 240));
+			//unscrobbledTracksTable.setIntercellSpacing(new Dimension(0, 0));
+			unscrobbledTracksTable.setGridColor(new Color(255, 240, 240));
 			//unscrobbledTracksTable.setIntercellSpacing(new Dimension(5, 5));
 		}
 		return unscrobbledTracksTable;
@@ -517,13 +524,11 @@ public class MainWindow extends JFrame {
 			statusLabel = new JLabel();
 			statusLabel.setName("statusLabel");
 			statusLabel.setText("Loading ...");
-			CardLayout cardLayout = new CardLayout();
-			cardLayout.setHgap(5);
-			cardLayout.setVgap(5);
 			statusBarPanel = new JPanel();
-			statusBarPanel.setLayout(cardLayout);
+			statusBarPanel.setLayout(new BoxLayout(getStatusBarPanel(), BoxLayout.X_AXIS));
 			statusBarPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-			statusBarPanel.add(statusLabel, statusLabel.getName());
+			statusBarPanel.add(getJPanel10(), null);
+			statusBarPanel.add(getJPanel8(), null);
 		}
 		return statusBarPanel;
 	}
@@ -1006,9 +1011,15 @@ public class MainWindow extends JFrame {
 	 */
 	private JPanel getJPanel8() {
 		if (jPanel8 == null) {
+			FlowLayout flowLayout2 = new FlowLayout();
+			flowLayout2.setHgap(5);
+			flowLayout2.setAlignment(FlowLayout.RIGHT);
+			flowLayout2.setVgap(2);
 			jPanel8 = new JPanel();
-			jPanel8.setLayout(new FlowLayout());
-			jPanel8.add(unscrobbledCountLabel, null);
+			jPanel8.setLayout(flowLayout2);
+			jPanel8.setComponentOrientation(ComponentOrientation.UNKNOWN);
+			jPanel8.setName("jPanel8");
+			jPanel8.add(getUnscrobbledCountLabel(), null);
 		}
 		return jPanel8;
 	}
@@ -1021,9 +1032,66 @@ public class MainWindow extends JFrame {
 	private JPanel getToolbarPanel() {
 		if (toolbarPanel == null) {
 			toolbarPanel = new JPanel();
-			toolbarPanel.setLayout(new GridBagLayout());
+			toolbarPanel.setLayout(new BoxLayout(getToolbarPanel(), BoxLayout.X_AXIS));
 		}
 		return toolbarPanel;
+	}
+
+	/**
+	 * This method initializes jPanel9	
+	 * 	
+	 * @return javax.swing.JPanel	
+	 */
+	private JPanel getJPanel9() {
+		if (jPanel9 == null) {
+			FlowLayout flowLayout = new FlowLayout();
+			flowLayout.setAlignment(FlowLayout.RIGHT);
+			jPanel9 = new JPanel();
+			jPanel9.setPreferredSize(new Dimension(382, 26));
+			jPanel9.setLayout(flowLayout);
+			jPanel9.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+			jPanel9.add(scrobbleTracksLabel, null);
+			jPanel9.add(getJPanel6(), null);
+			jPanel9.add(getScrobbleTracksButton(), null);
+			jPanel9.add(getIgnoreSelectedButton(), null);
+		}
+		return jPanel9;
+	}
+
+	/**
+	 * This method initializes jPanel10	
+	 * 	
+	 * @return javax.swing.JPanel	
+	 */
+	private JPanel getJPanel10() {
+		if (jPanel10 == null) {
+			FlowLayout flowLayout1 = new FlowLayout();
+			flowLayout1.setAlignment(FlowLayout.LEFT);
+			flowLayout1.setVgap(3);
+			jPanel10 = new JPanel();
+			jPanel10.setLayout(flowLayout1);
+			jPanel10.add(getStatusLabel(), null);
+		}
+		return jPanel10;
+	}
+
+	/**
+	 * This method initializes ignoreSelectedButton	
+	 * 	
+	 * @return javax.swing.JButton	
+	 */
+	private JButton getIgnoreSelectedButton() {
+		if (ignoreSelectedButton == null) {
+			ignoreSelectedButton = new JButton();
+			ignoreSelectedButton.setText("Ignore");
+			ignoreSelectedButton.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					ZensesApplication.getApplication().getZenses().getViewHandler().ignoreSelectedTracks();
+					//scrobbleTimeField.setText(_viewHandler.getZenses().getDeviceTrackService().getNextSubmissionTime());
+				}
+			});
+		}
+		return ignoreSelectedButton;
 	}
 
 } // @jve:decl-index=0:visual-constraint="10,10"

@@ -63,7 +63,7 @@ public class LastFmTracksSubmitter implements InitializingBean {
 		}
 		
 		Collection<Track> tracks = User.getRecentTracks(this.sessionUser.getName(), 1, LastFmTracksSubmitter.API_KEY);
-		
+
 		for (Track track : tracks) {
 			return track.getPlayedWhen();
 		}

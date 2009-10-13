@@ -3,6 +3,7 @@ package org.zenses.ui;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,6 +49,7 @@ public class ViewHandler
     
     private Zenses _zenses;
     protected List<DeviceTrackDto> _tracksToScrobble;
+    protected List<DeviceTrackDto> _tracksToIgnore;
     protected Timer _uiUpdateTimer;
     protected Timer _findDevicesTimer;
     protected Timer _devicesUpdateTimer;
@@ -97,6 +99,8 @@ public class ViewHandler
     			ViewHandler.getInstance().bindUnscrobbledTrable(this.getData());
     			ViewHandler.getInstance().bindHistoryTable(!this.getData());
     			ViewHandler.getInstance().updateSummaryMessage();
+    			
+    			ViewHandler.getInstance().updateInformation();
     		}
     	}.start();
     	
@@ -144,6 +148,32 @@ public class ViewHandler
     			}
     		}
     	}.start();
+    }
+    
+    public void updateInformation() {
+    	long selectedTotalTime = 0;
+    	long totalTime = 0;
+    	
+    	int selectedCount = 0;
+    	int totalCount = this.getMainWindow().getUnscrobbledTracksTable().getRowCount();
+    	
+		for (int i = 0; i < this.getMainWindow().getUnscrobbledTracksTable().getRowCount(); i++) {
+			Object val = this.getMainWindow().getUnscrobbledTracksTable().getModel().getValueAt(i, 0);
+			DeviceTrackDto track = ((TrackTableModel)this.getMainWindow().getUnscrobbledTracksTable().getModel()).getRowDto(i);
+				
+			if (val instanceof Boolean && (new Boolean(val.toString())) == true) {
+				selectedCount++;
+				selectedTotalTime += track.getLength().longValue();
+			}
+			
+			totalTime += track.getLength().longValue();
+		}
+    	
+    	if (selectedCount > 0) {
+    		this.getMainWindow().getUnscrobbledCountLabel().setText(selectedCount+" out of "+totalCount+", with a duration of "+selectedTotalTime);
+    	} else {
+    		this.getMainWindow().getUnscrobbledCountLabel().setText(totalCount+" tracks, with a duration of "+totalTime);
+    	}
     }
 
 	public void showMainWindow() {
@@ -352,6 +382,56 @@ public class ViewHandler
 		this._updateWindow.setLocationRelativeTo(this.getMainWindow());
 	}
 	
+	public void ignoreSelectedTracks() {
+		this._tracksToIgnore = new ArrayList<DeviceTrackDto>();
+		
+		this.updateStateMessage("Ignoring tracks ...");
+		
+		for (int i = 0; i < this.getMainWindow().getUnscrobbledTracksTable().getRowCount(); i++) {
+			Object val = this.getMainWindow().getUnscrobbledTracksTable().getModel().getValueAt(i, 0);
+
+			if (val instanceof Boolean && (new Boolean(val.toString())) == true) {
+				DeviceTrackDto track = ((TrackTableModel)this.getMainWindow().getUnscrobbledTracksTable().getModel()).getRowDto(i);
+				
+				this._tracksToIgnore.add(track);
+			}
+		}
+		
+		if (!this._tracksToIgnore.isEmpty()) {
+			String title = "Confirm Ignores";
+			String message = "Are you sure you want to ignore "+this._tracksToIgnore.size()+" tracks?";
+			Object[] options = { "Yes", "No" };
+			
+			int choice = JOptionPane.showOptionDialog(this.getMainWindow(), message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+			
+			if (choice == 1) {
+				this.updateStateMessage("Cancelled ignoring tracks");
+				return;
+			}
+			
+			this.updateStateMessage("Ignoring " + this._tracksToIgnore.size() + " tracks ...");
+		
+			new CustomThread<List<DeviceTrackDto>>(this._tracksToIgnore) {
+				public void run() {
+					Date scrobbleFromDate = new Date(ViewHandler.getInstance().getScrobbleFrom());
+					String scrobbleFrom = new SimpleDateFormat("HH:mm dd/MM/yyyy").format(scrobbleFromDate);
+		
+					try {
+						Zenses.getInstance().getTracksSubmitter().updateTracks(this.getData(), scrobbleFrom, Zenses.getInstance().getPreferences().getIntervalBetweenScrobbles());
+						ViewHandler.getInstance().updateStateMessage("Completed ignoring " + this.getData().size() + " tracks");
+					} catch (Exception e) {
+						ViewHandler.getInstance().showError(e.getMessage());
+						ViewHandler.getInstance().updateStateMessage("Failed ignoring " + this.getData().size() + " tracks");
+					} finally {
+						ViewHandler.getInstance().updateUI(false);
+					}
+				}
+			}.start();
+		} else {
+			this.updateStateMessage("No tracks selected to ignore ...");
+		}
+	}
+	
 	public void scrobbleSelectedTracks() {
 		this._tracksToScrobble = new ArrayList<DeviceTrackDto>();
 		
@@ -361,14 +441,25 @@ public class ViewHandler
 			this.showError("Please autheticate with Last.fm before attempting to scrobble tracks.");
 			
 			return;
-		}
+		} 
 		
-		this.updateStateMessage("Validating scrobbles");
+		this.updateStateMessage("Validating scrobbles ...");
 		
 		Date scrobbleFromDate = new Date(this.getScrobbleFrom());
 		String scrobbleFromOriginal = new SimpleDateFormat("hh:mma d MMMM yyyy").format(scrobbleFromDate);
 
-		if (scrobbleFromDate.before(this.getZenses().getLastScrobbledDateTime())) {
+		/*if (scrobbleFromDate.before(this.getZenses().getLastScrobbledDateTime())) {
+			String title = "Warning!";
+			String message = "You are trying to scrobble to Last.fm before your last successfully scrobble, Zenses cannot verify if the scrobbles will be accepted by Last.fm. Your scrobbles will work as long as the times dont clash with previous scrobbles. Continue?";
+			Object[] options = { "Yes", "No" };
+			
+			int choice = JOptionPane.showOptionDialog(this.getMainWindow(), message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+			
+			if (choice == 1) {
+				this.updateStateMessage("Cancelled scrobbling tracks");
+				return;
+			}
+			
 			this.showError("You must choose a date to scrobble from that is after your last scrobble to Last.fm, which was " + this.getZenses().getLastScrobbledTime() +" "+ this.getZenses().getLastScrobbledDate());
 			
 			this.getMainWindow().getScrobbleDateField().setText(Zenses.getInstance().getNextScrobbledDate());
@@ -377,9 +468,9 @@ public class ViewHandler
 			this.updateStateMessage("Scrobbles failed validation");
 			
 			return;
-		}
+		}*/
 		
-		this.updateStateMessage("Calculating tracks to scrobble");
+		this.updateStateMessage("Calculating scrobbles times for tracks ...");
 
 		for (int i = 0; i < this.getMainWindow().getUnscrobbledTracksTable().getRowCount(); i++) {
 			Object val = this.getMainWindow().getUnscrobbledTracksTable().getModel().getValueAt(i, 0);
@@ -425,7 +516,7 @@ public class ViewHandler
 				}
 			}.start();
 		} else {
-			this.updateStateMessage("No tracks selected to scrobble");
+			this.updateStateMessage("No tracks selected to scrobble ...");
 		}
 	}
 	
