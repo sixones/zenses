@@ -8,87 +8,97 @@ The plan for Zenses is to build a cross platform application but at the moment o
 Requirements
 ------------
 
-### Windows
+#### Windows
 
 * [Java Runtime Environment 6+][JRE_WIN]
 * [Windows Media Player 11][WMP11]
 
-### Mac OS X
 
-Unsupported
+#### Mac OS X / Linux
 
-### Linux
+* [libMTP][]
+* [libUSB][]
 
-Unsupported
 
 ### Build Requirements (only required to compile Zenses from source)
 
 * [Java Development Kit 6+ (Windows)][JDK_WIN]
 * [Maven][]
 
+
 Compiling
 ---------
 
-Zenses is split into 2 Java projects, `zenses-lib` and `zenses`. All the logic and the main workload happens in `zenses-lib` whilst `zenses` provides the GUI using [Java Swing][Swing].
+Zenses is split into 2 Java projects, `zenses-lib` and `zenses`. All the logic and the main workload happens in `zenses-lib` whilst `zenses` provides the GUI using [Java Swing][Swing]. To build Zenses with [Eclipse][] install the [MavenEmbed][] plugin, and use the instructions in the Dependencies section to import the missing dependencies.
 
-To use Zenses in [Eclipse][] install the [Maven Integration] http://m2eclipse.sonatype.org/update/
+Before you can build the two Zenses projects you will need to add the required dependencies to your [Maven][] installation, most will be automatically installed when you run the commands below. A few dependencies require a manual install as they cannot be redistributed, see the Dependencies section for instructions and information on the required artefacts.
 
-Before importing the projects, you will need to add a few extra dependencies that cant be redistributed:
+To build `zenses-lib`:
+
+	mvn install
+	
+To build `zenses`:
+	
+	mvn assembly:assembly
+	
+After you build `zenses` you should have a [Jar][] in your `target` directory called `zenses2.jar`, you can run Zenses directly from the jar with:
+
+	java -jar zenses2.jar
+	
+To build the launcher application (a Windows exe that launches the jar with the required arguments) and the installer application you will need the [NSIS][] installed on your machine. Once you have NSIS installed, you can use the build scripts inside the `scripts` directory which is in the `zenses` project folder.
+
+Dependencies (requires manual install)
+--------------------------------------
 
 JMTP
-----
 
-Artifact file:	jmtp.jar
-Group Id:		jmtp
-Artifact Id:	jmtp
-Version:		1.0
-Packaging:		jar
+	Artifact file:	jmtp.jar
+	Group Id:		jmtp
+	Artifact Id:	jmtp
+	Version:		1.0
+	Packaging:		jar
 
 Last.fm Bindings
-----------------
 
-Artifact file:	last.fm-bindings.jar
-Group Id:		last.fm
-Artifact Id:	last.fm-bindings
-Version:		5.21
-Packaging:		jar
+	Artifact file:	last.fm-bindings.jar
+	Group Id:		last.fm
+	Artifact Id:	last.fm-bindings
+	Version:		5.21
+	Packaging:		jar
 
 JMS
----
 
-Artifact file:	jms.jar
-Group Id:		javax.jms
-Artifact Id:	jms
-Version:		1.1
-Packaging:		jar
+	Artifact file:	jms.jar
+	Group Id:		javax.jms
+	Artifact Id:	jms
+	Version:		1.1
+	Packaging:		jar
 
 JMX Tools
----------
 
-Artifact file:	jmxtools.jar
-Group Id:		com.sun.jdmk
-Artifact Id:	jmxtools
-Version:		1.2.1
-Packaging:		jar
+	Artifact file:	jmxtools.jar
+	Group Id:		com.sun.jdmk
+	Artifact Id:	jmxtools
+	Version:		1.2.1
+	Packaging:		jar
 
 JMXRI
------
 
-Artifact file:	jmxri.jar
-Group Id:		com.sun.jmx
-Artifact Id:	jmxri
-Version:		1.2.1
-Packaging:		jar
+	Artifact file:	jmxri.jar
+	Group Id:		com.sun.jmx
+	Artifact Id:	jmxri
+	Version:		1.2.1
+	Packaging:		jar
 
 Spring Application Framework
-----------------------------
 
-Artifact file:	appframework-1.0.3.jar
-Group Id:		org.jdesktop
-Artifact Id:	appframework
-Version:		1.0.3
-Packaging:		jar
+	Artifact file:	appframework-1.0.3.jar
+	Group Id:		org.jdesktop
+	Artifact Id:	appframework
+	Version:		1.0.3
+	Packaging:		jar
 
+### Installing Dependencies (through Eclipse)
 
 For each;
 	
@@ -96,7 +106,6 @@ For each;
 	Maven => Install or deploy an artifact to a Maven repository
 	For artifact file => Click browse => Browse to the libs directory in the Zenses2 root and select the right jar file
 	Enter the artifact information (see list above, make sure Generate POM and Create Checksum are both checked)
-
 	Project => Update Maven Dependencies
 
 You can then import the projects:
@@ -111,31 +120,24 @@ You can then import the projects:
 	// this may take a while
 	// NOTE: let Eclipse / Maven finish before attempting to compile Zenses, doing so will cause countless errors about missing dependencies.
 
-Before you can build the two Zenses projects you will need to add the required dependencies to your [Maven][] installation, most will be automatically installed when you run the commands below. A few dependencies require a manual install as they cannot be redistributed. **TODO: add notes about installing extra dependencies.**
-
-To build `zenses-lib`:
-
-	mvn install
-	
-To build `zenses`:
-	
-	mvn assembly:assembly
-	
-After you build `zenses` you should have a [Jar][] in your `target` directory called `zenses2.jar`, you can run Zenses directly from the jar with:
-
-	java -jar zenses2.jar
-	
-To build the launcher application (a Windows exe that launches the jar with the required arguments) and the installer application you will need the [Nullsoft Scriptable Install System][NSIS] installed on your machine. Once you have NSIS installed, you can use the build scripts inside the `scripts` directory which is in the `zenses` project folder.
-
-Feature Plans
--------------
-
-* Localisation support
-* Mac OS X and Linux support (through [libMTP][])
-* Multiple [Last.fm][] user authentication
-
 Links
 -----
+
+* [MTP][]
+* [Last.fm][]
+* [Java][]
+* [Swing][]
+* [Jar][]
+* [JRE_WIN][]
+* [JDK_WIN][]
+* [WMP11][]
+* [NSIS][]
+* [libMTP][]
+* [libUSB][]
+* [Maven][]
+* [MavenEmbed][]
+* [Eclipse][]
+* [MIT][]
 
 [Java]: http://en.wikipedia.org/wiki/Java_%28programming_language%29 "Java"
 [MTP]: http://en.wikipedia.org/wiki/Media_Transfer_Protocol "MTP"
@@ -146,11 +148,14 @@ Links
 [JRE_WIN]: http://www.java.com/en/download/installed.jsp?detect=jre&try=1 "Java Runtime Environment 6+"
 [JDK_WIN]: http://java.sun.com/javase/downloads/index.jsp "Java Development Kit 6+"
 [NSIS]: http://nsis.sourceforge.net/Main_Page "Nullsoft Scriptable Install System"
+[Eclipse]: http://eclipse.org "Eclipse"
 
 [libMTP]: http://libmtp.sourceforge.net/ "libMTP"
+[libUSB]: http://www.libusb.org/ "libUSB"
 
 [Last.fm]: http://last.fm/ "Last.fm"
 [Maven]: http://maven.apache.org/ "Maven"
+[MavenEmbed]: http://m2eclipse.sonatype.org/update/ "Maven Integration"
 [MIT]: http://www.opensource.org/licenses/mit-license.php "MIT"
 
 License
