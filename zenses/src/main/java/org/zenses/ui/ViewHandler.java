@@ -126,7 +126,7 @@ public class ViewHandler {
 		new Thread() {
 			public void run() {
 				ViewHandler.getInstance().updateStateMessage("Searching for devices ...");
-
+				
 				@SuppressWarnings("unchecked")
 				List<MtpDevice> devices = Zenses.getInstance().getDeviceService().getDevices();
 
@@ -140,10 +140,16 @@ public class ViewHandler {
 					ViewHandler.getInstance().getMainWindow().getConnectedDevicesComboBox().setEnabled(true);
 
 					ViewHandler.getInstance().updateStateMessage("Found " + devices.size() + " device(s)");
+					
+					ViewHandler.getInstance().getMainWindow().getConnectedDevicesComboBox().setEnabled(true);
+					ViewHandler.getInstance().getMainWindow().getFetchTracksButton().setEnabled(true);
 				} else {
 					ViewHandler.getInstance().getMainWindow().getConnectedDevicesComboBox().setEnabled(false);
 
 					ViewHandler.getInstance().updateStateMessage("No devices could be found");
+					
+					ViewHandler.getInstance().getMainWindow().getConnectedDevicesComboBox().setEnabled(false);
+					ViewHandler.getInstance().getMainWindow().getFetchTracksButton().setEnabled(false);
 				}
 			}
 		}.start();
@@ -256,12 +262,17 @@ public class ViewHandler {
 						.getSelectedItem();
 				ViewHandler.getInstance().updateStateMessage("Connecting to device and fetching track information...");
 
+				ViewHandler.getInstance().getMainWindow().getConnectedDevicesComboBox().setEnabled(false);
+				ViewHandler.getInstance().getMainWindow().getFetchTracksButton().setEnabled(false);
+				
 				List<MtpDeviceTrack> tracks;
 
 				try {
 					tracks = ZensesApplication.getApplication().getZenses().getDeviceService().getTracks(device);
 				} catch (MTPException e) {
 					ViewHandler.getInstance().updateStateMessage("Failed.");
+					ViewHandler.getInstance().getMainWindow().getConnectedDevicesComboBox().setEnabled(true);
+					ViewHandler.getInstance().getMainWindow().getFetchTracksButton().setEnabled(true);
 					ViewHandler.getInstance().showError(
 							e.getMessage() + "\nTry to reboot the device and make sure its connected.");
 
@@ -290,6 +301,10 @@ public class ViewHandler {
 				}
 
 				ViewHandler.getInstance().updateStateMessage("Device tracks collected and ready for scrobbling");
+				
+				ViewHandler.getInstance().getMainWindow().getConnectedDevicesComboBox().setEnabled(true);
+				ViewHandler.getInstance().getMainWindow().getFetchTracksButton().setEnabled(true);
+				
 				ViewHandler.getInstance().updateUI();
 			}
 		}.start();

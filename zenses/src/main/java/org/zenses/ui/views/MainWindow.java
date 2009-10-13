@@ -350,11 +350,12 @@ public class MainWindow extends JFrame {
 	 * 
 	 * @return javax.swing.JButton
 	 */
-	private JButton getFetchTracksButton() {
+	public JButton getFetchTracksButton() {
 		if (fetchTracksButton == null) {
 			fetchTracksButton = new JButton();
 			fetchTracksButton.setName("fetchTracksButton");
 			fetchTracksButton.setPreferredSize(new Dimension(110, 26));
+			fetchTracksButton.setEnabled(false);
 			fetchTracksButton.setText("Fetch Tracks");
 			fetchTracksButton.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent evt) {
