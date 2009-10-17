@@ -17,9 +17,9 @@ public class ContextProvider {
 			"applicationContext.xml", "mtplib-" + System.getProperty("mtplib") + "-context.xml" });
 
 	static {
-		String operatingSystem = System.getProperty("os.name").toLowerCase();
+		//String operatingSystem = System.getProperty("os.name").toLowerCase();
 
-		if (operatingSystem.contains("windows")) {
+		//if (operatingSystem.contains("windows")) {
 			DriverManagerDataSource dataSource = getSingleBeanOfType(DriverManagerDataSource.class);
 			
 			if ("hsql".equals(System.getProperty("dbtype"))) {
@@ -28,7 +28,7 @@ public class ContextProvider {
 						.append("zenses.data;shutdown=true").toString();
 				dataSource.setUrl(url);
 			}
-		}
+		//}
 	}
 
 	@SuppressWarnings("unchecked")
