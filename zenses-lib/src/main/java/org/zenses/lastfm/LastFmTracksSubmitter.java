@@ -35,7 +35,7 @@ public class LastFmTracksSubmitter implements InitializingBean {
 	public void submitSingleTrack(DeviceTrackDto dto, long submissionTimestamp) throws IOException {
 		Assert.notNull(scrobbler,
 				"Not provided lastfm username or password - not connected, no submissions will be made");
-		int trackLength = (int) (dto.getLength().doubleValue() / 1000);
+		int trackLength = (int) (dto.getLength().doubleValue() / 100);
 		ResponseStatus status = scrobbler.submit(dto.getArtist(), dto.getTitle(), dto.getAlbum(), trackLength, -1,
 				Source.USER, submissionTimestamp);
 		Assert.isTrue(status.ok(), "Submitting track to Last.fm failed: " + status.getMessage() + ", track: " + dto);

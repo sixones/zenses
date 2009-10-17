@@ -25,6 +25,7 @@ public class MtpDeviceServiceImpl implements MtpDeviceService<PortableDevice> {
 
 	public List<MtpDevice<PortableDevice>> getDevices() {
 		PortableDeviceManager pdm = new PortableDeviceManager();
+		
 		PortableDevice[] devices = pdm.getDevices();
 		List<MtpDevice<PortableDevice>> deviceWrappers = new ArrayList<MtpDevice<PortableDevice>>(devices.length);
 		for (PortableDevice dev : devices) {
