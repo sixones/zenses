@@ -418,11 +418,11 @@ public class ViewHandler {
 					try {
 						Zenses.getInstance().getTracksSubmitter().ignoreTracks(this.getData());
 						ViewHandler.getInstance().updateStateMessage("Completed ignoring " + this.getData().size() + " tracks");
+					
+						ViewHandler.getInstance().updateUI(false);
 					} catch (Exception e) {
 						ViewHandler.getInstance().showError(e.getMessage());
 						ViewHandler.getInstance().updateStateMessage("Failed ignoring " + this.getData().size() + " tracks");
-					} finally {
-						ViewHandler.getInstance().updateUI(false);
 					}
 				}
 			}.start();
@@ -483,9 +483,17 @@ public class ViewHandler {
 		this.updateStateMessage("Calculating scrobbles times for tracks ...");
 		
 		if (!tracksToScrobble.isEmpty()) {
+			boolean goBackInTime = ViewHandler.getInstance().getMainWindow().getGoBackInTimeCheckbox().isSelected();
+			
 			String title = "Confirm Scrobbles";
 			String message = "Are you sure you want to scrobble " + tracksToScrobble.size() + " tracks from "
 					+ scrobbleFromOriginal + "?";
+			
+			if (goBackInTime) {
+				message = "Are you sure you want to scrobble " + tracksToScrobble.size() + " tracks until "
+				+ scrobbleFromOriginal + "?";
+			}
+			
 			Object[] options = { "Yes", "No" };
 
 			int choice = JOptionPane.showOptionDialog(this.getMainWindow(), message, title, JOptionPane.YES_NO_OPTION,
@@ -498,16 +506,18 @@ public class ViewHandler {
 
 			this.updateStateMessage("Attempting to scrobble " + tracksToScrobble.size() + " tracks");
 
-			final boolean goBackInTime = this.getMainWindow().getGoBackInTimeCheckbox().isSelected();
 			new CustomThread<List<DeviceTrackDto>>(tracksToScrobble) {
 				public void run() {
 					Date scrobbleFromDate = new Date(ViewHandler.getInstance().getScrobbleFrom());
 					String scrobbleFrom = new SimpleDateFormat("HH:mm dd/MM/yyyy").format(scrobbleFromDate);
-
+					boolean goBackInTime = ViewHandler.getInstance().getMainWindow().getGoBackInTimeCheckbox().isSelected();
+					
 					try {
-						Zenses.getInstance().getTracksSubmitter().updateTracks(this.getData(), "", 0, false);
+						Zenses.getInstance().getTracksSubmitter().updateTracks(this.getData(), scrobbleFrom, 0, goBackInTime);
 						ViewHandler.getInstance().updateStateMessage(
 								"Completed scrobbling " + this.getData().size() + " tracks");
+						
+						ViewHandler.getInstance().updateUI(false);
 					} catch (IllegalArgumentException e) {
 						ViewHandler.getInstance().showError(e.getMessage());
 						ViewHandler.getInstance().updateStateMessage(
@@ -516,8 +526,6 @@ public class ViewHandler {
 						ViewHandler.getInstance().showError(e.getMessage());
 						ViewHandler.getInstance().updateStateMessage(
 								"Failed scrobbling " + this.getData().size() + " tracks");
-					} finally {
-						ViewHandler.getInstance().updateUI(false);
 					}
 				}
 			}.start();
