@@ -84,6 +84,7 @@ Section "Zenses2 Beta2" SecDummy
   file "zenses2.jar"
   file "License.txt"
   file "Readme.txt"
+  file "run-debugger.bat"
 
   ${If} ${FileExists} `$INSTDIR\Zenses2 Beta1.exe`
 	Delete "$INSTDIR\Zenses2 Beta1.exe"
@@ -116,7 +117,7 @@ Section "Zenses2 Beta2" SecDummy
 
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Zenses2" "DisplayName" "Zenses2 Beta2"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Zenses2" "Publisher" "Sixones"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Zenses2" "DisplayVersion" "2.0.3b2"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Zenses2" "DisplayVersion" "2.0.5b2"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Zenses2" "UninstallString" "$\"$INSTDIR\Uninstall.exe$\""
 				
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Zenses2" "QuietUninstallString" "$\"$INSTDIR\Uninstall.exe$\" /S"
@@ -152,6 +153,7 @@ Section "Uninstall"
   Delete "$APPDATA\zenses\data\zenses.data.script"
   Delete "$INSTDIR\License.txt"
   Delete "$INSTDIR\Readme.txt"
+  Delete "$INSTDIR\run-debugger.bat"
 
   RMDir "$INSTDIR\data"
 
