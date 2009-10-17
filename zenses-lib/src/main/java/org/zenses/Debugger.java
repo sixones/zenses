@@ -1,10 +1,13 @@
 package org.zenses;
 
+import java.io.File;
 import java.util.List;
 
 import jmtp.PortableDevice;
 
 import org.apache.log4j.Logger;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.zenses.data.service.DeviceTrackService;
 import org.zenses.lib.ContextProvider;
 import org.zenses.mtp.MTPException;
 import org.zenses.mtp.MtpDevice;
@@ -22,9 +25,17 @@ public class Debugger {
 
 	private final MtpDeviceService<PortableDevice> mtpDeviceService;
 
+	private final DeviceTrackService tracksService;
+
 	@SuppressWarnings("unchecked")
 	public Debugger() {
 		this.mtpDeviceService = ContextProvider.getDeviceService();
+		this.tracksService = ContextProvider.getDeviceTrackService();
+		DriverManagerDataSource dataSource = ContextProvider.getSingleBeanOfType(DriverManagerDataSource.class);
+		String url = new StringBuilder().append("jdbc:hsqldb:file:").append("c:\\temp").append(File.separator).append(
+				"zenses.data;shutdown=true").toString();
+		dataSource.setUrl(url);
+
 	}
 
 	public void debug() {
@@ -39,6 +50,7 @@ public class Debugger {
 					logger.warn("Found " + tracks.size() + " tracks on the device [limited to 200 for performance]. "
 							+ "Listing tracks with >0 listenCount:");
 					for (MtpDeviceTrack track : tracks) {
+						tracksService.createOrUpdate(track);
 						if (track.getPlayCount() > 0)
 							logger.info(track);
 					}

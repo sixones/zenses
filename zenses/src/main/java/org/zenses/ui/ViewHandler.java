@@ -3,7 +3,6 @@ package org.zenses.ui;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -295,7 +294,7 @@ public class ViewHandler {
 												+ allTracks + "]");
 							}
 						} catch (Exception e) {
-							e.printStackTrace();
+							logger.error("Error on updating tracks: " , e);
 						}
 					}
 				}

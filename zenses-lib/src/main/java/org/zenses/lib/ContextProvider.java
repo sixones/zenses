@@ -48,7 +48,7 @@ public class ContextProvider {
 		return getSingleBeanOfType(LastFmTracksSubmitter.class);
 	}
 
-	private static <T> T getSingleBeanOfType(Class<T> beanClass) {
+	public static <T> T getSingleBeanOfType(Class<T> beanClass) {
 		Map<String, T> beansOfType = context.getBeansOfType(beanClass);
 		Assert.isTrue(beansOfType.size() == 1, "Expected one bean but instead found: " + beansOfType);
 		return beansOfType.values().iterator().next();
