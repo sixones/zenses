@@ -38,7 +38,7 @@
 		        <configuration>
 		          <archive>
 		            <manifest>
-		              <mainClass>org.zenses.ZensesApplication</mainClass>
+		              <mainClass>org.zenses.RootLauncher</mainClass>
 		              <addClasspath>true</addClasspath>
 		            </manifest>
 		          </archive>
@@ -54,7 +54,7 @@
                     <archive>
                         <manifest>
                         	<addClasspath>true</addClasspath>
-                            <mainClass>org.zenses.ZensesApplication</mainClass>
+                            <mainClass>org.zenses.RootLauncher</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
