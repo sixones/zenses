@@ -16,7 +16,7 @@ VIAddVersionKey "FileVersion" "2.0.5b2"
 VIProductVersion "2.0.5.0b2"
  
 !define CLASSPATH "zenses2.jar"
-!define CLASS "org.zenses.ZensesApplication"
+!define CLASS "org.zenses.RootLauncher"
 !define PRODUCT_NAME "Zenses2 Beta2"
  
 ; Definitions for Java 6.0
